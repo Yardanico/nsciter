@@ -1,16 +1,181 @@
-# Generated @ 2020-07-12T17:20:01-05:00
+# Generated @ 2020-07-13T15:45:06+03:00
 # Command line:
-#   /home/gt/nimterop/nimterop/toast --preprocess -m:c --recurse -TBOOL=bool,char16_t=cushort,GtkWidget=HWINDOW,UINT=cuint --noHeader --includeDirs+=/usr/include/gtk-3.0 --includeDirs+=/usr/include/glib-2.0 --includeDirs+=/usr/lib/x86_64-linux-gnu/glib-2.0/include --includeDirs+=/usr/include/pango-1.0 --includeDirs+=/usr/include/cairo --includeDirs+=/usr/include/gdk-pixbuf-2.0 --includeDirs+=/usr/include/atk-1.0 --exclude+=/usr/include/gtk-3.0 --exclude+=/usr/include/glib-2.0 --exclude+=/usr/lib/x86_64-linux-gnu/glib-2.0/include --exclude+=/usr/include/pango-1.0 --exclude+=/usr/include/cairo --exclude+=/usr/include/gdk-pixbuf-2.0 --exclude+=/usr/include/atk-1.0 --pnim --symOverride=KB_LEFTBRACKET,KB_RIGHTBRACKET,KB_NUMLOCK,SUBSCRIPTIONS_REQUEST,RRT_FORCE_DWORD,RT_DATA_FORCE_DWORD,RS_FORCE_DWORD,HELEMENT,HWINDOW,SCITER_VALUE,RECT,LPRECT,LPCRECT --nim:/home/gt/nimdevel/bin/nim --pluginSourcePath=/home/gt/.cache/nim/nimterop/cPlugins/nimterop_4133318743.nim /home/gt/wrappers/sciter-sdk/include/sciter-x.h -o /home/gt/.cache/nim/nimterop/toastCache/nimterop_2478488385.nim
+#   /home/dian/.nimble/pkgs/nimterop-0.6.4/nimterop/toast --preprocess -m:c --recurse -TBOOL=bool,char16_t=cushort,UINT=cuint --noHeader --includeDirs+=/usr/include/gtk-3.0 --includeDirs+=/usr/include/glib-2.0 --includeDirs+=/usr/lib/glib-2.0/include --includeDirs+=/usr/include/pango-1.0 --includeDirs+=/usr/include/cairo --includeDirs+=/usr/include/gdk-pixbuf-2.0 --includeDirs+=/usr/include/atk-1.0 --includeDirs+=/usr/include/harfbuzz --exclude+=/usr/include/gtk-3.0 --exclude+=/usr/include/glib-2.0 --exclude+=/usr/lib/glib-2.0/include --exclude+=/usr/include/pango-1.0 --exclude+=/usr/include/cairo --exclude+=/usr/include/gdk-pixbuf-2.0 --exclude+=/usr/include/atk-1.0 --exclude+=/usr/include/harfbuzz --pnim --symOverride=KB_LEFTBRACKET,KB_RIGHTBRACKET,KB_NUMLOCK,SUBSCRIPTIONS_REQUEST,RRT_FORCE_DWORD,RT_DATA_FORCE_DWORD,RS_FORCE_DWORD,SCDOM_OK_NOT_HANDLED,SCDOM_OK,SCDOM_INVALID_HWND,SCDOM_INVALID_HANDLE,SCDOM_PASSIVE_HANDLE,SCDOM_INVALID_PARAMETER,SCDOM_OPERATION_FAILED,HELEMENT,GtkWidget,HWINDOW,SCITER_VALUE,RECT,LPRECT,LPCRECT,SCDOM_RESULT,SUBSCRIPTIONS_REQUEST --nim:/home/dian/Things/Nim/bin/nim --pluginSourcePath=/home/dian/.cache/nim/nimterop/cPlugins/nimterop_394333083.nim /home/dian/Projects/nsciter/sdk/include/sciter-x.h -o /home/dian/.cache/nim/nimterop/toastCache/nimterop_3309838374.nim
 
-type 
-  SCDOM_RESULT* {.size: 4.} = enum
-    SCDOM_OK_NOT_HANDLED = ( - 1)
-    SCDOM_OK = 0
-    SCDOM_INVALID_HWND = 1
-    SCDOM_INVALID_HANDLE = 2
-    SCDOM_PASSIVE_HANDLE = 3
-    SCDOM_INVALID_PARAMETER = 4
-    SCDOM_OPERATION_FAILED = 5
+# const 'LINUX' has unsupported value 'typedef signed char BOOL;'
+# const 'SC_CALLBACK' has unsupported value 'typedef struct tagRECT'
+# const 'HWINDOW' skipped
+# const 'HINSTANCE' has unsupported value 'LPVOID /**/'
+# const 'LRESULT' has unsupported value 'long'
+# const 'HDC' has unsupported value 'LPVOID /* cairo_t*/'
+# const 'OBSOLETE' has unsupported value '__attribute__((deprecated))'
+# const 'STDCALL' has unsupported value '__stdcall'
+# const 'EXTERN_C' has unsupported value 'extern'
+# const 'FLOAT_VALUE' has unsupported value 'double'
+# const 'HAS_TISCRIPT' has unsupported value 'typedef VALUE SCITER_VALUE;'
+# const 'SCDOM_RESULT' skipped
+# const 'SCDOM_OK' skipped
+# const 'SCDOM_INVALID_HWND' skipped
+# const 'SCDOM_INVALID_HANDLE' skipped
+# const 'SCDOM_PASSIVE_HANDLE' skipped
+# const 'SCDOM_INVALID_PARAMETER' skipped
+# const 'SCDOM_OPERATION_FAILED' skipped
+# const 'SCDOM_OK_NOT_HANDLED' skipped
+# const 'SOM_VALUE' has unsupported value 'SCITER_VALUE'
+# proc '_SAPI' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SAPI' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'gapi' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'rapi' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterClassName' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterVersion' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterDataReady' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterDataReadyAsync' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterLoadFile' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterLoadHtml' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetCallback' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetMasterCSS' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterAppendMasterCSS' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetCSS' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetMediaType' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetMediaVars' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetMinWidth' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetMinHeight' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCall' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterEval' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterUpdateWindow' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetOption' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetPPI' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetViewExpando' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGraphicsCaps' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetHomeURL' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCreateWindow' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'Sciter_UseElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'Sciter_UnuseElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetRootElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetFocusElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterFindElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetChildrenCount' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetNthChild' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetParentElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementHtmlCB' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementTextCB' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetElementText' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetAttributeCount' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetNthAttributeNameCB' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetNthAttributeValueCB' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetAttributeByNameCB' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetAttributeByName' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterClearAttributes' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementIndex' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementType' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementTypeCB' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetStyleAttributeCB' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetStyleAttribute' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementLocation' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterScrollToView' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterUpdateElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterRefreshElementArea' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetCapture' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterReleaseCapture' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementHwnd' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCombineURL' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSelectElements' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSelectElementsW' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSelectParent' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSelectParentW' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetElementHtml' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementUID' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementByUID' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterShowPopup' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterShowPopupAt' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterHidePopup' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementState' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetElementState' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCreateElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCloneElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterInsertElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterDetachElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterDeleteElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetTimer' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterDetachEventHandler' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterAttachEventHandler' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterWindowAttachEventHandler' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterWindowDetachEventHandler' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSendEvent' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterPostEvent' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterFireEvent' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCallBehaviorMethod' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterRequestElementData' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterHttpRequest' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetScrollInfo' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetScrollPos' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementIntrinsicWidths' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetElementIntrinsicHeight' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterIsElementVisible' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterIsElementEnabled' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSortElements' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSwapElements' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterTraverseUIEvent' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCallScriptingMethod' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCallScriptingFunction' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterEvalElementScript' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterAttachHwndToElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterControlGetType' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetValue' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetValue' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetExpando' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterGetHighlightedElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetHighlightedElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeAddRef' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeRelease' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeCastFromElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeCastToElement' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeFirstChild' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeLastChild' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeNextSibling' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodePrevSibling' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeParent' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeNthChild' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeChildrenCount' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeType' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeGetText' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeSetText' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeInsert' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterNodeRemove' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCreateTextNode' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterCreateCommentNode' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueInit' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueClear' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueCompare' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueCopy' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueIsolate' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueType' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueStringData' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueStringDataSet' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueIntData' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueIntDataSet' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueInt64Data' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueInt64DataSet' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueFloatData' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueFloatDataSet' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueBinaryData' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueBinaryDataSet' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueElementsCount' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueNthElementValue' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueNthElementValueSet' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueNthElementKey' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueEnumElements' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueSetValueToKey' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueGetValueOfKey' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueToString' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueFromString' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueInvoke' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueNativeFunctorSet' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'ValueIsNativeFunctor' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterProcX' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterAtomValue' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterAtomNameCB' skipped - static inline procs cannot work with '--noHeader | -H'
+# proc 'SciterSetGlobalAsset' skipped - static inline procs cannot work with '--noHeader | -H'
 {.push hint[ConvFromXtoItselfNotNeeded]: off.}
 import macros
 
@@ -54,6 +219,9 @@ macro defineEnum(typ: untyped): untyped =
 
     proc `dlrop`*(x: `typ`): string {.borrow.}
     proc `notop`*(x: `typ`): `typ` {.borrow.}
+
+
+type wchar_t* {.importc.} = object
 
 
 {.experimental: "codeReordering".}
@@ -129,30 +297,31 @@ defineEnum(OUTPUT_SEVERITY)
 defineEnum(SCITER_X_MSG_CODE) ## ```
                              ##   The Sciter Engine of Terra Informatica Software, Inc.
                              ##    http:sciter.com
-                             ##
+                             ##   
                              ##    The code and information provided "as-is" without
                              ##    warranty of any kind, either expressed or implied.
-                             ##
+                             ##   
                              ##    (C) 2003-2015, Terra Informatica Software, Inc.
-                             ##
-                             ##
+                             ##    
+                             ##     
                              ##    Sciter basic types, platform isolation declarations
-                             ##
-                             ##
+                             ##    
+                             ##     
                              ##    The Sciter Engine of Terra Informatica Software, Inc.
                              ##    http:sciter.com
-                             ##
+                             ##    
                              ##    The code and information provided "as-is" without
                              ##    warranty of any kind, either expressed or implied.
-                             ##
+                             ##    
                              ##    (C) 2003-2015, Terra Informatica Software, Inc.
-                             ##
+                             ##    
                              ##      #SCITER_X_MSG_CODE message/function identifier
                              ## ```
 defineEnum(SCITER_PAINT_TARGET_TYPE) ## ```
                                     ##   #SCITER_X_MSG_PAINT target identifier.
                                     ## ```
 const
+  SUBSCRIPTIONS_REQUEST* = (0xFFFFFFFF'i32).EVENT_GROUPS
   GFX_LAYER_GDI* = (1).GFX_LAYER
   GFX_LAYER_CG* = (1).GFX_LAYER ## ```
                              ##   Mac OS
@@ -353,13 +522,6 @@ const
   CVT_XJSON_LITERAL* = (CVT_JSON_MAP + 1).VALUE_STRING_CVT_TYPE ## ```
                                                            ##   /< x-json parsing/emission, date is emitted as ISO8601 date literal, currency is emitted in the form DDDD$CCC
                                                            ## ```
-  #[SCDOM_OK* = 0
-  SCDOM_INVALID_HWND* = 1
-  SCDOM_INVALID_HANDLE* = 2
-  SCDOM_PASSIVE_HANDLE* = 3
-  SCDOM_INVALID_PARAMETER* = 4
-  SCDOM_OPERATION_FAILED* = 5
-  SCDOM_OK_NOT_HANDLED* = (-1)]# # TODO XXX FIX
   ROOT_RELATIVE* = (0x00000001).ELEMENT_AREAS ## ```
                                            ##   - or this flag if you want to get Sciter window relative coordinates,
                                            ##        otherwise it will use nearest windowed container e.g. popup window.
@@ -640,8 +802,6 @@ const
   HANDLE_INITIALIZATION* = (0x00000000).EVENT_GROUPS ## ```
                                                   ##   < attached/detached
                                                   ## ```
-  SUBSCRIPTIONS_REQUEST* = (0xFFFFFFFF'i32).EVENT_GROUPS # XXX TODO TEMP
-
   HANDLE_MOUSE* = (0x00000001).EVENT_GROUPS ## ```
                                          ##   < mouse events
                                          ## ```
@@ -675,7 +835,7 @@ const
                                                ##   < behavior specific methods
                                                ## ```
   HANDLE_SCRIPTING_METHOD_CALL* = (0x00000400).EVENT_GROUPS ## ```
-                                                         ##   < behavior specific methods
+                                                         ##   < behavior specific methods 
                                                          ##     HANDLE_TISCRIPT_METHOD_CALL  = 0x0800, < behavior specific methods using direct tiscript::value's
                                                          ## ```
   HANDLE_EXCHANGE* = (0x00001000).EVENT_GROUPS ## ```
@@ -833,10 +993,10 @@ const
                                                   ##   these two - by_code
                                                   ## ```
   FOCUS_RQ_LAST* = (FOCUS_RQ_FIRST + 1).FOCUS_CMD_TYPE ## ```
-                                                  ##
+                                                  ##   
                                                   ## ```
   FOCUS_RQ_END_REACHED* = (0x00008000).FOCUS_CMD_TYPE ## ```
-                                                   ##
+                                                   ##   
                                                    ## ```
   SCROLL_HOME* = (0).SCROLL_EVENTS
   SCROLL_END* = (SCROLL_HOME + 1).SCROLL_EVENTS
@@ -908,10 +1068,10 @@ const
                                                                ##   PAN_VERTICAL and PAN_HORIZONTAL modifiers
                                                                ## ```
   GESTURE_FLAG_PAN_WITH_INERTIA* = (0x00008000).GESTURE_TYPE_FLAGS ## ```
-                                                                ##
+                                                                ##   
                                                                 ## ```
   GESTURE_FLAGS_ALL* = (0x0000FFFF).GESTURE_TYPE_FLAGS ## ```
-                                                    ##
+                                                    ##   
                                                     ## ```
   X_DRAG_ENTER* = (0).EXCHANGE_CMD ## ```
                                 ##   drag enters the element
@@ -1172,27 +1332,27 @@ const
                                                     ##   undo/redo
                                                     ## ```
   DO_CLICK* = (0).BEHAVIOR_METHOD_IDENTIFIERS ## ```
-                                           ##   remnants of HTMLayout API, not used
+                                           ##   remnants of HTMLayout API, not used 
                                            ##       GET_TEXT_VALUE = 1,
                                            ##       SET_TEXT_VALUE,
                                            ##          p - TEXT_VALUE_PARAMS
-                                           ##
+                                           ##   
                                            ##       TEXT_EDIT_GET_SELECTION,
                                            ##          p - TEXT_EDIT_SELECTION_PARAMS
-                                           ##
+                                           ##   
                                            ##       TEXT_EDIT_SET_SELECTION,
                                            ##          p - TEXT_EDIT_SELECTION_PARAMS
-                                           ##
+                                           ##   
                                            ##        Replace selection content or insert text at current caret position.
                                            ##        Replaced text will be selected.
                                            ##       TEXT_EDIT_REPLACE_SELECTION,
                                            ##          p - TEXT_EDIT_REPLACE_SELECTION_PARAMS
-                                           ##
+                                           ##   
                                            ##        Set value of type="vscrollbar"/"hscrollbar"
                                            ##       SCROLL_BAR_GET_VALUE,
                                            ##       SCROLL_BAR_SET_VALUE,
-                                           ##
-                                           ##       TEXT_EDIT_GET_CARET_POSITION,
+                                           ##   
+                                           ##       TEXT_EDIT_GET_CARET_POSITION, 
                                            ##       TEXT_EDIT_GET_SELECTION_TEXT,  p - TEXT_SELECTION_PARAMS
                                            ##       TEXT_EDIT_GET_SELECTION_HTML,  p - TEXT_SELECTION_PARAMS
                                            ##       TEXT_EDIT_CHAR_POS_AT_XY,      p - TEXT_EDIT_CHAR_POS_AT_XY_PARAMS
@@ -1345,30 +1505,35 @@ const
                                             ##   < target::receiver fields are valid
                                             ## ```
   SPT_SURFACE* = (2).SCITER_PAINT_TARGET_TYPE ## ```
-                                           ##   < target::pSurface is valid
-                                           ##     SPT_OPENGL    = 3,  < target is not used - caller shall set current context on its side
-                                           ##     SPT_OPENGLES  = 4,  < target is not used - caller shall set current context on its side
+                                           ##   < target::pSurface is valid 
+                                           ##     SPT_OPENGL    = 3,  < target is not used - caller shall set current context on its side  
+                                           ##     SPT_OPENGLES  = 4,  < target is not used - caller shall set current context on its side  
                                            ##     SPT_
                                            ## ```
   SCITER_API_VERSION* = 6
 type
   HELEMENT* = distinct pointer
   LPRECT* = ptr RECT
-  HWINDOW* {.header: "gtk/gtk.h", importc: "GtkWindow*".} = pointer
+  HWINDOW* = GtkWidget
+  GtkWidget* {.header: "gtk/gtk.h", importc.} = object
   RECT* {.bycopy.} = object
     left*: INT
     top*: INT
     right*: INT
     bottom*: INT
 
-  SCITER_VALUE = VALUE
+  SCITER_VALUE* = VALUE
+  SCDOM_RESULT* {.size: 4.} = enum
+    SCDOM_OK_NOT_HANDLED = (-1), SCDOM_OK = 0, SCDOM_INVALID_HWND = 1,
+    SCDOM_INVALID_HANDLE = 2, SCDOM_PASSIVE_HANDLE = 3, SCDOM_INVALID_PARAMETER = 4,
+    SCDOM_OPERATION_FAILED = 5
   INT* = cint
   UINT32* = cuint
   INT32* = cint
   UINT64* = culonglong
   INT64* = clonglong
   BYTE* = cuchar
-  WCHAR* = cushort
+  WCHAR* = wchar_t
   LPCWSTR* = ptr WCHAR
   LPWSTR* = ptr WCHAR
   CHAR* = cchar
@@ -1400,13 +1565,13 @@ type
   HREQUEST* = pointer ## ```
                    ##   The Sciter Engine of Terra Informatica Software, Inc.
                    ##    http:sciter.com
-                   ##
+                   ##   
                    ##    The code and information provided "as-is" without
                    ##    warranty of any kind, either expressed or implied.
-                   ##
+                   ##   
                    ##    (C) 2003-2015, Terra Informatica Software, Inc.
-                   ##
-                   ##
+                   ##    
+                   ##     
                    ##    Sciter basic types, platform isolation declarations
                    ## ```
   SciterRequestAPI* {.bycopy.} = object
@@ -1526,7 +1691,7 @@ type
         cdecl.}               ## ```
                ##   get received (so far) data
                ## ```
-
+  
   LPSciterRequestAPI* = ptr SciterRequestAPI
   VALUE* {.bycopy.} = object
     t*: cuint
@@ -1571,7 +1736,7 @@ type
     name*: LPCWSTR             ## ```
                  ##   name of custom event (when cmd == CUSTOM)
                  ## ```
-
+  
   METHOD_PARAMS* {.bycopy.} = object
     methodID*: cuint
 
@@ -1587,13 +1752,13 @@ type
   HGFX* = pointer ## ```
                ##   The Sciter Engine of Terra Informatica Software, Inc.
                ##    http:sciter.com
-               ##
+               ##   
                ##    The code and information provided "as-is" without
                ##    warranty of any kind, either expressed or implied.
-               ##
+               ##   
                ##    (C) 2003-2015, Terra Informatica Software, Inc.
-               ##
-               ##
+               ##    
+               ##     
                ##    Sciter basic types, platform isolation declarations
                ## ```
   HIMG* = pointer
@@ -1617,7 +1782,7 @@ type
     offset*: cfloat            ## ```
                   ##   0.0 ... 1.0
                   ## ```
-
+  
   image_write_function* = proc (prm: LPVOID; data: ptr BYTE; data_length: cuint): bool {.
       cdecl.}
   image_paint_function* = proc (prm: LPVOID; hgfx: HGFX; width: cuint; height: cuint): VOID {.
@@ -1844,7 +2009,7 @@ type
     prop_setter*: som_any_prop_setter_t ## ```
                                       ##   thing.k = prop_val;
                                       ## ```
-
+  
   som_atom_t* = UINT64
   som_asset_t* {.bycopy.} = object
     isa*: ptr som_asset_class_t
@@ -1894,7 +2059,7 @@ type
     cmd*: cuint                ## ```
               ##   INITIALIZATION_EVENTS
               ## ```
-
+  
   Union_sciterxh1* {.union, bycopy.} = object ## ```
                                          ##   SOM_EVENTS
                                          ## ```
@@ -1908,7 +2073,7 @@ type
     data*: Union_sciterxh1     ## ```
                          ##   SOM_EVENTS
                          ## ```
-
+  
   MOUSE_PARAMS* {.bycopy.} = object
     cmd*: cuint                ## ```
               ##   MOUSE_EVENTS
@@ -1940,7 +2105,7 @@ type
     dragging_mode*: cuint      ## ```
                         ##   see DRAGGING_TYPE.
                         ## ```
-
+  
   KEY_PARAMS* {.bycopy.} = object
     cmd*: cuint                ## ```
               ##   KEY_EVENTS
@@ -1954,7 +2119,7 @@ type
     alt_state*: cuint          ## ```
                     ##   KEYBOARD_STATES
                     ## ```
-
+  
   FOCUS_PARAMS* {.bycopy.} = object
     cmd*: cuint                ## ```
               ##   < #FOCUS_EVENTS
@@ -1969,7 +2134,7 @@ type
     cancel*: bool ## ```
                 ##   < in #FOCUS_REQUEST and #FOCUS_LOST phase setting this field to true will cancel transfer focus from old element to the new one.
                 ## ```
-
+  
   SCROLL_PARAMS* {.bycopy.} = object
     cmd*: cuint                ## ```
               ##   SCROLL_EVENTS
@@ -1989,7 +2154,7 @@ type
     reason*: cuint             ## ```
                  ##   key or scrollbar part
                  ## ```
-
+  
   GESTURE_PARAMS* {.bycopy.} = object
     cmd*: cuint                ## ```
               ##   GESTURE_EVENTS
@@ -2017,7 +2182,7 @@ type
                     ##   for GESTURE_ROTATE - delta angle (radians)
                     ##      for GESTURE_ZOOM - zoom value, is less or greater than 1.0
                     ## ```
-
+  
   EXCHANGE_PARAMS* {.bycopy.} = object
     cmd*: cuint                ## ```
               ##   EXCHANGE_EVENTS
@@ -2040,7 +2205,7 @@ type
     data*: SCITER_VALUE        ## ```
                       ##   packaged drag data
                       ## ```
-
+  
   SCITER_GRAPHICS* {.incompleteStruct.} = object
   DRAW_PARAMS* {.bycopy.} = object
     cmd*: cuint                ## ```
@@ -2056,12 +2221,12 @@ type
                    ##   for DRAW_BACKGROUND/DRAW_FOREGROUND - it is a border box
                    ##      for DRAW_CONTENT - it is a content box
                    ## ```
-
+  
   TIMER_PARAMS* {.bycopy.} = object
     timerId*: UINT_PTR ## ```
                      ##   timerId that was used to create timer by using SciterSetTimer
                      ## ```
-
+  
   SCRIPTING_METHOD_PARAMS* {.bycopy.} = object
     name*: LPCSTR              ## ```
                 ##   /< method name
@@ -2075,7 +2240,7 @@ type
     result*: SCITER_VALUE      ## ```
                         ##   /< return value
                         ## ```
-
+  
   VALUE_PARAMS* {.bycopy.} = object
     methodID*: cuint
     val*: SCITER_VALUE
@@ -2085,7 +2250,7 @@ type
     is_empty*: cuint           ## ```
                    ##   !0 - is empty
                    ## ```
-
+  
   DATA_ARRIVED_PARAMS* {.bycopy.} = object
     initiator*: HELEMENT ## ```
                        ##   element intiator of SciterRequestElementData request,
@@ -2107,17 +2272,17 @@ type
     uri*: LPCWSTR              ## ```
                 ##   requested url
                 ## ```
-
+  
   SCITER_CALLBACK_NOTIFICATION* {.bycopy.} = object ## ```
                                                 ##   Notification callback structure.
                                                 ## ```
     code*: cuint               ## ```
                ##   < [in] one of the codes above.
                ## ```
-    hwnd*: ptr HWINDOW ## ```
-                    ##   < [in] HWINDOW of the window this callback was attached to.
-                    ## ```
-
+    hwnd*: ptr GtkWidget ## ```
+                      ##   < [in] HWINDOW of the window this callback was attached to.
+                      ## ```
+  
   LPSCITER_CALLBACK_NOTIFICATION* = ptr SCITER_CALLBACK_NOTIFICATION
   SciterHostCallback* = proc (pns: LPSCITER_CALLBACK_NOTIFICATION;
                            callbackParam: LPVOID): cuint {.cdecl.}
@@ -2126,9 +2291,9 @@ type
     code*: cuint               ## ```
                ##   < [in] one of the codes above.
                ## ```
-    hwnd*: ptr HWINDOW ## ```
-                    ##   < [in] HWINDOW of the window this callback was attached to.
-                    ## ```
+    hwnd*: ptr GtkWidget ## ```
+                      ##   < [in] HWINDOW of the window this callback was attached to.
+                      ## ```
     uri*: LPCWSTR ## ```
                 ##   < [in] Zero terminated string, fully qualified uri, for example "http:server/folder/file.ext".
                 ## ```
@@ -2155,9 +2320,9 @@ type
     code*: cuint               ## ```
                ##   < [in] one of the codes above.
                ## ```
-    hwnd*: ptr HWINDOW ## ```
-                    ##   < [in] HWINDOW of the window this callback was attached to.
-                    ## ```
+    hwnd*: ptr GtkWidget ## ```
+                      ##   < [in] HWINDOW of the window this callback was attached to.
+                      ## ```
     uri*: LPCWSTR ## ```
                 ##   < [in] zero terminated string, fully qualified uri, for example "http:server/folder/file.ext".
                 ## ```
@@ -2176,7 +2341,7 @@ type
                  ##                                            status = 100..505 - http response status, Note: 200 - OK!
                  ##                                            status > 12000 - wininet error code, see ERROR_INTERNET_*** in wininet.h
                  ## ```
-
+  
   LPSCN_DATA_LOADED* = ptr SCN_DATA_LOADED
   SCN_ATTACH_BEHAVIOR* {.bycopy.} = object ## ```
                                        ##   This structure is used by #SC_ATTACH_BEHAVIOR notification.
@@ -2185,9 +2350,9 @@ type
     code*: cuint               ## ```
                ##   < [in] one of the codes above.
                ## ```
-    hwnd*: ptr HWINDOW ## ```
-                    ##   < [in] HWINDOW of the window this callback was attached to.
-                    ## ```
+    hwnd*: ptr GtkWidget ## ```
+                      ##   < [in] HWINDOW of the window this callback was attached to.
+                      ## ```
     element*: HELEMENT         ## ```
                      ##   < [in] target DOM element handle
                      ## ```
@@ -2200,7 +2365,7 @@ type
     elementTag*: LPVOID ## ```
                       ##   < [out] tag value, passed as is into pointer ElementEventProc function.
                       ## ```
-
+  
   LPSCN_ATTACH_BEHAVIOR* = ptr SCN_ATTACH_BEHAVIOR
   SCN_ENGINE_DESTROYED* {.bycopy.} = object ## ```
                                         ##   This structure is used by #SC_ENGINE_DESTROYED notification.
@@ -2209,10 +2374,10 @@ type
     code*: cuint               ## ```
                ##   < [in] one of the codes above.
                ## ```
-    hwnd*: ptr HWINDOW ## ```
-                    ##   < [in] HWINDOW of the window this callback was attached to.
-                    ## ```
-
+    hwnd*: ptr GtkWidget ## ```
+                      ##   < [in] HWINDOW of the window this callback was attached to.
+                      ## ```
+  
   LPSCN_ENGINE_DESTROYED* = ptr SCN_ENGINE_DESTROYED
   SCN_POSTED_NOTIFICATION* {.bycopy.} = object ## ```
                                            ##   This structure is used by #SC_ENGINE_DESTROYED notification.
@@ -2221,9 +2386,9 @@ type
     code*: cuint               ## ```
                ##   < [in] one of the codes above.
                ## ```
-    hwnd*: ptr HWINDOW ## ```
-                    ##   < [in] HWINDOW of the window this callback was attached to.
-                    ## ```
+    hwnd*: ptr GtkWidget ## ```
+                      ##   < [in] HWINDOW of the window this callback was attached to.
+                      ## ```
     wparam*: UINT_PTR ## ```
                     ##   < [in] HWINDOW of the window this callback was attached to.
                     ## ```
@@ -2238,10 +2403,10 @@ type
     code*: cuint               ## ```
                ##   < [in] = SC_GRAPHICS_CRITICAL_FAILURE
                ## ```
-    hwnd*: ptr HWINDOW ## ```
-                    ##   < [in] HWINDOW of the window this callback was attached to.
-                    ## ```
-
+    hwnd*: ptr GtkWidget ## ```
+                      ##   < [in] HWINDOW of the window this callback was attached to.
+                      ## ```
+  
   LPSCN_GRAPHICS_CRITICAL_FAILURE* = ptr SCN_GRAPHICS_CRITICAL_FAILURE
   SCN_KEYBOARD_REQUEST* {.bycopy.} = object ## ```
                                         ##   This structure is used by #SC_KEYBOARD_REQUEST notification.
@@ -2250,13 +2415,13 @@ type
     code*: cuint               ## ```
                ##   < [in] = SC_KEYBOARD_REQUEST
                ## ```
-    hwnd*: ptr HWINDOW ## ```
-                    ##   < [in] HWINDOW of the window this callback was attached to.
-                    ## ```
+    hwnd*: ptr GtkWidget ## ```
+                      ##   < [in] HWINDOW of the window this callback was attached to.
+                      ## ```
     keyboardMode*: cuint ## ```
                        ##   < [in] 0 - hide keyboard, 1 ... type of keyboard, TBD
                        ## ```
-
+  
   LPSCN_KEYBOARD_REQUEST* = ptr SCN_KEYBOARD_REQUEST
   SCN_INVALIDATE_RECT* {.bycopy.} = object ## ```
                                        ##   This structure is used by #SC_INVALIDATE_RECT notification.
@@ -2265,13 +2430,13 @@ type
     code*: cuint               ## ```
                ##   < [in] = SC_INVALIDATE_RECT
                ## ```
-    hwnd*: ptr HWINDOW ## ```
-                    ##   < [in] HWINDOW of the window this callback was attached to.
-                    ## ```
+    hwnd*: ptr GtkWidget ## ```
+                      ##   < [in] HWINDOW of the window this callback was attached to.
+                      ## ```
     invalidRect*: RECT         ## ```
                      ##   < [in] cumulative invalid rect.
                      ## ```
-
+  
   LPSCN_INVALIDATE_RECT* = ptr SCN_INVALIDATE_RECT
   URL_DATA* {.bycopy.} = object
     requestedUrl*: LPCSTR      ## ```
@@ -2307,7 +2472,7 @@ type
     msg*: cuint                ## ```
               ##   < [in]  one of the codes of #SCITER_X_MSG_CODE.
               ## ```
-
+  
   SCITER_X_MSG_CREATE* {.bycopy.} = object
     header*: SCITER_X_MSG
     backend*: cuint
@@ -2343,7 +2508,7 @@ type
     got*: bool                 ## ```
              ##   true - got, false - lost
              ## ```
-
+  
   SCITER_X_MSG_HEARTBIT* {.bycopy.} = object
     header*: SCITER_X_MSG
     time*: cuint
@@ -2365,7 +2530,7 @@ type
     receiver*: Type_sciterxh1  ## ```
                             ##   < [in] must be IDXGISurface*
                             ## ```
-
+  
   SCITER_X_MSG_PAINT* {.bycopy.} = object
     header*: SCITER_X_MSG
     element*: HELEMENT ## ```
@@ -2380,52 +2545,52 @@ type
     target*: Union_sciterxh2   ## ```
                            ##   < [in] one of #SCITER_PAINT_TARGET_TYPE values
                            ## ```
-
+  
   ISciterAPI* {.bycopy.} = object
     version*: cuint            ## ```
                   ##   API_VERSION
                   ## ```
     SciterClassName*: proc (): LPCWSTR {.cdecl.}
     SciterVersion*: proc (major: bool): cuint {.cdecl.}
-    SciterDataReady*: proc (hwnd: ptr HWINDOW; uri: LPCWSTR; data: LPCBYTE;
+    SciterDataReady*: proc (hwnd: ptr GtkWidget; uri: LPCWSTR; data: LPCBYTE;
                           dataLength: cuint): bool {.cdecl.}
-    SciterDataReadyAsync*: proc (hwnd: ptr HWINDOW; uri: LPCWSTR; data: LPCBYTE;
+    SciterDataReadyAsync*: proc (hwnd: ptr GtkWidget; uri: LPCWSTR; data: LPCBYTE;
                                dataLength: cuint; requestId: LPVOID): bool {.cdecl.}
-    SciterLoadFile*: proc (hWndSciter: ptr HWINDOW; filename: LPCWSTR): bool {.cdecl.}
-    SciterLoadHtml*: proc (hWndSciter: ptr HWINDOW; html: LPCBYTE; htmlSize: cuint;
+    SciterLoadFile*: proc (hWndSciter: ptr GtkWidget; filename: LPCWSTR): bool {.cdecl.}
+    SciterLoadHtml*: proc (hWndSciter: ptr GtkWidget; html: LPCBYTE; htmlSize: cuint;
                          baseUrl: LPCWSTR): bool {.cdecl.}
-    SciterSetCallback*: proc (hWndSciter: ptr HWINDOW; cb: LPSciterHostCallback;
+    SciterSetCallback*: proc (hWndSciter: ptr GtkWidget; cb: LPSciterHostCallback;
                             cbParam: LPVOID): VOID {.cdecl.}
     SciterSetMasterCSS*: proc (utf8: LPCBYTE; numBytes: cuint): bool {.cdecl.}
     SciterAppendMasterCSS*: proc (utf8: LPCBYTE; numBytes: cuint): bool {.cdecl.}
-    SciterSetCSS*: proc (hWndSciter: ptr HWINDOW; utf8: LPCBYTE; numBytes: cuint;
+    SciterSetCSS*: proc (hWndSciter: ptr GtkWidget; utf8: LPCBYTE; numBytes: cuint;
                        baseUrl: LPCWSTR; mediaType: LPCWSTR): bool {.cdecl.}
-    SciterSetMediaType*: proc (hWndSciter: ptr HWINDOW; mediaType: LPCWSTR): bool {.
+    SciterSetMediaType*: proc (hWndSciter: ptr GtkWidget; mediaType: LPCWSTR): bool {.
         cdecl.}
-    SciterSetMediaVars*: proc (hWndSciter: ptr HWINDOW; mediaVars: ptr SCITER_VALUE): bool {.
+    SciterSetMediaVars*: proc (hWndSciter: ptr GtkWidget; mediaVars: ptr SCITER_VALUE): bool {.
         cdecl.}
-    SciterGetMinWidth*: proc (hWndSciter: ptr HWINDOW): cuint {.cdecl.}
-    SciterGetMinHeight*: proc (hWndSciter: ptr HWINDOW; width: cuint): cuint {.cdecl.}
-    SciterCall*: proc (hWnd: ptr HWINDOW; functionName: LPCSTR; argc: cuint;
+    SciterGetMinWidth*: proc (hWndSciter: ptr GtkWidget): cuint {.cdecl.}
+    SciterGetMinHeight*: proc (hWndSciter: ptr GtkWidget; width: cuint): cuint {.cdecl.}
+    SciterCall*: proc (hWnd: ptr GtkWidget; functionName: LPCSTR; argc: cuint;
                      argv: ptr SCITER_VALUE; retval: ptr SCITER_VALUE): bool {.cdecl.}
-    SciterEval*: proc (hwnd: ptr HWINDOW; script: LPCWSTR; scriptLength: cuint;
+    SciterEval*: proc (hwnd: ptr GtkWidget; script: LPCWSTR; scriptLength: cuint;
                      pretval: ptr SCITER_VALUE): bool {.cdecl.}
-    SciterUpdateWindow*: proc (hwnd: ptr HWINDOW): VOID {.cdecl.}
-    SciterSetOption*: proc (hWnd: ptr HWINDOW; option: cuint; value: UINT_PTR): bool {.
+    SciterUpdateWindow*: proc (hwnd: ptr GtkWidget): VOID {.cdecl.}
+    SciterSetOption*: proc (hWnd: ptr GtkWidget; option: cuint; value: UINT_PTR): bool {.
         cdecl.}
-    SciterGetPPI*: proc (hWndSciter: ptr HWINDOW; px: ptr cuint; py: ptr cuint): VOID {.
+    SciterGetPPI*: proc (hWndSciter: ptr GtkWidget; px: ptr cuint; py: ptr cuint): VOID {.
         cdecl.}
-    SciterGetViewExpando*: proc (hwnd: ptr HWINDOW; pval: ptr VALUE): bool {.cdecl.}
+    SciterGetViewExpando*: proc (hwnd: ptr GtkWidget; pval: ptr VALUE): bool {.cdecl.}
     SciterGraphicsCaps*: proc (pcaps: LPUINT): bool {.cdecl.}
-    SciterSetHomeURL*: proc (hWndSciter: ptr HWINDOW; baseUrl: LPCWSTR): bool {.cdecl.}
-    SciterCreateWidget*: proc (frame: LPRECT): ptr HWINDOW {.cdecl.} ## ```
-                                                              ##   returns GtkWidget
-                                                              ## ```
+    SciterSetHomeURL*: proc (hWndSciter: ptr GtkWidget; baseUrl: LPCWSTR): bool {.cdecl.}
+    SciterCreateWidget*: proc (frame: LPRECT): ptr GtkWidget {.cdecl.} ## ```
+                                                                ##   returns GtkWidget
+                                                                ## ```
     SciterCreateWindow*: proc (creationFlags: cuint; frame: LPRECT;
                              delegate: ptr SciterWindowDelegate;
-                             delegateParam: LPVOID; parent: ptr HWINDOW): ptr HWINDOW {.
+                             delegateParam: LPVOID; parent: ptr GtkWidget): ptr GtkWidget {.
         cdecl.}
-    SciterSetupDebugOutput*: proc (hwndOrNull: ptr HWINDOW; param: LPVOID;
+    SciterSetupDebugOutput*: proc (hwndOrNull: ptr GtkWidget; param: LPVOID;
                                  pfOutput: DEBUG_OUTPUT_PROC): VOID {.cdecl.}
     Sciter_UseElement*: proc (he: HELEMENT): INT {.cdecl.} ## ```
                                                      ##   |
@@ -2433,9 +2598,10 @@ type
                                                      ##     |
                                                      ## ```
     Sciter_UnuseElement*: proc (he: HELEMENT): INT {.cdecl.}
-    SciterGetRootElement*: proc (hwnd: ptr HWINDOW; phe: ptr HELEMENT): INT {.cdecl.}
-    SciterGetFocusElement*: proc (hwnd: ptr HWINDOW; phe: ptr HELEMENT): INT {.cdecl.}
-    SciterFindElement*: proc (hwnd: ptr HWINDOW; pt: POINT; phe: ptr HELEMENT): INT {.cdecl.}
+    SciterGetRootElement*: proc (hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.cdecl.}
+    SciterGetFocusElement*: proc (hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.cdecl.}
+    SciterFindElement*: proc (hwnd: ptr GtkWidget; pt: POINT; phe: ptr HELEMENT): INT {.
+        cdecl.}
     SciterGetChildrenCount*: proc (he: HELEMENT; count: ptr cuint): INT {.cdecl.}
     SciterGetNthChild*: proc (he: HELEMENT; n: cuint; phe: ptr HELEMENT): INT {.cdecl.}
     SciterGetParentElement*: proc (he: HELEMENT; p_parent_he: ptr HELEMENT): INT {.cdecl.}
@@ -2475,8 +2641,8 @@ type
     SciterRefreshElementArea*: proc (he: HELEMENT; rc: RECT): INT {.cdecl.}
     SciterSetCapture*: proc (he: HELEMENT): INT {.cdecl.}
     SciterReleaseCapture*: proc (he: HELEMENT): INT {.cdecl.}
-    SciterGetElementHwnd*: proc (he: HELEMENT; p_hwnd: ptr ptr HWINDOW; rootWindow: bool): INT {.
-        cdecl.}
+    SciterGetElementHwnd*: proc (he: HELEMENT; p_hwnd: ptr ptr GtkWidget;
+                               rootWindow: bool): INT {.cdecl.}
     SciterCombineURL*: proc (he: HELEMENT; szUrlBuffer: LPWSTR; UrlBufferSize: cuint): INT {.
         cdecl.}
     SciterSelectElements*: proc (he: HELEMENT; CSS_selectors: LPCSTR;
@@ -2492,7 +2658,7 @@ type
     SciterSetElementHtml*: proc (he: HELEMENT; html: ptr BYTE; htmlLength: cuint;
                                where: cuint): INT {.cdecl.}
     SciterGetElementUID*: proc (he: HELEMENT; puid: ptr cuint): INT {.cdecl.}
-    SciterGetElementByUID*: proc (hwnd: ptr HWINDOW; uid: cuint; phe: ptr HELEMENT): INT {.
+    SciterGetElementByUID*: proc (hwnd: ptr GtkWidget; uid: cuint; phe: ptr HELEMENT): INT {.
         cdecl.}
     SciterShowPopup*: proc (hePopup: HELEMENT; heAnchor: HELEMENT; placement: cuint): INT {.
         cdecl.}
@@ -2516,9 +2682,9 @@ type
                                    tag: LPVOID): INT {.cdecl.}
     SciterAttachEventHandler*: proc (he: HELEMENT; pep: C_LPELEMENT_EVENT_PROC;
                                    tag: LPVOID): INT {.cdecl.}
-    SciterWindowAttachEventHandler*: proc (hwndLayout: HWINDOW;
+    SciterWindowAttachEventHandler*: proc (hwndLayout: ptr GtkWidget;
         pep: C_LPELEMENT_EVENT_PROC; tag: LPVOID; subscription: cuint): INT {.cdecl.}
-    SciterWindowDetachEventHandler*: proc (hwndLayout: HWINDOW;
+    SciterWindowDetachEventHandler*: proc (hwndLayout: ptr GtkWidget;
         pep: C_LPELEMENT_EVENT_PROC; tag: LPVOID): INT {.cdecl.}
     SciterSendEvent*: proc (he: HELEMENT; appEventCode: cuint; heSource: HELEMENT;
                           reason: UINT_PTR; handled: ptr bool): INT {.cdecl.}
@@ -2552,7 +2718,7 @@ type
                                       argc: cuint; retval: ptr VALUE): INT {.cdecl.}
     SciterEvalElementScript*: proc (he: HELEMENT; script: LPCWSTR;
                                   scriptLength: cuint; retval: ptr VALUE): INT {.cdecl.}
-    SciterAttachHwndToElement*: proc (he: HELEMENT; hwnd: ptr HWINDOW): INT {.cdecl.}
+    SciterAttachHwndToElement*: proc (he: HELEMENT; hwnd: ptr GtkWidget): INT {.cdecl.}
     SciterControlGetType*: proc (he: HELEMENT; pType: ptr cuint): INT {.cdecl.}
     SciterGetValue*: proc (he: HELEMENT; pval: ptr VALUE): INT {.cdecl.}
     SciterSetValue*: proc (he: HELEMENT; pval: ptr VALUE): INT {.cdecl.}
@@ -2561,13 +2727,13 @@ type
     SciterGetObject*: proc (he: HELEMENT; pval: pointer; forceCreation: bool): INT {.
         cdecl.}
     SciterGetElementNamespace*: proc (he: HELEMENT; pval: pointer): INT {.cdecl.}
-    SciterGetHighlightedElement*: proc (hwnd: ptr HWINDOW; phe: ptr HELEMENT): INT {.
+    SciterGetHighlightedElement*: proc (hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.
         cdecl.}
-    SciterSetHighlightedElement*: proc (hwnd: ptr HWINDOW; he: HELEMENT): INT {.cdecl.} ## ```
-                                                                               ##   |
-                                                                               ##     | DOM Node API
-                                                                               ##     |
-                                                                               ## ```
+    SciterSetHighlightedElement*: proc (hwnd: ptr GtkWidget; he: HELEMENT): INT {.cdecl.} ## ```
+                                                                                 ##   |
+                                                                                 ##     | DOM Node API
+                                                                                 ##     |
+                                                                                 ## ```
     SciterNodeAddRef*: proc (hn: HNODE): INT {.cdecl.} ## ```
                                                  ##   |
                                                  ##     | DOM Node API
@@ -2662,20 +2828,20 @@ type
     SciterCloseArchive*: proc (harc: HSARCHIVE): bool {.cdecl.}
     SciterFireEvent*: proc (evt: ptr BEHAVIOR_EVENT_PARAMS; post: bool;
                           handled: ptr bool): INT {.cdecl.}
-    SciterGetCallbackParam*: proc (hwnd: ptr HWINDOW): LPVOID {.cdecl.}
-    SciterPostCallback*: proc (hwnd: ptr HWINDOW; wparam: UINT_PTR; lparam: UINT_PTR;
+    SciterGetCallbackParam*: proc (hwnd: ptr GtkWidget): LPVOID {.cdecl.}
+    SciterPostCallback*: proc (hwnd: ptr GtkWidget; wparam: UINT_PTR; lparam: UINT_PTR;
                              timeoutms: cuint): UINT_PTR {.cdecl.}
     GetSciterGraphicsAPI*: proc (): LPSciterGraphicsAPI {.cdecl.}
     GetSciterRequestAPI*: proc (): LPSciterRequestAPI {.cdecl.}
-    SciterProcX*: proc (hwnd: ptr HWINDOW; pMsg: ptr SCITER_X_MSG): bool {.cdecl.} ## ```
-                                                                         ##   returns TRUE if handled
-                                                                         ## ```
+    SciterProcX*: proc (hwnd: ptr GtkWidget; pMsg: ptr SCITER_X_MSG): bool {.cdecl.} ## ```
+                                                                           ##   returns TRUE if handled
+                                                                           ## ```
     SciterAtomValue*: proc (name: cstring): UINT64 {.cdecl.} ## ```
-                                                       ##
+                                                       ##   
                                                        ## ```
     SciterAtomNameCB*: proc (atomv: UINT64; rcv: ptr LPCSTR_RECEIVER; rcv_param: LPVOID): bool {.
         cdecl.}               ## ```
-               ##
+               ##   
                ## ```
     SciterSetGlobalAsset*: proc (pass: ptr som_asset_t): bool {.cdecl.}
 
@@ -2734,7 +2900,7 @@ proc ValueIntData*(pval: ptr VALUE; pData: ptr INT): cuint {.importc, cdecl.}
 proc ValueIntDataSet*(pval: ptr VALUE; data: INT; `type`: cuint; units: cuint): cuint {.
     importc, cdecl.}
   ## ```
-  ##   ValueIntDataSet - sets VALUE integer data of T_INT and T_BOOL types
+  ##   ValueIntDataSet - sets VALUE integer data of T_INT and T_BOOL types 
   ##    Optionally sets units field too.
   ## ```
 proc ValueInt64Data*(pval: ptr VALUE; pData: ptr INT64): cuint {.importc, cdecl.}
@@ -2763,14 +2929,14 @@ proc ValueBinaryData*(pval: ptr VALUE; pBytes: ptr LPCBYTE; pnBytes: ptr cuint):
 proc ValueBinaryDataSet*(pval: ptr VALUE; pBytes: LPCBYTE; nBytes: cuint; `type`: cuint;
                         units: cuint): cuint {.importc, cdecl.}
   ## ```
-  ##   ValueBinaryDataSet - sets VALUE to sequence of bytes of type T_BYTES
+  ##   ValueBinaryDataSet - sets VALUE to sequence of bytes of type T_BYTES 
   ##    'type' here must be set to T_BYTES. Optionally sets units field too.
   ##    The function creates local copy of bytes in its own storage.
   ## ```
 proc ValueElementsCount*(pval: ptr VALUE; pn: ptr INT): cuint {.importc, cdecl.}
   ## ```
   ##   ValueElementsCount - retreive number of sub-elements for:
-  ##    - T_ARRAY - number of elements in the array;
+  ##    - T_ARRAY - number of elements in the array; 
   ##    - T_MAP - number of key/value pairs in the map;
   ##    - T_FUNCTION - number of arguments in the function;
   ## ```
@@ -2778,7 +2944,7 @@ proc ValueNthElementValue*(pval: ptr VALUE; n: INT; pretval: ptr VALUE): cuint {
     cdecl.}
   ## ```
   ##   ValueNthElementValue - retreive value of sub-element at index n for:
-  ##    - T_ARRAY - nth element of the array;
+  ##    - T_ARRAY - nth element of the array; 
   ##    - T_MAP - value of nth key/value pair in the map;
   ##    - T_FUNCTION - value of nth argument of the function;
   ## ```
@@ -2786,10 +2952,10 @@ proc ValueNthElementValueSet*(pval: ptr VALUE; n: INT; pval_to_set: ptr VALUE): 
     importc, cdecl.}
   ## ```
   ##   ValueNthElementValueSet - sets value of sub-element at index n for:
-  ##    - T_ARRAY - nth element of the array;
+  ##    - T_ARRAY - nth element of the array; 
   ##    - T_MAP - value of nth key/value pair in the map;
   ##    - T_FUNCTION - value of nth argument of the function;
-  ##    If the VALUE is not of one of types above then it makes it of type T_ARRAY with
+  ##    If the VALUE is not of one of types above then it makes it of type T_ARRAY with 
   ##    single element - 'val_to_set'.
   ## ```
 proc ValueNthElementKey*(pval: ptr VALUE; n: INT; pretval: ptr VALUE): cuint {.importc,
@@ -2808,9 +2974,9 @@ proc ValueSetValueToKey*(pval: ptr VALUE; pkey: ptr VALUE; pval_to_set: ptr VALU
   ##    - T_MAP - value of key/value pair with the key;
   ##    - T_FUNCTION - value of argument with the name key;
   ##    - T_OBJECT (tiscript) - value of property of the object
-  ##    If the VALUE is not of one of types above then it makes it of type T_MAP with
+  ##    If the VALUE is not of one of types above then it makes it of type T_MAP with 
   ##    single pair - 'key'/'val_to_set'.
-  ##
+  ##   
   ##    key usually is a value of type T_STRING
   ## ```
 proc ValueGetValueOfKey*(pval: ptr VALUE; pkey: ptr VALUE; pretval: ptr VALUE): cuint {.
@@ -2826,7 +2992,7 @@ proc ValueToString*(pval: ptr VALUE; how: cuint): cuint {.importc, cdecl.}
   ## ```
   ##   ValueToString - converts value to T_STRING inplace:
   ##    - CVT_SIMPLE - parse/emit terminal values (T_INT, T_FLOAT, T_LENGTH, T_STRING)
-  ##    - CVT_JSON_LITERAL - parse/emit value using JSON literal rules: {}, [], "string", true, false, null
+  ##    - CVT_JSON_LITERAL - parse/emit value using JSON literal rules: {}, [], "string", true, false, null 
   ##    - CVT_JSON_MAP - parse/emit MAP value without enclosing '{' and '}' brackets.
   ## ```
 proc ValueFromString*(pval: ptr VALUE; str: LPCWSTR; strLength: cuint; how: cuint): cuint {.
@@ -2834,7 +3000,7 @@ proc ValueFromString*(pval: ptr VALUE; str: LPCWSTR; strLength: cuint; how: cuin
   ## ```
   ##   ValueFromString - parses string into value:
   ##    - CVT_SIMPLE - parse/emit terminal values (T_INT, T_FLOAT, T_LENGTH, T_STRING), "guess" non-strict parsing
-  ##    - CVT_JSON_LITERAL - parse/emit value using JSON literal rules: {}, [], "string", true, false, null
+  ##    - CVT_JSON_LITERAL - parse/emit value using JSON literal rules: {}, [], "string", true, false, null 
   ##    - CVT_JSON_MAP - parse/emit MAP value without enclosing '{' and '}' brackets.
   ##    Returns:
   ##      Number of non-parsed characters in case of errors. Thus if string was parsed in full it returns 0 (success)
@@ -2845,7 +3011,7 @@ proc ValueInvoke*(pval: ptr VALUE; pthis: ptr VALUE; argc: cuint; argv: ptr VALU
   ##   ValueInvoke - function invocation (Sciter/TIScript).
   ##    - VALUE* pval is a value of type T_OBJECT/UT_OBJECT_FUNCTION
   ##    - VALUE* pthis - object that will be known as 'this' inside that function.
-  ##    - UINT argc, const VALUE* argv - vector of arguments to pass to the function.
+  ##    - UINT argc, const VALUE* argv - vector of arguments to pass to the function. 
   ##    - VALUE* pretval - parse/emit MAP value without enclosing '{' and '}' brackets.
   ##    - LPCWSTR url - url or name of the script - used for error reporting in the script.
   ##    Returns:
@@ -2856,7 +3022,7 @@ proc ValueNativeFunctorSet*(pval: ptr VALUE; pinvoke: ptr NATIVE_FUNCTOR_INVOKE;
     importc, cdecl.}
   ## ```
   ##   ValueNativeFunctorSet - set reference to native function
-  ##    - VALUE* pval - value to be initialized
+  ##    - VALUE* pval - value to be initialized 
   ##    - NATIVE_FUNCTOR_INVOKE* pinvoke - reference to native functor implementation.
   ##    - NATIVE_FUNCTOR_RELEASE* prelease - reference to native functor dtor implementation.
   ##    - VOID* tag - optional tag, passed as it is to pinvoke and prelease
@@ -2871,34 +3037,34 @@ proc Sciter_UnuseElement*(he: HELEMENT): INT {.importc, cdecl.}
   ##    Get handle of every element's child element.
   ##    \param[in] he \b #HELEMENT
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##   
   ##    Application should call this function when it does not need element's
   ##    handle anymore.
   ##    \sa #Sciter_UseElement()
   ## ```
-proc SciterGetRootElement*(hwnd: ptr HWINDOW; phe: ptr HELEMENT): INT {.importc, cdecl.}
+proc SciterGetRootElement*(hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.importc, cdecl.}
   ## ```
   ##   Get root DOM element of HTML document.
   ##    \param[in] hwnd \b HWINDOW, Sciter window for which you need to get root
   ##    element
   ##    \param[out ] phe \b #HELEMENT*, variable to receive root element
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##   
   ##    Root DOM object is always a 'HTML' element of the document.
   ## ```
-proc SciterGetFocusElement*(hwnd: ptr HWINDOW; phe: ptr HELEMENT): INT {.importc, cdecl.}
+proc SciterGetFocusElement*(hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.importc, cdecl.}
   ## ```
   ##   Get focused DOM element of HTML document.
   ##    \param[in] hwnd \b HWINDOW, Sciter window for which you need to get focus
   ##    element
   ##    \param[out ] phe \b #HELEMENT*, variable to receive focus element
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##   
   ##    phe can have null value (0).
-  ##
+  ##   
   ##    COMMENT: To set focus on element use SciterSetElementState(STATE_FOCUS,0)
   ## ```
-proc SciterFindElement*(hwnd: ptr HWINDOW; pt: POINT; phe: ptr HELEMENT): INT {.importc,
+proc SciterFindElement*(hwnd: ptr GtkWidget; pt: POINT; phe: ptr HELEMENT): INT {.importc,
     cdecl.}
   ## ```
   ##   Find DOM element by coordinate.
@@ -2907,7 +3073,7 @@ proc SciterFindElement*(hwnd: ptr HWINDOW; pt: POINT; phe: ptr HELEMENT): INT {.
   ##    \param[in] pt \b POINT, coordinates, window client area relative.
   ##    \param[out ] phe \b #HELEMENT*, variable to receive found element handle.
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##   
   ##    If element was not found thenphe will be set to zero.
   ## ```
 proc SciterGetChildrenCount*(he: HELEMENT; count: ptr cuint): INT {.importc, cdecl.}
@@ -2916,7 +3082,7 @@ proc SciterGetChildrenCount*(he: HELEMENT; count: ptr cuint): INT {.importc, cde
   ##    \param[in] he \b #HELEMENT, element which child elements you need to count
   ##    \param[out] count \b UINT*, variable to receive number of child elements
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##   
   ##    \par Example:
   ##    for paragraph defined as
   ##    \verbatim <p>Hello <b>wonderfull</b> world!</p> \endverbatim
@@ -2931,7 +3097,7 @@ proc SciterGetNthChild*(he: HELEMENT; n: cuint; phe: ptr HELEMENT): INT {.import
   ##    \param[out] phe \b #HELEMENT*, variable to receive handle of the child
   ##    element
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##   
   ##    \par Example:
   ##    for paragraph defined as
   ##    \verbatim <p>Hello <b>wonderfull</b> world!</p> \endverbatim
@@ -2990,7 +3156,7 @@ proc SciterGetAttributeByNameCB*(he: HELEMENT; name: LPCSTR;
   ##    \param[out] p_value \b LPCWSTR*, will be set to address of the string
   ##    containing attribute value
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##    
   ##     SCDOM_RESULT SCAPI SciterGetAttributeByName(HELEMENT he, LPCSTR name, LPCWSTR* p_value);
   ## ```
 proc SciterSetAttributeByName*(he: HELEMENT; name: LPCSTR; value: LPCWSTR): INT {.
@@ -3022,7 +3188,7 @@ proc SciterGetElementType*(he: HELEMENT; p_type: ptr LPCSTR): INT {.importc, cde
   ##    \param[in] he \b #HELEMENT
   ##    \param[out] p_type \b LPCSTR*, receives name of the element type.
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##   
   ##    \par Example:
   ##    For &lt;div&gt; tag p_type will be set to "div".
   ## ```
@@ -3045,9 +3211,9 @@ proc SciterSetStyleAttribute*(he: HELEMENT; name: LPCSTR; value: LPCWSTR): INT {
   ##    \param[in] he \b #HELEMENT
   ##    \param[in] name \b LPCSTR, name of the style attribute
   ##    \param[out] value \b LPCWSTR, value of the style attribute.
-  ##
+  ##   
   ##    Style attributes are those that are set using css. E.g. "font-face: arial" or "display: block".
-  ##
+  ##   
   ##    \sa #SciterGetStyleAttribute()
   ## ```
 proc SciterGetElementLocation*(he: HELEMENT; p_location: LPRECT; areas: cuint): INT {.
@@ -3078,12 +3244,12 @@ proc SciterSetCapture*(he: HELEMENT): INT {.importc, cdecl.}
   ##   Set the mouse capture to the specified element.
   ##    \param[in] he \b #HELEMENT
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##   
   ##    After call to this function all mouse events will be targeted to the element.
   ##    To remove mouse capture call ReleaseCapture() function.
   ## ```
 proc SciterReleaseCapture*(he: HELEMENT): INT {.importc, cdecl.}
-proc SciterGetElementHwnd*(he: HELEMENT; p_hwnd: ptr ptr HWINDOW; rootWindow: bool): INT {.
+proc SciterGetElementHwnd*(he: HELEMENT; p_hwnd: ptr ptr GtkWidget; rootWindow: bool): INT {.
     importc, cdecl.}
   ## ```
   ##   Get HWINDOW of containing window.
@@ -3105,7 +3271,7 @@ proc SciterCombineURL*(he: HELEMENT; szUrlBuffer: LPWSTR; UrlBufferSize: cuint):
   ##    \param[in] UrlBufferSize \b UINT, size of the buffer pointed by
   ##    \c szUrlBuffer
   ##    \return \b #SCDOM_RESULT SCAPI
-  ##
+  ##   
   ##    This function is used for resolving relative references.
   ## ```
 proc SciterSelectElements*(he: HELEMENT; CSS_selectors: LPCSTR;
@@ -3121,7 +3287,7 @@ proc SciterSelectParentW*(he: HELEMENT; selector: LPCWSTR; depth: cuint;
 proc SciterSetElementHtml*(he: HELEMENT; html: ptr BYTE; htmlLength: cuint; where: cuint): INT {.
     importc, cdecl.}
 proc SciterGetElementUID*(he: HELEMENT; puid: ptr cuint): INT {.importc, cdecl.}
-proc SciterGetElementByUID*(hwnd: ptr HWINDOW; uid: cuint; phe: ptr HELEMENT): INT {.
+proc SciterGetElementByUID*(hwnd: ptr GtkWidget; uid: cuint; phe: ptr HELEMENT): INT {.
     importc, cdecl.}
 proc SciterShowPopup*(hePopup: HELEMENT; heAnchor: HELEMENT; placement: cuint): INT {.
     importc, cdecl.}
@@ -3152,7 +3318,7 @@ proc SciterSetElementState*(he: HELEMENT; stateBitsToSet: cuint;
                            stateBitsToClear: cuint; updateView: bool): INT {.importc,
     cdecl.}
   ## ```
-  ##
+  ##   
   ## ```
 proc SciterCreateElement*(tagname: LPCSTR; textOrNull: LPCWSTR; phe: ptr HELEMENT): INT {.
     importc, cdecl.}
@@ -3195,7 +3361,7 @@ proc SciterAttachEventHandler*(he: HELEMENT; pep: C_LPELEMENT_EVENT_PROC; tag: L
   ##   Attach ElementEventProc to the element and subscribe it to events providede by subscription parameter
   ##       See Sciter::attach_event_handler.
   ## ```
-proc SciterWindowAttachEventHandler*(hwndLayout: HWINDOW;
+proc SciterWindowAttachEventHandler*(hwndLayout: ptr GtkWidget;
                                     pep: C_LPELEMENT_EVENT_PROC; tag: LPVOID;
                                     subscription: cuint): INT {.importc, cdecl.}
   ## ```
@@ -3203,7 +3369,7 @@ proc SciterWindowAttachEventHandler*(hwndLayout: HWINDOW;
   ##       All events will start first here (in SINKING phase) and if not consumed will end up here.
   ##       You can install Window EventHandler only once - it will survive all document reloads.
   ## ```
-proc SciterWindowDetachEventHandler*(hwndLayout: HWINDOW;
+proc SciterWindowDetachEventHandler*(hwndLayout: ptr GtkWidget;
                                     pep: C_LPELEMENT_EVENT_PROC; tag: LPVOID): INT {.
     importc, cdecl.}
 proc SciterSendEvent*(he: HELEMENT; appEventCode: cuint; heSource: HELEMENT;
@@ -3253,7 +3419,7 @@ proc SciterCallScriptingFunction*(he: HELEMENT; name: LPCSTR; argv: ptr VALUE;
                                  argc: cuint; retval: ptr VALUE): INT {.importc, cdecl.}
 proc SciterEvalElementScript*(he: HELEMENT; script: LPCWSTR; scriptLength: cuint;
                              retval: ptr VALUE): INT {.importc, cdecl.}
-proc SciterAttachHwndToElement*(he: HELEMENT; hwnd: ptr HWINDOW): INT {.importc, cdecl.}
+proc SciterAttachHwndToElement*(he: HELEMENT; hwnd: ptr GtkWidget): INT {.importc, cdecl.}
   ## ```
   ##   Attach HWINDOW to the element.
   ##    \param[in] he \b #HELEMENT
@@ -3300,17 +3466,18 @@ proc SciterGetObject*(he: HELEMENT; pval: pointer; forceCreation: bool): INT {.i
   ##    \param[in] he \b HELEMENT, element which expando will be retrieved.
   ##    \param[out] pval \b tiscript::value*, pointer to tiscript::value that will get reference to the scripting object associated wuth the element or null.
   ##    \param[in] forceCreation \b BOOL, if there is no expando then when forceCreation==TRUE the function will create it.
-  ##
+  ##   
   ##     ATTN!: if you plan to store the reference or use it inside code that calls script VM functions
   ##            then you should use tiscript::pinned holder for the value.
   ## ```
 proc SciterGetElementNamespace*(he: HELEMENT; pval: pointer): INT {.importc, cdecl.}
-proc SciterGetHighlightedElement*(hwnd: ptr HWINDOW; phe: ptr HELEMENT): INT {.importc,
-    cdecl.}
+proc SciterGetHighlightedElement*(hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.
+    importc, cdecl.}
   ## ```
   ##   get/set highlighted element. Used for debugging purposes.
   ## ```
-proc SciterSetHighlightedElement*(hwnd: ptr HWINDOW; he: HELEMENT): INT {.importc, cdecl.}
+proc SciterSetHighlightedElement*(hwnd: ptr GtkWidget; he: HELEMENT): INT {.importc,
+    cdecl.}
 proc SciterNodeAddRef*(hn: HNODE): INT {.importc, cdecl.}
 proc SciterNodeRelease*(hn: HNODE): INT {.importc, cdecl.}
 proc SciterNodeCastFromElement*(he: HELEMENT; phn: ptr HNODE): INT {.importc, cdecl.}
@@ -3348,10 +3515,10 @@ proc SciterAtomNameCB*(atomv: UINT64; rcv: ptr LPCSTR_RECEIVER; rcv_param: LPVOI
 proc SciterClassName*(): LPCWSTR {.importc, cdecl.}
   ## ```
   ##   Get name of Sciter window class.
-  ##
+  ##   
   ##    \return \b LPCWSTR, name of Sciter window class.
   ##            \b NULL if initialization of the engine failed, Direct2D or DirectWrite are not supported on the OS.
-  ##
+  ##   
   ##    Use this function if you wish to create unicode version of Sciter.
   ##    The returned name can be used in CreateWindow(Ex)W function.
   ##    You can use #SciterClassNameT macro.
@@ -3361,48 +3528,48 @@ proc SciterVersion*(major: bool): cuint {.importc, cdecl.}
   ##   Returns major and minor version of Sciter engine.
   ##     \return UINT, hiword (16-bit) contains major number and loword contains minor number;
   ## ```
-proc SciterDataReady*(hwnd: ptr HWINDOW; uri: LPCWSTR; data: LPCBYTE; dataLength: cuint): bool {.
-    importc, cdecl.}
+proc SciterDataReady*(hwnd: ptr GtkWidget; uri: LPCWSTR; data: LPCBYTE;
+                     dataLength: cuint): bool {.importc, cdecl.}
   ## ```
   ##   The Sciter Engine of Terra Informatica Software, Inc.
   ##    http:sciter.com
-  ##
+  ##    
   ##    The code and information provided "as-is" without
   ##    warranty of any kind, either expressed or implied.
-  ##
+  ##    
   ##    (C) 2003-2015, Terra Informatica Software, Inc.
-  ##
-  ##
+  ##    
+  ##     
   ##    Behaviors support (a.k.a windowless controls)
-  ##
+  ##    
   ##     This function is used in response to SCN_LOAD_DATA request.
-  ##
+  ##   
   ##    \param[in] hwnd \b HWINDOW, Sciter window handle.
   ##    \param[in] uri \b LPCWSTR, URI of the data requested by Sciter.
   ##    \param[in] data \b LPBYTE, pointer to data buffer.
   ##    \param[in] dataLength \b UINT, length of the data in bytes.
   ##    \return \b BOOL, TRUE if Sciter accepts the data or \c FALSE if error occured
   ##    (for example this function was called outside of #SCN_LOAD_DATA request).
-  ##
+  ##   
   ##    \warning If used, call of this function MUST be done ONLY while handling
   ##    SCN_LOAD_DATA request and in the same thread. For asynchronous resource loading
   ##    use SciterDataReadyAsync
   ## ```
-proc SciterDataReadyAsync*(hwnd: ptr HWINDOW; uri: LPCWSTR; data: LPCBYTE;
+proc SciterDataReadyAsync*(hwnd: ptr GtkWidget; uri: LPCWSTR; data: LPCBYTE;
                           dataLength: cuint; requestId: LPVOID): bool {.importc, cdecl.}
-proc SciterLoadFile*(hWndSciter: ptr HWINDOW; url: LPCWSTR): bool {.importc, cdecl.}
+proc SciterLoadFile*(hWndSciter: ptr GtkWidget; url: LPCWSTR): bool {.importc, cdecl.}
   ## ```
   ##   Load HTML file.
-  ##
+  ##   
   ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
   ##    \param[in] url \b LPCWSTR, either absolute URL of HTML file to load. "file:...", "http:...", "res:...", "this:app/..." or absolute file path.
   ##    \return \b BOOL, \c TRUE if the text was parsed and loaded successfully, \c FALSE otherwise.
   ## ```
-proc SciterLoadHtml*(hWndSciter: ptr HWINDOW; html: LPCBYTE; htmlSize: cuint;
+proc SciterLoadHtml*(hWndSciter: ptr GtkWidget; html: LPCBYTE; htmlSize: cuint;
                     baseUrl: LPCWSTR): bool {.importc, cdecl.}
   ## ```
   ##   Load HTML from in memory buffer with base.
-  ##
+  ##   
   ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
   ##    \param[in] html \b LPCBYTE, Address of HTML to load.
   ##    \param[in] htmlSize \b UINT, Length of the array pointed by html parameter.
@@ -3410,51 +3577,52 @@ proc SciterLoadHtml*(hWndSciter: ptr HWINDOW; html: LPCBYTE; htmlSize: cuint;
   ##                                   this URL.
   ##    \return \b BOOL, \c TRUE if the text was parsed and loaded successfully, FALSE otherwise.
   ## ```
-proc SciterSetCallback*(hWndSciter: ptr HWINDOW; cb: LPSciterHostCallback;
+proc SciterSetCallback*(hWndSciter: ptr GtkWidget; cb: LPSciterHostCallback;
                        cbParam: LPVOID): VOID {.importc, cdecl.}
   ## ```
   ##   Set \link #SCITER_NOTIFY() notification callback function \endlink.
-  ##
+  ##   
   ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
   ##    \param[in] cb \b SCITER_NOTIFY*, \link #SCITER_NOTIFY() callback function \endlink.
   ##    \param[in] cbParam \b LPVOID, parameter that will be passed to \link #SCITER_NOTIFY() callback function \endlink as vParam paramter.
   ## ```
 proc SciterSetMasterCSS*(utf8: LPCBYTE; numBytes: cuint): bool {.importc, cdecl.}
 proc SciterAppendMasterCSS*(utf8: LPCBYTE; numBytes: cuint): bool {.importc, cdecl.}
-proc SciterSetCSS*(hWndSciter: ptr HWINDOW; utf8: LPCBYTE; numBytes: cuint;
+proc SciterSetCSS*(hWndSciter: ptr GtkWidget; utf8: LPCBYTE; numBytes: cuint;
                   baseUrl: LPCWSTR; mediaType: LPCWSTR): bool {.importc, cdecl.}
-proc SciterSetMediaType*(hWndSciter: ptr HWINDOW; mediaType: LPCWSTR): bool {.importc,
-    cdecl.}
-proc SciterSetMediaVars*(hWndSciter: ptr HWINDOW; mediaVars: ptr SCITER_VALUE): bool {.
+proc SciterSetMediaType*(hWndSciter: ptr GtkWidget; mediaType: LPCWSTR): bool {.
     importc, cdecl.}
-proc SciterGetMinWidth*(hWndSciter: ptr HWINDOW): cuint {.importc, cdecl.}
-proc SciterGetMinHeight*(hWndSciter: ptr HWINDOW; width: cuint): cuint {.importc, cdecl.}
-proc SciterCall*(hWnd: ptr HWINDOW; functionName: LPCSTR; argc: cuint;
+proc SciterSetMediaVars*(hWndSciter: ptr GtkWidget; mediaVars: ptr SCITER_VALUE): bool {.
+    importc, cdecl.}
+proc SciterGetMinWidth*(hWndSciter: ptr GtkWidget): cuint {.importc, cdecl.}
+proc SciterGetMinHeight*(hWndSciter: ptr GtkWidget; width: cuint): cuint {.importc,
+    cdecl.}
+proc SciterCall*(hWnd: ptr GtkWidget; functionName: LPCSTR; argc: cuint;
                 argv: ptr SCITER_VALUE; retval: ptr SCITER_VALUE): bool {.importc, cdecl.}
   ## ```
   ##   evalue script in context of current document
   ## ```
-proc SciterEval*(hwnd: ptr HWINDOW; script: LPCWSTR; scriptLength: cuint;
+proc SciterEval*(hwnd: ptr GtkWidget; script: LPCWSTR; scriptLength: cuint;
                 pretval: ptr SCITER_VALUE): bool {.importc, cdecl.}
   ## ```
   ##   evalue script in context of current document
   ## ```
-proc SciterUpdateWindow*(hwnd: ptr HWINDOW): VOID {.importc, cdecl.}
+proc SciterUpdateWindow*(hwnd: ptr GtkWidget): VOID {.importc, cdecl.}
   ## ```
   ##   Update pending changes in Sciter window.
-  ##
+  ##   
   ##    \param[in] hwnd \b HWINDOW, Sciter window handle.
   ## ```
-proc SciterSetOption*(hWnd: ptr HWINDOW; option: cuint; value: UINT_PTR): bool {.importc,
-    cdecl.}
-proc SciterGetPPI*(hWndSciter: ptr HWINDOW; px: ptr cuint; py: ptr cuint): VOID {.importc,
-    cdecl.}
-proc SciterGetViewExpando*(hwnd: ptr HWINDOW; pval: ptr VALUE): bool {.importc, cdecl.}
-proc SciterEnumUrlData*(hWndSciter: ptr HWINDOW; receiver: ptr URL_DATA_RECEIVER;
+proc SciterSetOption*(hWnd: ptr GtkWidget; option: cuint; value: UINT_PTR): bool {.
+    importc, cdecl.}
+proc SciterGetPPI*(hWndSciter: ptr GtkWidget; px: ptr cuint; py: ptr cuint): VOID {.
+    importc, cdecl.}
+proc SciterGetViewExpando*(hwnd: ptr GtkWidget; pval: ptr VALUE): bool {.importc, cdecl.}
+proc SciterEnumUrlData*(hWndSciter: ptr GtkWidget; receiver: ptr URL_DATA_RECEIVER;
                        param: LPVOID; url: LPCSTR): bool {.importc, cdecl.}
   ## ```
   ##   Get graphics capabilities of the system
-  ##
+  ##   
   ##    \pcaps[in] LPUINT \b pcaps, address of variable receiving:
   ##                                0 - no compatible graphics found;
   ##                                1 - compatible graphics found but Direct2D will use WARP driver (software emulation);
@@ -3462,21 +3630,22 @@ proc SciterEnumUrlData*(hWndSciter: ptr HWINDOW; receiver: ptr URL_DATA_RECEIVER
   ##    \return \b BOOL, \c TRUE if pcaps is valid pointer.
   ## ```
 proc SciterGraphicsCaps*(pcaps: LPUINT): bool {.importc, cdecl.}
-proc SciterSetHomeURL*(hWndSciter: ptr HWINDOW; baseUrl: LPCWSTR): bool {.importc, cdecl.}
+proc SciterSetHomeURL*(hWndSciter: ptr GtkWidget; baseUrl: LPCWSTR): bool {.importc,
+    cdecl.}
 proc SciterCreateWindow*(creationFlags: cuint; frame: LPRECT;
                         delegate: ptr SciterWindowDelegate; delegateParam: LPVOID;
-                        parent: ptr HWINDOW): ptr HWINDOW {.importc, cdecl.}
+                        parent: ptr GtkWidget): ptr GtkWidget {.importc, cdecl.}
   ## ```
   ##   Create sciter window.
   ##     On Windows returns HWND of either top-level or child window created.
   ##     On OS X returns NSView* of either top-level window or child view .
-  ##
+  ##   
   ##    \param[in] creationFlags \b SCITER_CREATE_WINDOW_FLAGS, creation flags.
   ##    \param[in] frame \b LPRECT, window frame position and size.
   ##    \param[in] delegate \b SciterWindowDelegate, either partial WinProc implementation or thing implementing NSWindowDelegate protocol.
   ##    \param[in] delegateParam \b LPVOID, optional param passed to SciterWindowDelegate.
   ##    \param[in] parent \b HWINDOW, optional parent window.
   ## ```
-proc SciterSetupDebugOutput*(hwndOrNull: ptr HWINDOW; param: LPVOID;
+proc SciterSetupDebugOutput*(hwndOrNull: ptr GtkWidget; param: LPVOID;
                             pfOutput: DEBUG_OUTPUT_PROC): VOID {.importc, cdecl.}
 {.pop.}

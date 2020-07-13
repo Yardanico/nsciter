@@ -172,22 +172,22 @@ proc element_proc(tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): bool {.
     else:
         return bool 0
 
-proc Attach*(target: HWINDOW, eh: EventHandler, 
+proc Attach*(target: ptr HWINDOW, eh: EventHandler, 
                 mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT =
-    return SAPI().SciterWindowAttachEventHandler(target, cast[C_LPELEMENT_EVENT_PROC](element_proc), eh, mask).SCDOM_RESULT
+    return sapi.SciterWindowAttachEventHandler(target, cast[C_LPELEMENT_EVENT_PROC](element_proc), eh, mask).SCDOM_RESULT
 
 proc Attach*(target: HELEMENT, eh: EventHandler,
             mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT =
-    return SAPI().SciterAttachEventHandler(target, cast[C_LPELEMENT_EVENT_PROC](element_proc), eh).SCDOM_RESULT
+    return sapi.SciterAttachEventHandler(target, cast[C_LPELEMENT_EVENT_PROC](element_proc), eh).SCDOM_RESULT
 
-proc Detach*(target: EventTarget, eh: EventHandler,
+proc Detach*(target: ptr EventTarget, eh: EventHandler,
             mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT {.discardable.} =
     when EventTarget is HWINDOW:
-        return SAPI().SciterWindowDetachEventHandler(target, element_proc, eh, mask)
+        return sapi.SciterWindowDetachEventHandler(target, element_proc, eh, mask)
     elif EventTarget is HELEMENT:
-        return SAPI().SciterDetachEventHandler(target, element_proc, eh)
+        return sapi.SciterDetachEventHandler(target, element_proc, eh)
 
-proc onClick*(target: EventTarget, 
+proc onClick*(target: ptr HWINDOW | HELEMENT , 
             handler: proc():uint32): SCDOM_RESULT {.discardable.} =
     var eh = newEventHandler()
     eh.handle_event = proc(he: HELEMENT,

@@ -3,27 +3,32 @@ import nimterop/[cimport]
 cIncludeDir(@[
   "/usr/include/gtk-3.0",
   "/usr/include/glib-2.0",
-  "/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+  "/usr/lib/glib-2.0/include",
   "/usr/include/pango-1.0",
   "/usr/include/cairo",
   "/usr/include/gdk-pixbuf-2.0",
-  "/usr/include/atk-1.0"
+  "/usr/include/atk-1.0",
+  "/usr/include/harfbuzz"
 ], exclude = true)
 
 static:
   cSkipSymbol(@[
     "KB_LEFTBRACKET", "KB_RIGHTBRACKET", "KB_NUMLOCK",
-    "SUBSCRIPTIONS_REQUEST", "RRT_FORCE_DWORD", "RT_DATA_FORCE_DWORD", "RS_FORCE_DWORD"
+    "SUBSCRIPTIONS_REQUEST", "RRT_FORCE_DWORD", "RT_DATA_FORCE_DWORD", "RS_FORCE_DWORD",
+    "SCDOM_OK_NOT_HANDLED", "SCDOM_OK", "SCDOM_INVALID_HWND", "SCDOM_INVALID_HANDLE",
+    "SCDOM_PASSIVE_HANDLE", "SCDOM_INVALID_PARAMETER", "SCDOM_OPERATION_FAILED"
   ])
 
 const
-  typeMap = "-TBOOL=bool,char16_t=cushort,GtkWidget=HWINDOW,UINT=cuint"
+  typeMap = "-TBOOL=bool,char16_t=cushort,UINT=cuint"
 
 cOverride:
   type
-    HELEMENT = pointer
-    HWINDOW* {.header: "gtk/gtk.h", importc: "GtkWindow*".} = pointer
-    SCITER_VALUE = VALUE
+    HELEMENT* = distinct pointer # for easier differentiation between
+      # HELEMENT and HWINDOW, and others maybe too 
+    GtkWidget* {.header: "gtk/gtk.h", importc.} = object
+    HWINDOW* = GtkWidget
+    SCITER_VALUE* = VALUE
 
     RECT* {.bycopy.} = object
       left*: INT
@@ -33,6 +38,17 @@ cOverride:
 
     LPRECT* = ptr RECT
     LPCRECT* = ptr RECT
+    SCDOM_RESULT* {.size: 4.} = enum
+      SCDOM_OK_NOT_HANDLED = (-1)
+      SCDOM_OK = 0
+      SCDOM_INVALID_HWND = 1
+      SCDOM_INVALID_HANDLE = 2
+      SCDOM_PASSIVE_HANDLE = 3
+      SCDOM_INVALID_PARAMETER = 4
+      SCDOM_OPERATION_FAILED = 5
+  
+  const
+    SUBSCRIPTIONS_REQUEST* = (0xFFFFFFFF'i32).EVENT_GROUPS
 
 cPlugin:
   import strutils
@@ -42,4 +58,4 @@ cPlugin:
     if sym.name in ["VALUE_TYPE", "LPELEMENT_EVENT_PROC"]:
       sym.name = "C_" & sym.name
 
-cImport("sciter-x.h", recurse = true, flags = typeMap & " --noHeader")
+cImport("/home/dian/Projects/nsciter/sdk/include/sciter-x.h", recurse = true, flags = typeMap & " --noHeader")
