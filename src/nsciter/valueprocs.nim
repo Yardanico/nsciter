@@ -6,8 +6,9 @@ import sciwrap, papi, converters, event
 ######## for value operations ##########
 
 type
-  SciterVal* = object
+  SciterValObj* = object
     impl*: ptr SCITER_VALUE
+  SciterVal* = SciterValObj
 
 template enumToInt(typ: untyped): void =
   converter fromCuint(x: cuint): typ  =
@@ -20,22 +21,23 @@ enumToInt(VALUE_UNIT_TYPE_OBJECT)
 
 proc `==`(a: cuint, b: VALUE_RESULT): bool = a == b.cuint
 
-proc `=destroy`(x: var SciterVal) =   
-  # echo "called =destroy"
-  if x.impl != nil:
-    assert sapi.ValueClear(x.impl) == HV_OK
-    dealloc(x.impl)
+proc `=destroy`(x: var SciterValObj) =   
+  echo "value called =destroy"
+  #writeStackTrace()
+  #if x.impl != nil:
+  #  assert sapi.ValueClear(x.impl) == HV_OK
+  #  dealloc(x.impl)
 
-proc `=`(dst: var SciterVal, src: SciterVal) = 
-  # echo "called ="
+proc `=`(dst: var SciterValObj, src: SciterValObj) = 
+  echo "value called ="
   if dst.impl != src.impl:
     `=destroy`(dst.impl)
     dst.impl = cast[ptr SCITER_VALUE](alloc(sizeof(SCITER_VALUE)))
     assert sapi.ValueInit(dst.impl) == HV_OK
     assert sapi.ValueCopy(dst.impl, src.impl) == HV_OK
 
-proc `=sink`(dst: var SciterVal, src: SciterVal) = 
-  # echo "called =sink"
+proc `=sink`(dst: var SciterValObj, src: SciterValObj) = 
+  echo "value called =sink"
   `=destroy`(dst)
   dst.impl = src.impl
 

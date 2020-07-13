@@ -224,18 +224,18 @@ proc packArgs*(argc: uint32; argv: ptr Value): seq[ptr Value] =
       var p = cast[ptr Value](base + step*uint(idx))
       result[int(idx)] = p
 
-proc defineScriptingFunction*(target: EventTarget, name: string,
+proc defineScriptingFunction*(target: ptr HWINDOW | HELEMENT, name: string,
                             fn: NativeFunctor): SCDOM_RESULT {.discardable.} =
   var eh = newEventHandler()
   eh.handle_scripting_call = proc(he: HELEMENT, params: ptr SCRIPTING_METHOD_PARAMS): uint =
-    # echo "handle_scripting_call: ", params.name , " ", name
-    if params.name != name:
+    echo "handle_scripting_call: ", params.name , " ", name
+    if params.name != cstring(name):
       return 0        
     var ret = fn(packArgs(params.argc, params.argv))
-    # echo " handle_scripting result: ", params.name, " ", ret
+    echo " handle_scripting result: ", params.name, " ", ret
     params.result = ret
     result = 1
-  return target.Attach(eh, HANDLE_SCRIPTING_METHOD_CALL) #  HANDLE_ALL
+  return target.Attach(eh, HANDLE_SCRIPTING_METHOD_CALL.UINT32).SCDOM_RESULT #  HANDLE_ALL
 
 proc createBehavior*(target: LPSCN_ATTACH_BEHAVIOR,
                     fn: proc()): SCDOM_RESULT {.discardable.} =

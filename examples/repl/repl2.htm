@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Simple calculator</title>
+    <style>
+      input#mathExpr {
+        width: 65%
+      }
+
+      input#mathRes {
+        width: 25%
+      }
+      popup#myPopup
+    {
+      background-color: orange;
+      border:1dip solid red;
+      width:100dip;
+      height:100dip;
+      cursor:pointer;
+      border-radius: 12dip; 
+    }
+    </style>
+    <popup#myPopup>
+      <h1>Hi</h1>
+    </popup>
+  </head>
+  
+  <body>
+    <script type="text/tiscript">
+      const lib = view.getLib();
+      event change $(input#mathExpr) {
+        $(input#mathRes).text = lib.calculate(this.text);
+        return true;
+      }
+      event click $(button#showPopup) {
+        this.popup($(popup#myPopup));
+      }
+    </script>
+    <h2>This is a simple calculator.</h2>
+    <button id="showPopup">Show popup!</button>
+    Input your mathematical expression and it'll be calculated on the fly!
+    <br><br>
+    <input type="text" id="mathExpr"> = <input id="mathRes" readonly>
+  </body>
+</html>
