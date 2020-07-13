@@ -68,7 +68,7 @@ var data = readFile(path)
 const cbs = [
   "SciterElementCallback", "SciterWindowDelegate", "KeyValueCallback", 
   "NATIVE_FUNCTOR_INVOKE", "NATIVE_FUNCTOR_RELEASE", "LPCSTR_RECEIVER", 
-  "LPCWSTR_RECEIVER", "LPCBYTE_RECEIVER"
+  "LPCWSTR_RECEIVER", "LPCBYTE_RECEIVER", "ElementEventProc"
 ]
 
 for cb in cbs:

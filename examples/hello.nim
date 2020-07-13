@@ -62,8 +62,13 @@ proc elemFoundCb(elem: HELEMENT, param: pointer): bool {.cdecl.} =
   result = true
 
 wnd.onClick(proc: uint32 = 
-  echo "Global click event handler"
+  echo "Global click event handler 1"
 )
+
+wnd.onClick(proc: uint32 = 
+  echo "Global click event handler 2"
+)
+
 
 var mysel = cstring("#btnOne")
 echo sapi.SciterSelectElements(rootElem, "#btnOne", elemFoundCb, nil)

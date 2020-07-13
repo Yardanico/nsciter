@@ -1752,7 +1752,7 @@ type
   SciterElementCallback* = proc (he: HELEMENT; param: LPVOID): bool {.cdecl.}
   ElementEventProc* = proc (tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): bool {.
       cdecl.}
-  C_LPELEMENT_EVENT_PROC* = ptr ElementEventProc
+  C_LPELEMENT_EVENT_PROC* = ElementEventProc
   ELEMENT_COMPARATOR* = proc (he1: HELEMENT; he2: HELEMENT; param: LPVOID): INT {.cdecl.}
   HGFX* = pointer ## ```
                ##   The Sciter Engine of Terra Informatica Software, Inc.
@@ -2055,7 +2055,7 @@ type
     params*: uint
     `func`*: som_method_t
 
-  LPElementEventProc* = ptr ElementEventProc ## ```
+  LPElementEventProc* = ElementEventProc ## ```
                                          ##   signature of the function exported from external behavior/dll.
                                          ## ```
   SciterBehaviorFactory* = proc (a1: LPCSTR; a2: HELEMENT; a3: ptr LPElementEventProc;
@@ -2364,7 +2364,7 @@ type
     behaviorName*: LPCSTR ## ```
                         ##   < [in] zero terminated string, string appears as value of CSS behavior:"???" attribute.
                         ## ```
-    elementProc*: ptr ElementEventProc ## ```
+    elementProc*: ElementEventProc ## ```
                                     ##   < [out] pointer to ElementEventProc function.
                                     ## ```
     elementTag*: LPVOID ## ```
