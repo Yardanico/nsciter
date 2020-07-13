@@ -1,6 +1,6 @@
 
-import sciwrap, papi, event, converters
-export sciwrap, papi, event, converters
+import sciwrap, papi, event, converters, valueprocs
+export sciwrap, papi, event, converters, valueprocs
 
 
 when defined(linux):

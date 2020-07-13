@@ -1,14 +1,13 @@
 import strformat
 from times import toWinTime, fromWinTime, Time
 
-import sciwrap, converters, event
+import sciwrap, papi, converters, event
 
 ######## for value operations ##########
 
 type
   SciterVal* = object
-    impl: ptr SCITER_VALUE
-
+    impl*: ptr SCITER_VALUE
 
 template enumToInt(typ: untyped): void =
   converter fromCuint(x: cuint): typ  =
@@ -19,17 +18,26 @@ enumToInt(C_VALUE_TYPE)
 enumToInt(VALUE_UNIT_TYPE_STRING)
 enumToInt(VALUE_UNIT_TYPE_OBJECT)
 
-proc `=destroy`(x: var SciterVal) =        
-  assert ValueClear(x.impl) == HV_OK
+proc `==`(a: cuint, b: VALUE_RESULT): bool = a == b.cuint
+
+proc `=destroy`(x: var SciterVal) =   
+  echo "called =destroy"
+  if x.impl != nil:
+    assert sapi.ValueClear(x.impl) == HV_OK
+    dealloc(x.impl)
 
 proc `=`(dst: var SciterVal, src: SciterVal) = 
-  # ValueClear(dst.impl)
-  assert ValueInit(dst.impl) == HV_OK
-  assert ValueCopy(dst.impl, src.impl) == HV_OK
+  echo "called ="
+  if dst.impl != src.impl:
+    `=destroy`(dst.impl)
+    dst.impl = cast[ptr SCITER_VALUE](alloc(sizeof(SCITER_VALUE)))
+    assert sapi.ValueInit(dst.impl) == HV_OK
+    assert sapi.ValueCopy(dst.impl, src.impl) == HV_OK
 
 proc `=sink`(dst: var SciterVal, src: SciterVal) = 
-  # ValueInit(dst.impl)
-  assert ValueCopy(dst.impl, src.impl) == HV_OK
+  echo "called =sink"
+  `=destroy`(dst)
+  dst.impl = src.impl
 
 proc isUndefined*(v: SciterVal): bool {.inline.} =
   result = v.impl.t == T_UNDEFINED
@@ -107,74 +115,78 @@ proc isFunction*(v: SciterVal): bool {.inline.} =
   result = v.impl.t == T_FUNCTION
 
 proc isNativeFunctor*(v: SciterVal): bool {.inline.} =
-  result = ValueIsNativeFunctor(v.impl)
+  result = sapi.ValueIsNativeFunctor(v.impl)
 
 proc newValue*(): SciterVal =
-  assert ValueInit(result.impl) == HV_OK
+  result.impl = cast[ptr SCITER_VALUE](alloc(sizeof(SCITER_VALUE)))
+  assert sapi.ValueInit(result.impl) == HV_OK
 
 proc nullValue*(): SciterVal =
   # ???
-  result.impl.t = T_NULL.cuint # only here, not newVal()
+  result = newValue()
+  result.impl.t = T_NULL.cuint
+  #result.impl = cast[ptr SCITER_VALUE](alloc(sizeof(SCITER_VALUE)))
+  #result.impl.t = T_NULL.cuint # only here, not newVal()
 
 proc cloneTo*(src: SciterVal, dst: SciterVal) {.inline.} =
-  assert ValueCopy(dst.impl, src.impl) == HV_OK
+  assert sapi.ValueCopy(dst.impl, src.impl) == HV_OK
 
 #proc clone*(x: var Value): SciterVal {.inline.} =
 proc clone*(x: SciterVal): SciterVal {.inline.} =
   result = nullValue()
-  assert ValueCopy(result.impl, x.impl) == HV_OK
+  assert sapi.ValueCopy(result.impl, x.impl) == HV_OK
 
 proc newValue*(dat: string): SciterVal =
   #UINT SCFN( ValueStringDataSet )( VALUE* pval, LPCWSTR chars, UINT numChars, UINT units );
   var ws = newWideCString(dat)
   result = newValue()
-  assert ValueStringDataSet(result.impl, ws, ws.len.uint32, 0'u32) == HV_OK
+  assert sapi.ValueStringDataSet(result.impl, ws, ws.len.uint32, 0'u32) == HV_OK
 
 proc newValue*(dat: SomeSignedInt): SciterVal =
   result = newValue()
   when dat is int64:
-    assert ValueInt64DataSet(result.impl, dat, T_INT.UINT32, 0) == HV_OK
+    assert sapi.ValueInt64DataSet(result.impl, dat, T_INT.UINT32, 0) == HV_OK
   else:
-    assert ValueIntDataSet(result.impl, dat.int32, T_INT.UINT32, 0) == HV_OK
+    assert sapi.ValueIntDataSet(result.impl, dat.int32, T_INT.UINT32, 0) == HV_OK
 
 proc newValue*(dat: Time): SciterVal =
   result = newValue()
   var s = toWinTime(dat)
-  assert ValueInt64DataSet(result.impl, s, T_DATE.UINT32, DT_HAS_SECONDS.UINT32) == HV_OK
+  assert sapi.ValueInt64DataSet(result.impl, s, T_DATE.UINT32, DT_HAS_SECONDS.UINT32) == HV_OK
 
 proc newValue*(dat: float64): SciterVal =
   result = newValue()
-  assert ValueFloatDataSet(result.impl, dat, T_FLOAT.UINT32, 0) == HV_OK
+  assert sapi.ValueFloatDataSet(result.impl, dat, T_FLOAT.UINT32, 0) == HV_OK
 
 proc newValue*(dat: bool): SciterVal =
   result = newValue()
   if dat:
-    assert ValueIntDataSet(result.impl, 1, T_BOOL.UINT32, 0) == HV_OK
+    assert sapi.ValueIntDataSet(result.impl, 1, T_BOOL.UINT32, 0) == HV_OK
   else:
-    assert ValueIntDataSet(result.impl, 0, T_BOOL.UINT32, 0) == HV_OK
+    assert sapi.ValueIntDataSet(result.impl, 0, T_BOOL.UINT32, 0) == HV_OK
 
 proc convertFromString*(x: SciterVal, s: string, 
                         how: VALUE_STRING_CVT_TYPE = CVT_SIMPLE) {.discardable.} =
   #UINT SCFN( ValueFromString )( VALUE* pval, LPCWSTR str, UINT strLength, /*VALUE_STRING_CVT_TYPE*/ UINT how );
   #xDefPtr(x, v)
   var ws = newWideCString(s)    
-  assert ValueFromString(x.impl, ws, ws.len.uint32, how.UINT32) == HV_OK
+  assert sapi.ValueFromString(x.impl, ws, ws.len.uint32, how.UINT32) == HV_OK
 
 proc convertToString*(x: SciterVal, 
                     how: VALUE_STRING_CVT_TYPE = CVT_SIMPLE) {.discardable.} =
   # converts value to T_STRING inplace
   #UINT SCFN( ValueToString )( VALUE* pval, /*VALUE_STRING_CVT_TYPE*/ UINT how );
   #xDefPtr(x, v) # don't work
-  assert ValueToString(x.impl, how.UINT32) == HV_OK
+  assert sapi.ValueToString(x.impl, how.UINT32) == HV_OK
 
 proc getString*(x: SciterVal): string =
   #UINT SCFN( ValueStringData )( const VALUE* pval, LPCWSTR* pChars, UINT* pNumChars );
   #var xx = x
-  var ws: WideCString
+  var ws: ptr UncheckedArray[Utf16Char]
   var n: uint32    
-  var r = ValueStringData(x.impl, cast[ptr LPCWSTR](ws[0].addr), n.addr)
+  var r = sapi.ValueStringData(x.impl, cast[ptr LPCWSTR](ws.addr), n.addr)
   assert r == HV_OK, "res: " & $cast[VALUE_RESULT](r)
-  result = $(ws)
+  result = $(cast[WideCString](ws[0].addr))
 
 proc `$`*(v: SciterVal): string =
   result = fmt"({cast[C_VALUE_TYPE](v.impl.t)}) "
@@ -188,12 +200,13 @@ proc `$`*(v: SciterVal): string =
     var nv: SciterVal = v.clone()
     nv.convertToString(CVT_SIMPLE)
     result &= nv.getString()
+  result &= " addr - " & repr cast[pointer](v.impl)
 
 proc getInt64*(x: SciterVal): int64 =
-  assert ValueInt64Data(x.impl, result.addr) == HV_OK
+  assert sapi.ValueInt64Data(x.impl, result.addr) == HV_OK
 
 proc getInt32*(x: SciterVal): int32 =
-  assert ValueIntData(x.impl, result.addr) == HV_OK
+  assert sapi.ValueIntData(x.impl, result.addr) == HV_OK
 
 proc getInt*(x: SciterVal): int32 =
     result = if x.isInt: getInt32(x) else: 0
@@ -204,14 +217,14 @@ proc getBool*(x: SciterVal): bool =
     result = if i == 0: false else: true
 
 proc getFloat*(x: SciterVal): float =    
-  var r = ValueFloatData(x.impl, result.addr)
+  var r = sapi.ValueFloatData(x.impl, result.addr)
   assert r == HV_OK, "getFloat: " & $r.bool
 
 proc getBytes*(x: SciterVal): seq[byte] =
   var p: LPCBYTE
   var size: uint32
   echo "getBytes: ", repr x, " v:", $x
-  var r = ValueBinaryData(x.impl, p.addr, size.addr)
+  var r = sapi.ValueBinaryData(x.impl, p.addr, size.addr)
   assert r == HV_OK, "getBytes:" & repr r
   result = newSeq[byte](size)
   copyMem(result[0].addr, p, int(size) * sizeof(byte))
@@ -219,7 +232,7 @@ proc getBytes*(x: SciterVal): seq[byte] =
 proc setBytes*(x: SciterVal, dat: var openArray[byte]): uint32 {.discardable.} =
   var p = cast[LPCBYTE](dat[0].addr)
   var size = dat.len()*sizeof(byte)
-  assert ValueBinaryDataSet(x.impl, p, uint32(size), T_BYTES.UINT32, 0) == HV_OK    
+  assert sapi.ValueBinaryDataSet(x.impl, p, uint32(size), T_BYTES.UINT32, 0) == HV_OK    
 
 proc getColor*(x: SciterVal): uint32 =
   assert x.isColor()
@@ -238,17 +251,17 @@ proc getDuration*(x: SciterVal): float32 =
 proc getDate*(x: SciterVal): Time = 
   var t: int64
   assert x.isDate()
-  if ValueInt64Data(x.impl, t.addr) == HV_OK: 
+  if sapi.ValueInt64Data(x.impl, t.addr) == HV_OK: 
       return fromWinTime(t)
   else:
       return fromWinTime(0)
   
 ## for array and object types
 proc len*(x: SciterVal): int32 =    
-  assert ValueElementsCount(x.impl, result.addr) == HV_OK
+  assert sapi.ValueElementsCount(x.impl, result.addr) == HV_OK
 
 proc enumerate*(x: SciterVal, cb: ptr KeyValueCallback, param: pointer = nil) =
-  assert ValueEnumElements(x.impl, cb, param) == HV_OK
+  assert sapi.ValueEnumElements(x.impl, cb, param) == HV_OK
 
 # one list fo two iterator...
 var tempList = newSeq[(ptr SCITER_VALUE, ptr SCITER_VALUE)]() 
@@ -277,20 +290,20 @@ iterator pairs*(x: SciterVal): (SciterVal, SciterVal) =
 #proc `[]`*[I: Ordinal, VT:var Value | ptr Value](x: VT; i: I): SciterVal =
 proc `[]`*[T: Ordinal](x: SciterVal; i: T): SciterVal =
   result = newValue()
-  assert ValueNthElementValue(x.impl, i.INT, result.addr) == HV_OK
+  assert sapi.ValueNthElementValue(x.impl, i.INT, result.impl) == HV_OK
 
 #proc `[]=`*[I: Ordinal, VT:var Value|ptr Value](x: VT; i: I; y: VT) =
 proc `[]=`*(x: SciterVal; i: int32; y: SciterVal) =
-  assert ValueNthElementValueSet(x.impl, i.INT, y.impl) == HV_OK
+  assert sapi.ValueNthElementValueSet(x.impl, i.INT, y.impl) == HV_OK
 
 proc `[]`*(x: SciterVal; name: string): SciterVal =
   var key = newValue(name)
   result = newValue()
-  assert ValueGetValueOfKey(x.impl, key.impl, result.impl) == HV_OK
+  assert sapi.ValueGetValueOfKey(x.impl, key.impl, result.impl) == HV_OK
 
 proc `[]=`*(x: SciterVal; name: string; y: SciterVal) =
   var key = newValue(name)
-  assert ValueSetValueToKey(x.impl, key.impl, y.impl) == HV_OK
+  assert sapi.ValueSetValueToKey(x.impl, key.impl, y.impl) == HV_OK
 
 ## value functions calls
 proc invokeWithSelf*(x: SciterVal, self: SciterVal, 
@@ -301,7 +314,7 @@ proc invokeWithSelf*(x: SciterVal, self: SciterVal,
   for i in 0 ..< clen:
     cargs[i] = args[i].impl
     
-  assert ValueInvoke(x.impl, self.impl, uint32(len(args)),
+  assert sapi.ValueInvoke(x.impl, self.impl, uint32(len(args)),
                       cargs[0], result.impl, nil) == HV_OK
   echo "invokeWithSelf. result: ", result
 
@@ -323,8 +336,8 @@ proc pinvoke(tag: pointer;
   var i = cast[int](tag)
   var nf = nfs[i]    
   var res = nf(packArgs(argc, argv))    
-  assert ValueInit(retval) == HV_OK
-  assert ValueCopy(retval, res.addr) == HV_OK    
+  assert sapi.ValueInit(retval) == HV_OK
+  assert sapi.ValueCopy(retval, res.addr) == HV_OK    
 
 proc prelease(tag: pointer) {.cdecl.} = 
   echo "prelease tag index: ", cast[int](tag)
@@ -333,7 +346,7 @@ proc setNativeFunctor*(v: SciterVal, nf: NativeFunctor) =
   nfs.add(nf)
   var tag = cast[ptr VOID](nfs.len() - 1)
   #var vv = v
-  assert ValueNativeFunctorSet(v.impl, cast[ptr NATIVE_FUNCTOR_INVOKE](pinvoke), cast[ptr NATIVE_FUNCTOR_RELEASE](prelease), tag) == HV_OK
+  assert sapi.ValueNativeFunctorSet(v.impl, cast[ptr NATIVE_FUNCTOR_INVOKE](pinvoke), cast[ptr NATIVE_FUNCTOR_RELEASE](prelease), tag) == HV_OK
 
 ## # sds proc for python compatible
 
