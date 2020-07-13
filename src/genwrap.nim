@@ -1,4 +1,4 @@
-import nimterop/[cimport]
+import nimterop/[cimport], os, strutils
 
 cIncludeDir(@[
   "/usr/include/gtk-3.0",
@@ -58,4 +58,21 @@ cPlugin:
     if sym.name in ["VALUE_TYPE", "LPELEMENT_EVENT_PROC"]:
       sym.name = "C_" & sym.name
 
-cImport("/home/dian/Projects/nsciter/sdk/include/sciter-x.h", recurse = true, flags = typeMap & " --noHeader")
+cImport("/home/dian/Projects/nsciter/sdk/include/sciter-x.h", nimFile = "sciwrap.nim", recurse = true, flags = typeMap & " --noHeader")
+#cImport("/home/dian/Projects/nsciter/go-sciter/include/sciter-x.h", recurse = true, flags = typeMap & " --noHeader")
+
+echo "Fixing callbacks..."
+let path = currentSourcePath().splitPath().head / "sciwrap.nim"
+var data = readFile(path)
+# Fix callback types (not sure if correct, need to ask Sciter author)
+const cbs = [
+  "SciterElementCallback", "SciterWindowDelegate", "KeyValueCallback", 
+  "NATIVE_FUNCTOR_INVOKE", "NATIVE_FUNCTOR_RELEASE", "LPCSTR_RECEIVER", 
+  "LPCWSTR_RECEIVER", "LPCBYTE_RECEIVER"
+]
+
+for cb in cbs:
+  data = data.replace("ptr " & cb, cb)
+
+writeFile(path, data)
+echo "Done!"

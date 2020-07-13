@@ -1,4 +1,4 @@
-import os, sciter, strformat
+import os, sciter, strformat, times
 
 type
   ScitterRect = object
@@ -32,14 +32,14 @@ var wnd = sapi.SciterCreateWindow(
 )
 
 # load htm file for sciter
-discard sapi.SciterLoadFile(wnd, currentSourcePath().splitPath().head / "hello.htm")
+assert sapi.SciterLoadFile(wnd, currentSourcePath().splitPath().head / "hello.htm")
 
 # get root element (the <html> one) of the window
 var rootElem: HELEMENT
-discard sapi.SciterGetRootElement(wnd, addr rootElem)
+echo sapi.SciterGetRootElement(wnd, addr rootElem)
 
-proc lpToNim(str: WideCString; str_length: cuint; param: pointer) {.stdcall.} = 
-  cast[ptr string](param)[] = $str
+proc lpToNim(str: LPCWSTR; str_length: cuint; param: pointer): VOID {.cdecl.} = 
+  cast[ptr string](param)[] = $cast[WideCString](str)
 
 var i = 0
 
@@ -49,7 +49,7 @@ proc elemFoundCb(elem: HELEMENT, param: pointer): bool {.cdecl.} =
     echo "Clicked button"
     var node: HNODE
     var mystr: string
-    discard sapi.SciterGetElementTextCB(elem, cast[ptr LPCWSTR_RECEIVER](lpToNim), addr mystr)
+    discard sapi.SciterGetElementTextCB(elem, lpToNim, addr mystr)
     echo "Current text - ", mystr
     echo "Setting new text!"
     inc i
@@ -66,7 +66,6 @@ wnd.onClick(proc: uint32 =
 )
 
 var mysel = cstring("#btnOne")
-
-echo sapi.SciterSelectElements(rootElem, "#btnOne", cast[ptr SciterElementCallback](elemFoundCb), nil)
+echo sapi.SciterSelectElements(rootElem, "#btnOne", elemFoundCb, nil)
 
 wnd.run()

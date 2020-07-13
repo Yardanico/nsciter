@@ -1,6 +1,6 @@
-# Generated @ 2020-07-13T15:45:06+03:00
+# Generated @ 2020-07-13T19:45:03+03:00
 # Command line:
-#   /home/dian/.nimble/pkgs/nimterop-0.6.4/nimterop/toast --preprocess -m:c --recurse -TBOOL=bool,char16_t=cushort,UINT=cuint --noHeader --includeDirs+=/usr/include/gtk-3.0 --includeDirs+=/usr/include/glib-2.0 --includeDirs+=/usr/lib/glib-2.0/include --includeDirs+=/usr/include/pango-1.0 --includeDirs+=/usr/include/cairo --includeDirs+=/usr/include/gdk-pixbuf-2.0 --includeDirs+=/usr/include/atk-1.0 --includeDirs+=/usr/include/harfbuzz --exclude+=/usr/include/gtk-3.0 --exclude+=/usr/include/glib-2.0 --exclude+=/usr/lib/glib-2.0/include --exclude+=/usr/include/pango-1.0 --exclude+=/usr/include/cairo --exclude+=/usr/include/gdk-pixbuf-2.0 --exclude+=/usr/include/atk-1.0 --exclude+=/usr/include/harfbuzz --pnim --symOverride=KB_LEFTBRACKET,KB_RIGHTBRACKET,KB_NUMLOCK,SUBSCRIPTIONS_REQUEST,RRT_FORCE_DWORD,RT_DATA_FORCE_DWORD,RS_FORCE_DWORD,SCDOM_OK_NOT_HANDLED,SCDOM_OK,SCDOM_INVALID_HWND,SCDOM_INVALID_HANDLE,SCDOM_PASSIVE_HANDLE,SCDOM_INVALID_PARAMETER,SCDOM_OPERATION_FAILED,HELEMENT,GtkWidget,HWINDOW,SCITER_VALUE,RECT,LPRECT,LPCRECT,SCDOM_RESULT,SUBSCRIPTIONS_REQUEST --nim:/home/dian/Things/Nim/bin/nim --pluginSourcePath=/home/dian/.cache/nim/nimterop/cPlugins/nimterop_394333083.nim /home/dian/Projects/nsciter/sdk/include/sciter-x.h -o /home/dian/.cache/nim/nimterop/toastCache/nimterop_3309838374.nim
+#   /home/dian/.nimble/pkgs/nimterop-0.6.4/nimterop/toast --preprocess -m:c --recurse -TBOOL=bool,char16_t=cushort,UINT=cuint --noHeader --includeDirs+=/usr/include/gtk-3.0 --includeDirs+=/usr/include/glib-2.0 --includeDirs+=/usr/lib/glib-2.0/include --includeDirs+=/usr/include/pango-1.0 --includeDirs+=/usr/include/cairo --includeDirs+=/usr/include/gdk-pixbuf-2.0 --includeDirs+=/usr/include/atk-1.0 --includeDirs+=/usr/include/harfbuzz --exclude+=/usr/include/gtk-3.0 --exclude+=/usr/include/glib-2.0 --exclude+=/usr/lib/glib-2.0/include --exclude+=/usr/include/pango-1.0 --exclude+=/usr/include/cairo --exclude+=/usr/include/gdk-pixbuf-2.0 --exclude+=/usr/include/atk-1.0 --exclude+=/usr/include/harfbuzz --pnim --symOverride=KB_LEFTBRACKET,KB_RIGHTBRACKET,KB_NUMLOCK,SUBSCRIPTIONS_REQUEST,RRT_FORCE_DWORD,RT_DATA_FORCE_DWORD,RS_FORCE_DWORD,SCDOM_OK_NOT_HANDLED,SCDOM_OK,SCDOM_INVALID_HWND,SCDOM_INVALID_HANDLE,SCDOM_PASSIVE_HANDLE,SCDOM_INVALID_PARAMETER,SCDOM_OPERATION_FAILED,HELEMENT,GtkWidget,HWINDOW,SCITER_VALUE,RECT,LPRECT,LPCRECT,SCDOM_RESULT,SUBSCRIPTIONS_REQUEST --nim:/home/dian/Things/Nim/bin/nim --pluginSourcePath=/home/dian/.cache/nim/nimterop/cPlugins/nimterop_3333537963.nim /home/dian/Projects/nsciter/sdk/include/sciter-x.h -o /home/dian/.cache/nim/nimterop/toastCache/nimterop_1081104442.nim
 
 # const 'LINUX' has unsupported value 'typedef signed char BOOL;'
 # const 'SC_CALLBACK' has unsupported value 'typedef struct tagRECT'
@@ -220,8 +220,13 @@ macro defineEnum(typ: untyped): untyped =
     proc `dlrop`*(x: `typ`): string {.borrow.}
     proc `notop`*(x: `typ`): `typ` {.borrow.}
 
-
-type wchar_t* {.importc.} = object
+when defined(cpp):
+  # http://www.cplusplus.com/reference/cwchar/wchar_t/
+  # In C++, wchar_t is a distinct fundamental type (and thus it is
+  # not defined in <cwchar> nor any other header).
+  type wchar_t* {.importc.} = object
+else:
+  type wchar_t* {.importc, header: "stddef.h".} = object
 
 
 {.experimental: "codeReordering".}
@@ -1581,11 +1586,11 @@ type
     RequestUnUse*: proc (rq: HREQUEST): REQUEST_RESULT {.cdecl.} ## ```
                                                            ##   a.k.a Release()
                                                            ## ```
-    RequestUrl*: proc (rq: HREQUEST; rcv: ptr LPCSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
+    RequestUrl*: proc (rq: HREQUEST; rcv: LPCSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
         cdecl.}               ## ```
                ##   get requested URL
                ## ```
-    RequestContentUrl*: proc (rq: HREQUEST; rcv: ptr LPCSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
+    RequestContentUrl*: proc (rq: HREQUEST; rcv: LPCSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
         cdecl.} ## ```
                ##   get real, content URL (after possible redirection)
                ## ```
@@ -1597,7 +1602,7 @@ type
         cdecl.}               ## ```
                ##   get requested data type
                ## ```
-    RequestGetReceivedDataType*: proc (rq: HREQUEST; rcv: ptr LPCSTR_RECEIVER;
+    RequestGetReceivedDataType*: proc (rq: HREQUEST; rcv: LPCSTR_RECEIVER;
                                      rcv_param: LPVOID): REQUEST_RESULT {.cdecl.} ## ```
                                                                               ##   get received data type, string, mime type
                                                                               ## ```
@@ -1606,12 +1611,12 @@ type
                ##   get number of request parameters passed
                ## ```
     RequestGetNthParameterName*: proc (rq: HREQUEST; n: cuint;
-                                     rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
+                                     rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
         cdecl.}               ## ```
                ##   get nth request parameter name
                ## ```
     RequestGetNthParameterValue*: proc (rq: HREQUEST; n: cuint;
-                                      rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
+                                      rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
         cdecl.}               ## ```
                ##   get nth request parameter value
                ## ```
@@ -1624,12 +1629,12 @@ type
                ##   get number of request headers
                ## ```
     RequestGetNthRqHeaderName*: proc (rq: HREQUEST; n: cuint;
-                                    rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
+                                    rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
         cdecl.}               ## ```
                ##   get nth request header name
                ## ```
     RequestGetNthRqHeaderValue*: proc (rq: HREQUEST; n: cuint;
-                                     rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
+                                     rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
         cdecl.}               ## ```
                ##   get nth request header value
                ## ```
@@ -1638,12 +1643,12 @@ type
                ##   get number of response headers
                ## ```
     RequestGetNthRspHeaderName*: proc (rq: HREQUEST; n: cuint;
-                                     rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
+                                     rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
         cdecl.}               ## ```
                ##   get nth response header name
                ## ```
     RequestGetNthRspHeaderValue*: proc (rq: HREQUEST; n: cuint;
-                                      rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
+                                      rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
         cdecl.}               ## ```
                ##   get nth response header value
                ## ```
@@ -1652,7 +1657,7 @@ type
         cdecl.} ## ```
                ##   get completion status (CompletionStatus - http response code : 200, 404, etc.)
                ## ```
-    RequestGetProxyHost*: proc (rq: HREQUEST; rcv: ptr LPCSTR_RECEIVER;
+    RequestGetProxyHost*: proc (rq: HREQUEST; rcv: LPCSTR_RECEIVER;
                               rcv_param: LPVOID): REQUEST_RESULT {.cdecl.} ## ```
                                                                        ##   get proxy host
                                                                        ## ```
@@ -1687,7 +1692,7 @@ type
         cdecl.}               ## ```
                ##   set received data encoding, string
                ## ```
-    RequestGetData*: proc (rq: HREQUEST; rcv: ptr LPCBYTE_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
+    RequestGetData*: proc (rq: HREQUEST; rcv: LPCBYTE_RECEIVER; rcv_param: LPVOID): REQUEST_RESULT {.
         cdecl.}               ## ```
                ##   get received (so far) data
                ## ```
@@ -2587,7 +2592,7 @@ type
                                                                 ##   returns GtkWidget
                                                                 ## ```
     SciterCreateWindow*: proc (creationFlags: cuint; frame: LPRECT;
-                             delegate: ptr SciterWindowDelegate;
+                             delegate: SciterWindowDelegate;
                              delegateParam: LPVOID; parent: ptr GtkWidget): ptr GtkWidget {.
         cdecl.}
     SciterSetupDebugOutput*: proc (hwndOrNull: ptr GtkWidget; param: LPVOID;
@@ -2606,31 +2611,31 @@ type
     SciterGetNthChild*: proc (he: HELEMENT; n: cuint; phe: ptr HELEMENT): INT {.cdecl.}
     SciterGetParentElement*: proc (he: HELEMENT; p_parent_he: ptr HELEMENT): INT {.cdecl.}
     SciterGetElementHtmlCB*: proc (he: HELEMENT; outer: bool;
-                                 rcv: ptr LPCBYTE_RECEIVER; rcv_param: LPVOID): INT {.
+                                 rcv: LPCBYTE_RECEIVER; rcv_param: LPVOID): INT {.
         cdecl.}
-    SciterGetElementTextCB*: proc (he: HELEMENT; rcv: ptr LPCWSTR_RECEIVER;
+    SciterGetElementTextCB*: proc (he: HELEMENT; rcv: LPCWSTR_RECEIVER;
                                  rcv_param: LPVOID): INT {.cdecl.}
     SciterSetElementText*: proc (he: HELEMENT; utf16: LPCWSTR; length: cuint): INT {.
         cdecl.}
     SciterGetAttributeCount*: proc (he: HELEMENT; p_count: LPUINT): INT {.cdecl.}
     SciterGetNthAttributeNameCB*: proc (he: HELEMENT; n: cuint;
-                                      rcv: ptr LPCSTR_RECEIVER; rcv_param: LPVOID): INT {.
+                                      rcv: LPCSTR_RECEIVER; rcv_param: LPVOID): INT {.
         cdecl.}
     SciterGetNthAttributeValueCB*: proc (he: HELEMENT; n: cuint;
-                                       rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
+                                       rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
         cdecl.}
     SciterGetAttributeByNameCB*: proc (he: HELEMENT; name: LPCSTR;
-                                     rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
+                                     rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
         cdecl.}
     SciterSetAttributeByName*: proc (he: HELEMENT; name: LPCSTR; value: LPCWSTR): INT {.
         cdecl.}
     SciterClearAttributes*: proc (he: HELEMENT): INT {.cdecl.}
     SciterGetElementIndex*: proc (he: HELEMENT; p_index: LPUINT): INT {.cdecl.}
     SciterGetElementType*: proc (he: HELEMENT; p_type: ptr LPCSTR): INT {.cdecl.}
-    SciterGetElementTypeCB*: proc (he: HELEMENT; rcv: ptr LPCSTR_RECEIVER;
+    SciterGetElementTypeCB*: proc (he: HELEMENT; rcv: LPCSTR_RECEIVER;
                                  rcv_param: LPVOID): INT {.cdecl.}
     SciterGetStyleAttributeCB*: proc (he: HELEMENT; name: LPCSTR;
-                                    rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
+                                    rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
         cdecl.}
     SciterSetStyleAttribute*: proc (he: HELEMENT; name: LPCSTR; value: LPCWSTR): INT {.
         cdecl.}
@@ -2646,10 +2651,10 @@ type
     SciterCombineURL*: proc (he: HELEMENT; szUrlBuffer: LPWSTR; UrlBufferSize: cuint): INT {.
         cdecl.}
     SciterSelectElements*: proc (he: HELEMENT; CSS_selectors: LPCSTR;
-                               callback: ptr SciterElementCallback; param: LPVOID): INT {.
+                               callback: SciterElementCallback; param: LPVOID): INT {.
         cdecl.}
     SciterSelectElementsW*: proc (he: HELEMENT; CSS_selectors: LPCWSTR;
-                                callback: ptr SciterElementCallback; param: LPVOID): INT {.
+                                callback: SciterElementCallback; param: LPVOID): INT {.
         cdecl.}
     SciterSelectParent*: proc (he: HELEMENT; selector: LPCSTR; depth: cuint;
                              heFound: ptr HELEMENT): INT {.cdecl.}
@@ -2750,7 +2755,7 @@ type
     SciterNodeNthChild*: proc (hnode: HNODE; n: cuint; phn: ptr HNODE): INT {.cdecl.}
     SciterNodeChildrenCount*: proc (hnode: HNODE; pn: ptr cuint): INT {.cdecl.}
     SciterNodeType*: proc (hnode: HNODE; pNodeType: ptr cuint): INT {.cdecl.}
-    SciterNodeGetText*: proc (hnode: HNODE; rcv: ptr LPCWSTR_RECEIVER;
+    SciterNodeGetText*: proc (hnode: HNODE; rcv: LPCWSTR_RECEIVER;
                             rcv_param: LPVOID): INT {.cdecl.}
     SciterNodeSetText*: proc (hnode: HNODE; text: LPCWSTR; textLength: cuint): INT {.
         cdecl.}
@@ -2797,7 +2802,7 @@ type
     ValueNthElementValueSet*: proc (pval: ptr VALUE; n: INT; pval_to_set: ptr VALUE): cuint {.
         cdecl.}
     ValueNthElementKey*: proc (pval: ptr VALUE; n: INT; pretval: ptr VALUE): cuint {.cdecl.}
-    ValueEnumElements*: proc (pval: ptr VALUE; penum: ptr KeyValueCallback;
+    ValueEnumElements*: proc (pval: ptr VALUE; penum: KeyValueCallback;
                             param: LPVOID): cuint {.cdecl.}
     ValueSetValueToKey*: proc (pval: ptr VALUE; pkey: ptr VALUE; pval_to_set: ptr VALUE): cuint {.
         cdecl.}
@@ -2809,8 +2814,8 @@ type
     ValueInvoke*: proc (pval: ptr VALUE; pthis: ptr VALUE; argc: cuint; argv: ptr VALUE;
                       pretval: ptr VALUE; url: LPCWSTR): cuint {.cdecl.}
     ValueNativeFunctorSet*: proc (pval: ptr VALUE;
-                                pinvoke: ptr NATIVE_FUNCTOR_INVOKE;
-                                prelease: ptr NATIVE_FUNCTOR_RELEASE; tag: ptr VOID): cuint {.
+                                pinvoke: NATIVE_FUNCTOR_INVOKE;
+                                prelease: NATIVE_FUNCTOR_RELEASE; tag: ptr VOID): cuint {.
         cdecl.}
     ValueIsNativeFunctor*: proc (pval: ptr VALUE): bool {.cdecl.} ## ```
                                                            ##   used to be script VM API
@@ -2839,7 +2844,7 @@ type
     SciterAtomValue*: proc (name: cstring): UINT64 {.cdecl.} ## ```
                                                        ##   
                                                        ## ```
-    SciterAtomNameCB*: proc (atomv: UINT64; rcv: ptr LPCSTR_RECEIVER; rcv_param: LPVOID): bool {.
+    SciterAtomNameCB*: proc (atomv: UINT64; rcv: LPCSTR_RECEIVER; rcv_param: LPVOID): bool {.
         cdecl.}               ## ```
                ##   
                ## ```
@@ -2965,7 +2970,7 @@ proc ValueNthElementKey*(pval: ptr VALUE; n: INT; pretval: ptr VALUE): cuint {.i
   ##    - T_MAP - key of nth key/value pair in the map;
   ##    - T_FUNCTION - name of nth argument of the function (if any);
   ## ```
-proc ValueEnumElements*(pval: ptr VALUE; penum: ptr KeyValueCallback; param: LPVOID): cuint {.
+proc ValueEnumElements*(pval: ptr VALUE; penum: KeyValueCallback; param: LPVOID): cuint {.
     importc, cdecl.}
 proc ValueSetValueToKey*(pval: ptr VALUE; pkey: ptr VALUE; pval_to_set: ptr VALUE): cuint {.
     importc, cdecl.}
@@ -3017,8 +3022,8 @@ proc ValueInvoke*(pval: ptr VALUE; pthis: ptr VALUE; argc: cuint; argv: ptr VALU
   ##    Returns:
   ##      HV_OK, HV_BAD_PARAMETER or HV_INCOMPATIBLE_TYPE
   ## ```
-proc ValueNativeFunctorSet*(pval: ptr VALUE; pinvoke: ptr NATIVE_FUNCTOR_INVOKE;
-                           prelease: ptr NATIVE_FUNCTOR_RELEASE; tag: ptr VOID): cuint {.
+proc ValueNativeFunctorSet*(pval: ptr VALUE; pinvoke: NATIVE_FUNCTOR_INVOKE;
+                           prelease: NATIVE_FUNCTOR_RELEASE; tag: ptr VOID): cuint {.
     importc, cdecl.}
   ## ```
   ##   ValueNativeFunctorSet - set reference to native function
@@ -3113,7 +3118,7 @@ proc SciterGetParentElement*(he: HELEMENT; p_parent_he: ptr HELEMENT): INT {.imp
   ##    parent element
   ##    \return \b #SCDOM_RESULT SCAPI
   ## ```
-proc SciterGetElementHtmlCB*(he: HELEMENT; outer: bool; rcv: ptr LPCBYTE_RECEIVER;
+proc SciterGetElementHtmlCB*(he: HELEMENT; outer: bool; rcv: LPCBYTE_RECEIVER;
                             rcv_param: LPVOID): INT {.importc, cdecl.}
   ## ```
   ##   Get html representation of the element.
@@ -3123,7 +3128,7 @@ proc SciterGetElementHtmlCB*(he: HELEMENT; outer: bool; rcv: ptr LPCBYTE_RECEIVE
   ##    \param[in] rcv_param \b parameter that passed to rcv as it is.
   ##    \return \b #SCDOM_RESULT SCAPI
   ## ```
-proc SciterGetElementTextCB*(he: HELEMENT; rcv: ptr LPCWSTR_RECEIVER;
+proc SciterGetElementTextCB*(he: HELEMENT; rcv: LPCWSTR_RECEIVER;
                             rcv_param: LPVOID): INT {.importc, cdecl.}
 proc SciterSetElementText*(he: HELEMENT; utf16: LPCWSTR; length: cuint): INT {.importc,
     cdecl.}
@@ -3142,12 +3147,12 @@ proc SciterGetAttributeCount*(he: HELEMENT; p_count: LPUINT): INT {.importc, cde
   ##    attributes.
   ##    \return \b #SCDOM_RESULT SCAPI
   ## ```
-proc SciterGetNthAttributeNameCB*(he: HELEMENT; n: cuint; rcv: ptr LPCSTR_RECEIVER;
+proc SciterGetNthAttributeNameCB*(he: HELEMENT; n: cuint; rcv: LPCSTR_RECEIVER;
                                  rcv_param: LPVOID): INT {.importc, cdecl.}
-proc SciterGetNthAttributeValueCB*(he: HELEMENT; n: cuint; rcv: ptr LPCWSTR_RECEIVER;
+proc SciterGetNthAttributeValueCB*(he: HELEMENT; n: cuint; rcv: LPCWSTR_RECEIVER;
                                   rcv_param: LPVOID): INT {.importc, cdecl.}
 proc SciterGetAttributeByNameCB*(he: HELEMENT; name: LPCSTR;
-                                rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
+                                rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
     importc, cdecl.}
   ## ```
   ##   Get value of any element's attribute by name.
@@ -3192,7 +3197,7 @@ proc SciterGetElementType*(he: HELEMENT; p_type: ptr LPCSTR): INT {.importc, cde
   ##    \par Example:
   ##    For &lt;div&gt; tag p_type will be set to "div".
   ## ```
-proc SciterGetElementTypeCB*(he: HELEMENT; rcv: ptr LPCSTR_RECEIVER; rcv_param: LPVOID): INT {.
+proc SciterGetElementTypeCB*(he: HELEMENT; rcv: LPCSTR_RECEIVER; rcv_param: LPVOID): INT {.
     importc, cdecl.}
   ## ```
   ##   Get element's type.
@@ -3202,7 +3207,7 @@ proc SciterGetElementTypeCB*(he: HELEMENT; rcv: ptr LPCSTR_RECEIVER; rcv_param: 
   ##    \return \b #SCDOM_RESULT SCAPI
   ## ```
 proc SciterGetStyleAttributeCB*(he: HELEMENT; name: LPCSTR;
-                               rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
+                               rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
     importc, cdecl.}
 proc SciterSetStyleAttribute*(he: HELEMENT; name: LPCSTR; value: LPCWSTR): INT {.
     importc, cdecl.}
@@ -3275,10 +3280,10 @@ proc SciterCombineURL*(he: HELEMENT; szUrlBuffer: LPWSTR; UrlBufferSize: cuint):
   ##    This function is used for resolving relative references.
   ## ```
 proc SciterSelectElements*(he: HELEMENT; CSS_selectors: LPCSTR;
-                          callback: ptr SciterElementCallback; param: LPVOID): INT {.
+                          callback: SciterElementCallback; param: LPVOID): INT {.
     importc, cdecl.}
 proc SciterSelectElementsW*(he: HELEMENT; CSS_selectors: LPCWSTR;
-                           callback: ptr SciterElementCallback; param: LPVOID): INT {.
+                           callback: SciterElementCallback; param: LPVOID): INT {.
     importc, cdecl.}
 proc SciterSelectParent*(he: HELEMENT; selector: LPCSTR; depth: cuint;
                         heFound: ptr HELEMENT): INT {.importc, cdecl.}
@@ -3490,7 +3495,7 @@ proc SciterNodeParent*(hnode: HNODE; pheParent: ptr HELEMENT): INT {.importc, cd
 proc SciterNodeNthChild*(hnode: HNODE; n: cuint; phn: ptr HNODE): INT {.importc, cdecl.}
 proc SciterNodeChildrenCount*(hnode: HNODE; pn: ptr cuint): INT {.importc, cdecl.}
 proc SciterNodeType*(hnode: HNODE; pNodeType: ptr cuint): INT {.importc, cdecl.}
-proc SciterNodeGetText*(hnode: HNODE; rcv: ptr LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
+proc SciterNodeGetText*(hnode: HNODE; rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
     importc, cdecl.}
 proc SciterNodeSetText*(hnode: HNODE; text: LPCWSTR; textLength: cuint): INT {.importc,
     cdecl.}
@@ -3510,7 +3515,7 @@ proc SciterCreateTextNode*(text: LPCWSTR; textLength: cuint; phnode: ptr HNODE):
 proc SciterCreateCommentNode*(text: LPCWSTR; textLength: cuint; phnode: ptr HNODE): INT {.
     importc, cdecl.}
 proc SciterAtomValue*(name: cstring): UINT64 {.importc, cdecl.}
-proc SciterAtomNameCB*(atomv: UINT64; rcv: ptr LPCSTR_RECEIVER; rcv_param: LPVOID): UINT64 {.
+proc SciterAtomNameCB*(atomv: UINT64; rcv: LPCSTR_RECEIVER; rcv_param: LPVOID): UINT64 {.
     importc, cdecl.}
 proc SciterClassName*(): LPCWSTR {.importc, cdecl.}
   ## ```
@@ -3633,7 +3638,7 @@ proc SciterGraphicsCaps*(pcaps: LPUINT): bool {.importc, cdecl.}
 proc SciterSetHomeURL*(hWndSciter: ptr GtkWidget; baseUrl: LPCWSTR): bool {.importc,
     cdecl.}
 proc SciterCreateWindow*(creationFlags: cuint; frame: LPRECT;
-                        delegate: ptr SciterWindowDelegate; delegateParam: LPVOID;
+                        delegate: SciterWindowDelegate; delegateParam: LPVOID;
                         parent: ptr GtkWidget): ptr GtkWidget {.importc, cdecl.}
   ## ```
   ##   Create sciter window.

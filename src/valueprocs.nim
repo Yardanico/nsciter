@@ -21,13 +21,13 @@ enumToInt(VALUE_UNIT_TYPE_OBJECT)
 proc `==`(a: cuint, b: VALUE_RESULT): bool = a == b.cuint
 
 proc `=destroy`(x: var SciterVal) =   
-  echo "called =destroy"
+  # echo "called =destroy"
   if x.impl != nil:
     assert sapi.ValueClear(x.impl) == HV_OK
     dealloc(x.impl)
 
 proc `=`(dst: var SciterVal, src: SciterVal) = 
-  echo "called ="
+  # echo "called ="
   if dst.impl != src.impl:
     `=destroy`(dst.impl)
     dst.impl = cast[ptr SCITER_VALUE](alloc(sizeof(SCITER_VALUE)))
@@ -35,7 +35,7 @@ proc `=`(dst: var SciterVal, src: SciterVal) =
     assert sapi.ValueCopy(dst.impl, src.impl) == HV_OK
 
 proc `=sink`(dst: var SciterVal, src: SciterVal) = 
-  echo "called =sink"
+  # echo "called =sink"
   `=destroy`(dst)
   dst.impl = src.impl
 
@@ -165,6 +165,13 @@ proc newValue*(dat: bool): SciterVal =
   else:
     assert sapi.ValueIntDataSet(result.impl, 0, T_BOOL.UINT32, 0) == HV_OK
 
+proc newValue*(dat: openArray[(string, string)]): SciterVal =
+  result = newValue()
+  for (key, val) in dat:
+    let key = newValue(key)
+    let val = newValue(val)
+    assert sapi.ValueSetValueToKey(result.impl, key.impl, val.impl) == HV_OK
+
 proc convertFromString*(x: SciterVal, s: string, 
                         how: VALUE_STRING_CVT_TYPE = CVT_SIMPLE) {.discardable.} =
   #UINT SCFN( ValueFromString )( VALUE* pval, LPCWSTR str, UINT strLength, /*VALUE_STRING_CVT_TYPE*/ UINT how );
@@ -188,19 +195,42 @@ proc getString*(x: SciterVal): string =
   assert r == HV_OK, "res: " & $cast[VALUE_RESULT](r)
   result = $(cast[WideCString](ws[0].addr))
 
+
+proc valueTypeToStr(x: C_VALUE_TYPE): string = 
+  result = case x
+  of T_UNDEFINED: "undefined"
+  of T_NULL: "null"
+  of T_BOOl: "bool"
+  of T_INT: "int"
+  of T_FLOAT: "float"
+  of T_STRING: "string"
+  of T_DATE: "date"
+  of T_CURRENCY: "currency"
+  of T_LENGTH: "length"
+  of T_ARRAY: "array"
+  of T_MAP: "map"
+  of T_FUNCTION: "function"
+  of T_BYTES: "bytes"
+  of T_OBJECT: "object"
+  of T_RESOURCE: "resource"
+  of T_DURATION: "duration"
+  of T_ANGLE: "angle"
+  of T_COLOR: "color"
+  of T_ASSET: "asset"
+  else: ""
+
 proc `$`*(v: SciterVal): string =
-  result = fmt"({cast[C_VALUE_TYPE](v.impl.t)}) "
+  result = fmt"<{valueTypeToStr(v.impl.t)}> "
   if  v.isString():        
     result &= v.getString()
   elif v.isFunction() or v.isNativeFunctor() or v.isObjectFunction():
-    result &= "<functor>"
+    result = "<functor>"
   elif v.isResource():
-    result &= "<resource>"
-  else:        
-    var nv: SciterVal = v.clone()
+    result = "<resource>"
+  else:
+    var nv = v.clone()
     nv.convertToString(CVT_SIMPLE)
     result &= nv.getString()
-  result &= " addr - " & repr cast[pointer](v.impl)
 
 proc getInt64*(x: SciterVal): int64 =
   assert sapi.ValueInt64Data(x.impl, result.addr) == HV_OK
@@ -209,12 +239,13 @@ proc getInt32*(x: SciterVal): int32 =
   assert sapi.ValueIntData(x.impl, result.addr) == HV_OK
 
 proc getInt*(x: SciterVal): int32 =
-    result = if x.isInt: getInt32(x) else: 0
+  result = if x.isInt: getInt32(x) else: 0
 
-proc getBool*(x: SciterVal): bool =    
-    assert x.isBool, "Value is not BOOL type"    
-    var i = x.getInt32()
-    result = if i == 0: false else: true
+proc getBool*(x: SciterVal): bool = 
+  # XXX: Do we want to allow getting a boolean from an int?
+  # assert x.isBool, "Value is not BOOL type"    
+  var i = x.getInt32()
+  result = if i == 0: false else: true
 
 proc getFloat*(x: SciterVal): float =    
   var r = sapi.ValueFloatData(x.impl, result.addr)
@@ -223,7 +254,6 @@ proc getFloat*(x: SciterVal): float =
 proc getBytes*(x: SciterVal): seq[byte] =
   var p: LPCBYTE
   var size: uint32
-  echo "getBytes: ", repr x, " v:", $x
   var r = sapi.ValueBinaryData(x.impl, p.addr, size.addr)
   assert r == HV_OK, "getBytes:" & repr r
   result = newSeq[byte](size)
@@ -249,50 +279,56 @@ proc getDuration*(x: SciterVal): float32 =
   result = getFloat(x)  
 
 proc getDate*(x: SciterVal): Time = 
-  var t: int64
   assert x.isDate()
+  var t: int64
   if sapi.ValueInt64Data(x.impl, t.addr) == HV_OK: 
-      return fromWinTime(t)
+    result = fromWinTime(t)
   else:
-      return fromWinTime(0)
+    # XXX: Do we really want this?
+    result = fromWinTime(0)
   
 ## for array and object types
 proc len*(x: SciterVal): int32 =    
   assert sapi.ValueElementsCount(x.impl, result.addr) == HV_OK
 
-proc enumerate*(x: SciterVal, cb: ptr KeyValueCallback, param: pointer = nil) =
+proc enumerate*(x: SciterVal, cb: KeyValueCallback, param: pointer = nil) =
   assert sapi.ValueEnumElements(x.impl, cb, param) == HV_OK
 
-# one list fo two iterator...
-var tempList = newSeq[(ptr SCITER_VALUE, ptr SCITER_VALUE)]() 
-
-var cb = 
-  proc (param: pointer; pkey: ptr SCITER_VALUE; pval: ptr SCITER_VALUE): bool {.stdcall.} = 
-    tempList.add (pkey, pval)
+proc getItems*(x: SciterVal): seq[SciterVal] =
+  # XXX - do we really need this optimization?
+  result = newSeqOfCap[SciterVal](x.len())
+  let mycb = proc (param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
+    cast[ptr seq[SciterVal]](param)[].add SciterVal(impl: pval)
     result = true
+  
+  assert sapi.ValueEnumElements(x.impl, mycb, result.addr) == HV_OK
 
-iterator items*(x: SciterVal): SciterVal =
-  tempList.setLen(0)
-  enumerate(x, cast[ptr KeyValueCallback](cb))
-  var i = 0
-  while i < len(tempList):
-    yield SciterVal(impl: tempList[i][1])
-    inc i
+iterator items*(x: SciterVal): SciterVal = 
+  for elem in x.getItems():
+    yield elem
 
-iterator pairs*(x: SciterVal): (SciterVal, SciterVal) =
-  tempList.setLen(0)
-  enumerate(x, cast[ptr KeyValueCallback](cb))
-  var i = 0
-  while i < len(tempList):
-    yield (SciterVal(impl: tempList[i][0]), SciterVal(impl: tempList[i][1]))
-    inc i
+type KVal = tuple[key, value: SciterVal]
 
-#proc `[]`*[I: Ordinal, VT:var Value | ptr Value](x: VT; i: I): SciterVal =
+proc getPairs*(x: SciterVal): seq[KVal] =
+  # XXX - do we really need this optimization?
+  result = newSeqOfCap[KVal](x.len())
+  let mycb = proc (param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
+    # be careful here - SIGSEGV if you dereference in myseq itself!
+    var myseq = cast[ptr seq[KVal]](param)
+    myseq[].add (SciterVal(impl: pkey), SciterVal(impl: pval))
+    result = true
+  
+  assert sapi.ValueEnumElements(x.impl, mycb, result.addr) == HV_OK
+
+iterator pairs*(x: SciterVal): (SciterVal, SciterVal) = 
+  for (key, val) in x.getPairs():
+    yield (key, val)
+
+
 proc `[]`*[T: Ordinal](x: SciterVal; i: T): SciterVal =
   result = newValue()
   assert sapi.ValueNthElementValue(x.impl, i.INT, result.impl) == HV_OK
 
-#proc `[]=`*[I: Ordinal, VT:var Value|ptr Value](x: VT; i: I; y: VT) =
 proc `[]=`*(x: SciterVal; i: int32; y: SciterVal) =
   assert sapi.ValueNthElementValueSet(x.impl, i.INT, y.impl) == HV_OK
 
@@ -327,10 +363,10 @@ proc invoke*(x: SciterVal, args: varargs[SciterVal]): SciterVal =
 
 var nfs = newSeq[NativeFunctor]()
 
-proc pinvoke(tag: pointer;
-            argc: uint32; 
+proc pinvoke(tag: ptr VOID;
+            argc: cuint; 
             argv: ptr SCITER_VALUE;
-            retval: ptr SCITER_VALUE) {.cdecl.} =
+            retval: ptr SCITER_VALUE): VOID {.cdecl.} =
     #is available only when ``--threads:on`` and ``--tlsEmulation:off`` are used
     #setupForeignThreadGc()
   var i = cast[int](tag)
@@ -339,14 +375,14 @@ proc pinvoke(tag: pointer;
   assert sapi.ValueInit(retval) == HV_OK
   assert sapi.ValueCopy(retval, res.addr) == HV_OK    
 
-proc prelease(tag: pointer) {.cdecl.} = 
+proc prelease(tag: ptr VOID): VOID {.cdecl.} = 
   echo "prelease tag index: ", cast[int](tag)
 
 proc setNativeFunctor*(v: SciterVal, nf: NativeFunctor) = 
   nfs.add(nf)
   var tag = cast[ptr VOID](nfs.len() - 1)
   #var vv = v
-  assert sapi.ValueNativeFunctorSet(v.impl, cast[ptr NATIVE_FUNCTOR_INVOKE](pinvoke), cast[ptr NATIVE_FUNCTOR_RELEASE](prelease), tag) == HV_OK
+  assert sapi.ValueNativeFunctorSet(v.impl, pinvoke, prelease, tag) == HV_OK
 
 ## # sds proc for python compatible
 
