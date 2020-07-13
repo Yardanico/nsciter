@@ -1,7 +1,7 @@
 import strformat
 from times import toWinTime, fromWinTime, Time
 
-import sciwrap, converters
+import sciwrap, converters, event
 
 ######## for value operations ##########
 
@@ -133,9 +133,9 @@ proc newValue*(dat: string): SciterVal =
 proc newValue*(dat: SomeSignedInt): SciterVal =
   result = newValue()
   when dat is int64:
-    assert ValueInt64DataSet(result.impl, dat, T_INT, 0) == HV_OK
+    assert ValueInt64DataSet(result.impl, dat, T_INT.UINT32, 0) == HV_OK
   else:
-    assert ValueIntDataSet(result.impl, dat.int32, T_INT, 0) == HV_OK
+    assert ValueIntDataSet(result.impl, dat.int32, T_INT.UINT32, 0) == HV_OK
 
 proc newValue*(dat: Time): SciterVal =
   result = newValue()
@@ -205,21 +205,21 @@ proc getBool*(x: SciterVal): bool =
 
 proc getFloat*(x: SciterVal): float =    
   var r = ValueFloatData(x.impl, result.addr)
-  assert r == HV_OK, "getFloat: " & $r
+  assert r == HV_OK, "getFloat: " & $r.bool
 
 proc getBytes*(x: SciterVal): seq[byte] =
-  var p: pointer
+  var p: LPCBYTE
   var size: uint32
-  echo "getBytes: ", repr x, " v:", repr v
+  echo "getBytes: ", repr x, " v:", $x
   var r = ValueBinaryData(x.impl, p.addr, size.addr)
   assert r == HV_OK, "getBytes:" & repr r
   result = newSeq[byte](size)
   copyMem(result[0].addr, p, int(size) * sizeof(byte))
 
 proc setBytes*(x: SciterVal, dat: var openArray[byte]): uint32 {.discardable.} =
-  var p = dat[0].addr
+  var p = cast[LPCBYTE](dat[0].addr)
   var size = dat.len()*sizeof(byte)
-  assert ValueBinaryDataSet(x.impl, p, uint32(size), T_BYTES, 0) == HV_OK    
+  assert ValueBinaryDataSet(x.impl, p, uint32(size), T_BYTES.UINT32, 0) == HV_OK    
 
 proc getColor*(x: SciterVal): uint32 =
   assert x.isColor()
@@ -247,7 +247,7 @@ proc getDate*(x: SciterVal): Time =
 proc len*(x: SciterVal): int32 =    
   assert ValueElementsCount(x.impl, result.addr) == HV_OK
 
-proc enumerate*(x: SciterVal, cb: KeyValueCallback, param: pointer = nil) =
+proc enumerate*(x: SciterVal, cb: ptr KeyValueCallback, param: pointer = nil) =
   assert ValueEnumElements(x.impl, cb, param) == HV_OK
 
 # one list fo two iterator...
@@ -260,22 +260,22 @@ var cb =
 
 iterator items*(x: SciterVal): SciterVal =
   tempList.setLen(0)
-  enumerate(x, cb)
-  var i : int = 0
+  enumerate(x, cast[ptr KeyValueCallback](cb))
+  var i = 0
   while i < len(tempList):
     yield SciterVal(impl: tempList[i][1])
     inc i
 
 iterator pairs*(x: SciterVal): (SciterVal, SciterVal) =
   tempList.setLen(0)
-  enumerate(x, cb)
-  var i : int = 0
+  enumerate(x, cast[ptr KeyValueCallback](cb))
+  var i = 0
   while i < len(tempList):
-    yield SciterVal(impl: tempList[i][0]), SciterVal(impl: tempList[i][1])
+    yield (SciterVal(impl: tempList[i][0]), SciterVal(impl: tempList[i][1]))
     inc i
 
 #proc `[]`*[I: Ordinal, VT:var Value | ptr Value](x: VT; i: I): SciterVal =
-proc `[]`*(x: SciterVal; i: Ordinal): SciterVal =
+proc `[]`*[T: Ordinal](x: SciterVal; i: T): SciterVal =
   result = newValue()
   assert ValueNthElementValue(x.impl, i.INT, result.addr) == HV_OK
 
@@ -293,15 +293,15 @@ proc `[]=`*(x: SciterVal; name: string; y: SciterVal) =
   assert ValueSetValueToKey(x.impl, key.impl, y.impl) == HV_OK
 
 ## value functions calls
-proc invokeWithSelf*(x: SciterVal, self: SciterValue, 
-                    args: varargs[SciterValue]): SciterVal = 
+proc invokeWithSelf*(x: SciterVal, self: SciterVal, 
+                    args: varargs[SciterVal]): SciterVal = 
   result = newValue(0)
   var clen = len(args)
   var cargs = newSeq[ptr SCITER_VALUE](clen + 1)
   for i in 0 ..< clen:
     cargs[i] = args[i].impl
     
-  assert ValueInvoke(x, self.impl, uint32(len(args)),
+  assert ValueInvoke(x.impl, self.impl, uint32(len(args)),
                       cargs[0], result.impl, nil) == HV_OK
   echo "invokeWithSelf. result: ", result
 
@@ -331,9 +331,9 @@ proc prelease(tag: pointer) {.cdecl.} =
 
 proc setNativeFunctor*(v: SciterVal, nf: NativeFunctor) = 
   nfs.add(nf)
-  var tag = cast[pointer](nfs.len() - 1)
+  var tag = cast[ptr VOID](nfs.len() - 1)
   #var vv = v
-  assert ValueNativeFunctorSet(v.impl, pinvoke, prelease, tag) == HV_OK
+  assert ValueNativeFunctorSet(v.impl, cast[ptr NATIVE_FUNCTOR_INVOKE](pinvoke), cast[ptr NATIVE_FUNCTOR_RELEASE](prelease), tag) == HV_OK
 
 ## # sds proc for python compatible
 
@@ -371,15 +371,15 @@ proc callFunction*(hwnd: HWINDOW | HELEMENT,
     return rv]#
 
 ## Call scripting method defined for the element
-proc callMethod*(he: HELEMENT, name: cstring, args: varargs[ValSciterValue]): SciterVal = 
-    result = newValue()
-    var clen = len(args)
-    var cargs = newSeq[ptr SCITER_VALUE](clen)
-    for i in 0 ..< clen:
-      cargs[i] = args[i].impl
-    var ok =  SciterCallScriptingMethod(
-      he,  name,  cargs[0], uint32(clen), result.impl
-    )
-    assert ok == SCDOM_OK, "ok is:" & $ok 
-    #sciter.Value.raise_from(rv, ok == SCDOM_RESULT.SCDOM_OK, name)
-    #self._throw_if(ok)
+proc callMethod*(he: HELEMENT, name: cstring, args: varargs[SciterVal]): SciterVal = 
+  result = newValue()
+  var clen = len(args)
+  var cargs = newSeq[ptr SCITER_VALUE](clen)
+  for i in 0 ..< clen:
+    cargs[i] = args[i].impl
+  var ok =  SciterCallScriptingMethod(
+    he, name, cargs[0], uint32(clen), result.impl
+  )
+  assert ok.SCDOM_RESULT == SCDOM_OK, "ok is:" & $ok 
+  #sciter.Value.raise_from(rv, ok == SCDOM_RESULT.SCDOM_OK, name)
+  #self._throw_if(ok)

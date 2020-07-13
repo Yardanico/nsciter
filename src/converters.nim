@@ -15,3 +15,8 @@ converter toLPCSTR*(s: string): LPCSTR =
   ## Converts a Nim string to Sciter-expected ptr char (LPCSTR)
   var mystr = cstring(s)
   result = cast[LPCSTR](addr mystr[0])
+
+converter toLPCSTR*(s: cstring): LPCSTR = 
+  ## Converts a Nim string to Sciter-expected ptr char (LPCSTR)
+  var mystr = cstring($s)
+  result = cast[LPCSTR](addr mystr[0])
