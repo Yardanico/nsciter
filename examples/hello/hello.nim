@@ -1,4 +1,4 @@
-import os, sciter, strformat, times
+import os, nsciter, strformat, times
 
 type
   ScitterRect = object

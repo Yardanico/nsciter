@@ -1,5 +1,5 @@
 
-import sciwrap, papi, event, converters, valueprocs
+import nsciter / [sciwrap, papi, event, converters, valueprocs]
 export sciwrap, papi, event, converters, valueprocs
 
 
