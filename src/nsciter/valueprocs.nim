@@ -22,14 +22,11 @@ enumToInt(VALUE_UNIT_TYPE_OBJECT)
 proc `==`(a: cuint, b: VALUE_RESULT): bool = a == b.cuint
 
 proc `=destroy`(x: var SciterValObj) =   
-  echo "value called =destroy"
-  #writeStackTrace()
-  #if x.impl != nil:
-  #  assert sapi.ValueClear(x.impl) == HV_OK
-  #  dealloc(x.impl)
+  if x.impl != nil:
+    assert sapi.ValueClear(x.impl) == HV_OK
+    dealloc(x.impl)
 
 proc `=`(dst: var SciterValObj, src: SciterValObj) = 
-  echo "value called ="
   if dst.impl != src.impl:
     `=destroy`(dst.impl)
     dst.impl = cast[ptr SCITER_VALUE](alloc(sizeof(SCITER_VALUE)))
@@ -37,7 +34,6 @@ proc `=`(dst: var SciterValObj, src: SciterValObj) =
     assert sapi.ValueCopy(dst.impl, src.impl) == HV_OK
 
 proc `=sink`(dst: var SciterValObj, src: SciterValObj) = 
-  echo "value called =sink"
   `=destroy`(dst)
   dst.impl = src.impl
 
@@ -133,13 +129,11 @@ proc nullValue*(): SciterVal =
 proc cloneTo*(src: SciterVal, dst: SciterVal) {.inline.} =
   assert sapi.ValueCopy(dst.impl, src.impl) == HV_OK
 
-#proc clone*(x: var Value): SciterVal {.inline.} =
 proc clone*(x: SciterVal): SciterVal {.inline.} =
   result = nullValue()
   assert sapi.ValueCopy(result.impl, x.impl) == HV_OK
 
 proc newValue*(dat: string): SciterVal =
-  #UINT SCFN( ValueStringDataSet )( VALUE* pval, LPCWSTR chars, UINT numChars, UINT units );
   var ws = newWideCString(dat)
   result = newValue()
   assert sapi.ValueStringDataSet(result.impl, ws, ws.len.uint32, 0'u32) == HV_OK
@@ -176,27 +170,19 @@ proc newValue*(dat: openArray[(string, string)]): SciterVal =
 
 proc convertFromString*(x: SciterVal, s: string, 
                         how: VALUE_STRING_CVT_TYPE = CVT_SIMPLE) {.discardable.} =
-  #UINT SCFN( ValueFromString )( VALUE* pval, LPCWSTR str, UINT strLength, /*VALUE_STRING_CVT_TYPE*/ UINT how );
-  #xDefPtr(x, v)
   var ws = newWideCString(s)    
   assert sapi.ValueFromString(x.impl, ws, ws.len.uint32, how.UINT32) == HV_OK
 
 proc convertToString*(x: SciterVal, 
                     how: VALUE_STRING_CVT_TYPE = CVT_SIMPLE) {.discardable.} =
-  # converts value to T_STRING inplace
-  #UINT SCFN( ValueToString )( VALUE* pval, /*VALUE_STRING_CVT_TYPE*/ UINT how );
-  #xDefPtr(x, v) # don't work
   assert sapi.ValueToString(x.impl, how.UINT32) == HV_OK
 
 proc getString*(x: SciterVal): string =
-  #UINT SCFN( ValueStringData )( const VALUE* pval, LPCWSTR* pChars, UINT* pNumChars );
-  #var xx = x
   var ws: ptr UncheckedArray[Utf16Char]
   var n: uint32    
   var r = sapi.ValueStringData(x.impl, cast[ptr LPCWSTR](ws.addr), n.addr)
   assert r == HV_OK, "res: " & $cast[VALUE_RESULT](r)
   result = $(cast[WideCString](ws[0].addr))
-
 
 proc valueTypeToStr(x: C_VALUE_TYPE): string = 
   result = case x
@@ -258,7 +244,7 @@ proc getBytes*(x: SciterVal): seq[byte] =
   var size: uint32
   var r = sapi.ValueBinaryData(x.impl, p.addr, size.addr)
   assert r == HV_OK, "getBytes:" & repr r
-  result = newSeq[byte](size)
+  result = newSeqUninitialized[byte](size)
   copyMem(result[0].addr, p, int(size) * sizeof(byte))
 
 proc setBytes*(x: SciterVal, dat: var openArray[byte]): uint32 {.discardable.} =
@@ -270,12 +256,10 @@ proc getColor*(x: SciterVal): uint32 =
   assert x.isColor()
   result = cast[uint32](x.getInt)
   
-## returns radians if this->is_angle()
 proc getAngle*(x: SciterVal): float32 = 
   assert x.isAngle()
   result = getFloat(x)
-  
-## returns seconds if this->is_duration()
+
 proc getDuration*(x: SciterVal): float32 =    
   assert x.isDuration()
   result = getFloat(x)  
@@ -326,7 +310,6 @@ iterator pairs*(x: SciterVal): (SciterVal, SciterVal) =
   for (key, val) in x.getPairs():
     yield (key, val)
 
-
 proc `[]`*[T: Ordinal](x: SciterVal; i: T): SciterVal =
   result = newValue()
   assert sapi.ValueNthElementValue(x.impl, i.INT, result.impl) == HV_OK
@@ -343,7 +326,6 @@ proc `[]=`*(x: SciterVal; name: string; y: SciterVal) =
   var key = newValue(name)
   assert sapi.ValueSetValueToKey(x.impl, key.impl, y.impl) == HV_OK
 
-## value functions calls
 proc invokeWithSelf*(x: SciterVal, self: SciterVal, 
                     args: varargs[SciterVal]): SciterVal = 
   result = newValue(0)
@@ -356,7 +338,6 @@ proc invokeWithSelf*(x: SciterVal, self: SciterVal,
                       cargs[0], result.impl, nil) == HV_OK
   echo "invokeWithSelf. result: ", result
 
-## value functions calls    
 proc invoke*(x: SciterVal, args: varargs[SciterVal]): SciterVal =
   echo "invoke"
   var self = newValue()
@@ -383,10 +364,7 @@ proc prelease(tag: ptr VOID): VOID {.cdecl.} =
 proc setNativeFunctor*(v: SciterVal, nf: NativeFunctor) = 
   nfs.add(nf)
   var tag = cast[ptr VOID](nfs.len() - 1)
-  #var vv = v
   assert sapi.ValueNativeFunctorSet(v.impl, pinvoke, prelease, tag) == HV_OK
-
-## # sds proc for python compatible
 
 proc callFunction*(hwnd: HWINDOW | HELEMENT, 
                   name: cstring, args: varargs[SciterVal]): SciterVal =  

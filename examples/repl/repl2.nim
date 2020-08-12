@@ -32,10 +32,10 @@ var wnd = sapi.SciterCreateWindow(
 )
 
 proc funct(data: seq[ptr Value]): Value = 
-  echo "in funct"
   if data.len < 1: 
-    let b = newValue("invalid call!").impl[]
-    return b
+    let b = newValue("Requires 1 argument: string to evaluate")
+    discard sapi.ValueCopy(addr result, b.impl)
+    return
   let str = SciterVal(impl: data[0]).getString()
   var data = ""
   try:
@@ -43,21 +43,17 @@ proc funct(data: seq[ptr Value]): Value =
     data = $e.eval(str)
   except:
     data = "error"
-  
   let res = newValue(data)
-  result = res.impl[]
+  discard sapi.ValueCopy(addr result, res.impl)
 
-echo wnd.defineScriptingFunction("getLib", 
-  proc(args: seq[ptr Value]): Value =
-    echo "called"
-    let val = newValue()
-    let fun = newValue()
-    fun.setNativeFunctor(funct)
-    echo "functor set"
-    val["calculate"] = fun
-    result = val.impl[]
-    echo "result set"
-)
+proc setFunctor(args: seq[ptr Value]): Value = 
+  let val = newValue()
+  let fun = newValue()
+  fun.setNativeFunctor(funct)
+  val["calculate"] = fun
+  discard sapi.ValueCopy(addr result, val.impl)
+
+echo wnd.defineScriptingFunction("getLib", setFunctor)
 
 # load htm file for sciter
 assert sapi.SciterLoadFile(wnd, currentSourcePath().splitPath().head / "repl2.htm")
