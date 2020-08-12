@@ -1,4 +1,4 @@
-# Generated @ 2020-08-12T07:43:58+03:00
+# Generated @ 2020-08-12T08:02:54+03:00
 # Command line:
 #   /home/dian/.nimble/pkgs/nimterop-0.6.6/nimterop/toast --preprocess -m:c --recurse -TBOOL=bool,char16_t=cushort,UINT=cuint --noHeader --includeDirs+=/usr/include/gtk-3.0 --includeDirs+=/usr/include/glib-2.0 --includeDirs+=/usr/lib/glib-2.0/include --includeDirs+=/usr/include/pango-1.0 --includeDirs+=/usr/include/cairo --includeDirs+=/usr/include/gdk-pixbuf-2.0 --includeDirs+=/usr/include/atk-1.0 --includeDirs+=/usr/include/harfbuzz --exclude+=/usr/include/gtk-3.0 --exclude+=/usr/include/glib-2.0 --exclude+=/usr/lib/glib-2.0/include --exclude+=/usr/include/pango-1.0 --exclude+=/usr/include/cairo --exclude+=/usr/include/gdk-pixbuf-2.0 --exclude+=/usr/include/atk-1.0 --exclude+=/usr/include/harfbuzz --pnim --symOverride=KB_LEFTBRACKET,KB_RIGHTBRACKET,KB_NUMLOCK,SUBSCRIPTIONS_REQUEST,RRT_FORCE_DWORD,RT_DATA_FORCE_DWORD,RS_FORCE_DWORD,SCDOM_OK_NOT_HANDLED,SCDOM_OK,SCDOM_INVALID_HWND,SCDOM_INVALID_HANDLE,SCDOM_PASSIVE_HANDLE,SCDOM_INVALID_PARAMETER,SCDOM_OPERATION_FAILED,HELEMENT,GtkWidget,HWINDOW,SCITER_VALUE,RECT,LPRECT,LPCRECT,SCDOM_RESULT,SUBSCRIPTIONS_REQUEST --nim:/home/dian/Things/Nim/bin/nim --pluginSourcePath=/home/dian/.cache/nim/nimterop/cPlugins/nimterop_3333537963.nim /home/dian/Projects/nsciter/sdk/include/sciter-x.h -o /home/dian/Projects/nsciter/src/nsciter/sciwrap.nim
 
@@ -21,6 +21,7 @@
 # const 'SCDOM_INVALID_PARAMETER' skipped
 # const 'SCDOM_OPERATION_FAILED' skipped
 # const 'SCDOM_OK_NOT_HANDLED' skipped
+# proc 'som_asset_get_class' skipped - static inline procs cannot work with '--noHeader | -H'
 # const 'SOM_VALUE' has unsupported value 'SCITER_VALUE'
 # proc '_SAPI' skipped - static inline procs cannot work with '--noHeader | -H'
 # proc 'SAPI' skipped - static inline procs cannot work with '--noHeader | -H'
@@ -219,14 +220,6 @@ macro defineEnum(typ: untyped): untyped =
 
     proc `dlrop`*(x: `typ`): string {.borrow.}
     proc `notop`*(x: `typ`): `typ` {.borrow.}
-
-when defined(cpp):
-  # http://www.cplusplus.com/reference/cwchar/wchar_t/
-  # In C++, wchar_t is a distinct fundamental type (and thus it is
-  # not defined in <cwchar> nor any other header).
-  type wchar_t* {.importc.} = object
-else:
-  type wchar_t* {.importc, header: "stddef.h".} = object
 
 
 {.experimental: "codeReordering".}
@@ -1538,7 +1531,7 @@ type
   UINT64* = culonglong
   INT64* = clonglong
   BYTE* = cuchar
-  WCHAR* = wchar_t
+  WCHAR* = cushort
   LPCWSTR* = ptr WCHAR
   LPWSTR* = ptr WCHAR
   CHAR* = cchar
