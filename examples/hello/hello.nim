@@ -1,19 +1,13 @@
 import os, nsciter, strformat, times
 
-
 # Initialize the Sciter API
 let sapi = initSapi()
-
 
 # Create a Sciter rect with the window position (on the screen)
 var rect = newSciterRect(420, 400)
 
-
-# Create a Sciter Window
-var wnd = sapi.SciterCreateWindow(
-  cuint(SW_CONTROLS or SW_MAIN or SW_TITLEBAR or SW_RESIZEABLE), 
-  rect.impl, nil, nil, nil
-)
+# Create a new Sciter window with some flags
+var wnd = createWindow({swMain, swTitlebar, swControls, swResizeable}, rect)
 
 # Load the HTM file into the window
 let path = currentSourcePath().splitPath().head / "hello.htm"
@@ -55,8 +49,8 @@ wnd.onClick(proc: uint32 =
   echo "Global click event handler 2"
 )
 
-
 var mysel = cstring("#btnOne")
 echo sapi.SciterSelectElements(rootElem, "#btnOne", elemFoundCb, nil)
 
+# Open the window and start the main loop
 wnd.run()

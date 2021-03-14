@@ -10,3 +10,6 @@
 
 sdk
 libsciter-gtk.so
+
+# sometimes I use this nimcache folder
+here

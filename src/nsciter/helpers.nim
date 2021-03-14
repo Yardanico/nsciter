@@ -1,6 +1,6 @@
 import std/unicode
 
-const nsciterDbg* = defined(nsciterDbg)
+const isDebug* = defined(nsciterDbg)
 
 import papi, sciwrap
 
@@ -35,7 +35,7 @@ proc utf16to8*(input: ptr UncheckedArray[uint16], len: int): string =
         # Error, produce tofu character.
         result.add "□"
 
-proc loadFile*(wnd: ptr GtkWidget, path: string) = 
+proc loadFile*(wnd: ptr GtkWidget, path: string) =
   var path = utf8to16(path)
   # TODO: Raise an exception if this fails?
   discard sapi.SciterLoadFile(wnd, addr path[0])
@@ -44,20 +44,36 @@ type
   SciterRect* = object
     impl*: ptr Rect
 
-proc `=destroy`*(r: var SciterRect) = 
-  when nsciterDbg:
+proc `=destroy`*(r: var SciterRect) =
+  when isDebug:
     echo "Deallocating a sciter rect"
   if r.impl != nil:
     dealloc(r.impl)
 
-proc newSciterRect*(right, bottom: int, left = 50, top = 50): SciterRect = 
+proc newSciterRect*(right, bottom: int, left = 50, top = 50): SciterRect =
   result = SciterRect(
     impl: create(Rect)
   )
 
   result.impl[] = Rect(
-    left: INT left, 
-    top: INT top, 
-    right: INT right + left, 
+    left: INT left,
+    top: INT top,
+    right: INT right + left,
     bottom: INT bottom + top
+  )
+
+type
+  SciterWindowFlag* {.size: sizeof(cuint), pure.} = enum
+    swChild, swTitlebar, swResizeable, swTool,
+    swControls, swGlassy, swAlpha, swMain, swPopup,
+    swEnableDebug, swOwnsVm
+
+proc createWindow*(flags = {swMain, swTitlebar, swControls, swResizeable},
+    rect = SciterRect()): ptr GtkWidget =
+  ## Creates a new Sciter window with a `set` of `SciterWindowFlag` flags,
+  ## and an optional rectangle containing the starting position and size
+  ## of the window
+  result = sapi.SciterCreateWindow(
+    cast[cuint](flags),
+    rect.impl, nil, nil, nil
   )

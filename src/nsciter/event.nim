@@ -1,5 +1,16 @@
 import sciwrap, papi
 
+#[
+We have an object with event handler procs
+To handle an event for an element we have to attach
+a handling proc to it (and optionally our own custom object)
+
+When that handling proc gets called, it calls the callback
+from the event handler object so that you receive it in
+the Nim side 
+
+]#
+
 type
   EventHandler* = ptr EventHandlerObj
   EventHandlerObj* = object
@@ -71,7 +82,8 @@ proc fn_handle_scripting_call(he: HELEMENT, params: ptr SCRIPTING_METHOD_PARAMS)
 
 proc fn_ttach(he: HELEMENT) = discard
 
-proc newEventHandler*(): EventHandler =    
+proc newEventHandler*(): EventHandler =
+  # TODO: Check if this leaks memory or not (there's a dealloc below)
   result = create(EventHandlerObj)
   result.subscription = fn_subscription
   result.handle_mouse = fn_handle_mouse
@@ -113,8 +125,8 @@ proc element_proc(tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): bool {.
       #echo "BEHAVIOR_DETACH: ", cast[int](tag) , " evct: ", evct[pThis]
       pThis.detached(he)
       evct[pThis] -= 1
-      if evct.contains(pThis): 
-        dealloc(pThis) 
+      if evct.contains(pThis):
+        dealloc(pThis)
     
     elif INITIALIZATION_EVENTS(p.cmd) == BEHAVIOR_ATTACH:
       #echo "BEHAVIOR_ATTACH: ", cast[int](tag)
