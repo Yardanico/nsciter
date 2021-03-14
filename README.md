@@ -6,7 +6,15 @@ Based on https://github.com/citrusn/nsciter and Nimterop. Currently only support
 
 This wrapper does not support statically linking Sciter because I don't have access to the source code :)
 
-`hello.nim` - ![Screenshot of the example](assets/pic.png?raw=true "Screenshot")
+## Examples
+
+Examples are available in the `examples` folder.
+
+### `hello.nim`
+
+Simple example with a button (and a callback to change the contexts on a press) and an image
+
+![Screenshot of the example](assets/pic.png?raw=true "Screenshot")
 
 ### Licensing 
 Sciter itself is proprietary, but they provide binaries for Windows/Linux/macOS
