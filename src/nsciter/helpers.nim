@@ -1,5 +1,12 @@
 import std/unicode
 
+type
+  SciterBaseError* = object of CatchableError
+  
+  SciterBaseDefect* = object of Defect
+
+  SciterValueError* = object of SciterBaseError
+
 const isDebug* = defined(nsciterDbg)
 
 import papi, sciwrap
