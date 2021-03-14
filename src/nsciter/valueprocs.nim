@@ -1,8 +1,7 @@
 import std/[strformat, times, unicode]
 
-import sciwrap, papi, converters, event
+import sciwrap, papi, converters, event, helpers
 
-const nsciterDbg = defined(nsciterDbg)
 
 type
   SciterValObj* = object
@@ -146,37 +145,6 @@ proc cloneTo*(src: SciterVal, dst: SciterVal) {.inline.} =
 proc clone*(x: SciterVal): SciterVal {.inline.} =
   result = nullValue()
   doAssert sapi.ValueCopy(result.impl, x.impl) == HV_OK
-
-# Taken from https://github.com/treeform/encode. License applies
-proc utf8to16(input: string): seq[uint16] =
-  for r in input.runes:
-    let u = r.uint32
-    if (0x0000 <= u and u <= 0xD7FF) or (0xE000 <= u and u <= 0xFFFF):
-      result.add(u.uint16)
-    elif 0x010000 <= u and u <= 0x10FFFF:
-      let
-        u0 = u - 0x10000
-        w1 = 0xD800 + u0 div 0x400
-        w2 = 0xDC00 + u0 mod 0x400
-      result.add(w1.uint16)
-      result.add(w2.uint16)
-
-# Taken from https://github.com/treeform/encode. License applies
-proc utf16to8(input: ptr UncheckedArray[uint16], len: int): string =
-  var i = 0
-  while i < len:
-    var u1 = input[i]
-    i += 1
-    if u1 - 0xd800 >= 0x800:
-      result.add Rune(u1.int)
-    else:
-      var u2 = input[i]
-      i += 1
-      if ((u1 and 0xfc00) == 0xd800) and ((u2 and 0xfc00) == 0xdc00):
-        result.add Rune((u1.uint32 shl 10) + u2.uint32 - 0x35fdc00)
-      else:
-        # Error, produce tofu character.
-        result.add "□"
 
 proc newValue*(dat: string): SciterVal =
   var ws = utf8to16(dat)

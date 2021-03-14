@@ -1,6 +1,6 @@
 
-import nsciter / [sciwrap, papi, event, converters, valueprocs]
-export sciwrap, papi, event, converters, valueprocs
+import nsciter / [sciwrap, papi, event, converters, valueprocs, helpers]
+export sciwrap, papi, event, converters, valueprocs, helpers
 
 when defined(linux):
   {.passC: gorge("pkg-config gtk+-3.0 --cflags").}

@@ -72,24 +72,23 @@ proc fn_handle_scripting_call(he: HELEMENT, params: ptr SCRIPTING_METHOD_PARAMS)
 proc fn_ttach(he: HELEMENT) = discard
 
 proc newEventHandler*(): EventHandler =    
-    #new(EventHandler)
-    result = cast[EventHandler](alloc(sizeof(EventHandlerObj)))
-    result.subscription = fn_subscription
-    result.handle_mouse = fn_handle_mouse
-    result.handle_key = fn_handle_key
-    result.handle_focus = fn_handle_focus
-    result.handle_timer = fn_handle_timer
-    result.handle_size = fn_handle_size
-    result.handle_scroll = fn_handle_scroll
-    result.handle_gesture = fn_handle_gesture
-    result.handle_exchange = fn_handle_exchange
-    result.handle_draw = fn_handle_draw
-    result.handle_method_call = fn_handle_method_call
-    result.handle_event = fn_handle_event
-    result.handle_data_arrived = fn_handle_data_arrived
-    result.handle_scripting_call = fn_handle_scripting_call
-    result.detached = fn_ttach
-    result.attached = fn_ttach
+  result = create(EventHandlerObj)
+  result.subscription = fn_subscription
+  result.handle_mouse = fn_handle_mouse
+  result.handle_key = fn_handle_key
+  result.handle_focus = fn_handle_focus
+  result.handle_timer = fn_handle_timer
+  result.handle_size = fn_handle_size
+  result.handle_scroll = fn_handle_scroll
+  result.handle_gesture = fn_handle_gesture
+  result.handle_exchange = fn_handle_exchange
+  result.handle_draw = fn_handle_draw
+  result.handle_method_call = fn_handle_method_call
+  result.handle_event = fn_handle_event
+  result.handle_data_arrived = fn_handle_data_arrived
+  result.handle_scripting_call = fn_handle_scripting_call
+  result.detached = fn_ttach
+  result.attached = fn_ttach
 
 import tables
 #proc hash(x: EventHandler): Hash {.inline.} =  return hash(x)

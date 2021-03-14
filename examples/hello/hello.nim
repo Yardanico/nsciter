@@ -1,45 +1,31 @@
 import os, nsciter, strformat, times
 
-type
-  ScitterRect = object
-    impl: ptr Rect
 
-proc `=destroy`(r: var ScitterRect) = 
-  if r.impl != nil:
-    dealloc(r.impl)
-
-proc initScitterRect(right, bottom: int, left = 50, top = 50): ScitterRect = 
-  result = ScitterRect(
-    impl: cast[ptr Rect](alloc(sizeof(Rect)))
-  )
-
-  result.impl[] = Rect(
-    left: INT left, 
-    top: INT top, 
-    right: INT right + left, 
-    bottom: INT bottom + top
-  )
-
-# create rect with window position size
-var rect = initScitterRect(420, 400)
-
+# Initialize the Sciter API
 let sapi = initSapi()
 
-# create window
+
+# Create a Sciter rect with the window position (on the screen)
+var rect = newSciterRect(420, 400)
+
+
+# Create a Sciter Window
 var wnd = sapi.SciterCreateWindow(
-  cast[cuint](SW_CONTROLS or SW_MAIN or SW_TITLEBAR or SW_RESIZEABLE), 
+  cuint(SW_CONTROLS or SW_MAIN or SW_TITLEBAR or SW_RESIZEABLE), 
   rect.impl, nil, nil, nil
 )
 
-# load htm file for sciter
-assert sapi.SciterLoadFile(wnd, currentSourcePath().splitPath().head / "hello.htm")
+# Load the HTM file into the window
+let path = currentSourcePath().splitPath().head / "hello.htm"
+wnd.loadFile(path)
 
-# get root element (the <html> one) of the window
+
+# Get root element (the <html> one) of the window
 var rootElem: HELEMENT
 echo sapi.SciterGetRootElement(wnd, addr rootElem)
 
 proc lpToNim(str: LPCWSTR; str_length: cuint; param: pointer): VOID {.cdecl.} = 
-  cast[ptr string](param)[] = $cast[WideCString](str)
+  cast[ptr string](param)[] = utf16to8(cast[ptr UncheckedArray[uint16]](str), int str_length)
 
 var i = 0
 
