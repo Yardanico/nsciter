@@ -133,7 +133,7 @@ proc isObjectError*(v: SciterVal): bool {.inline.} =
 #    result = v.impl.t == T_DOM_OBJECT
 
 proc isNativeFunctor*(v: SciterVal): bool {.inline.} =
-  result = sapi.ValueIsNativeFunctor(v.impl)
+  result = bool sapi.ValueIsNativeFunctor(v.impl)
 
 proc newValue*(): SciterVal =
   ## Creates a new empty Sciter value.
@@ -357,9 +357,9 @@ proc len*(val: SciterVal): int =
   isOk sapi.ValueElementsCount(val.impl, addr temp)
   result = int temp
 
-proc getItemsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
+proc getItemsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): cint {.cdecl.} = 
   cast[ptr seq[SciterVal]](param)[].add SciterVal(impl: pval).copy()
-  result = true
+  result = 1
 
 proc getItems*(val: SciterVal): seq[SciterVal] =
   ## Gets all items from a Sciter value `x`
@@ -375,14 +375,14 @@ iterator items*(val: SciterVal): SciterVal =
 
 type SciterKeyVal* = tuple[key, value: SciterVal]
 
-proc getPairsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
+proc getPairsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): cint {.cdecl.} = 
   # As far as I understand we don't own pkey and pval so we must
   # copy them here
   cast[ptr seq[SciterKeyVal]](param)[].add (
     SciterVal(impl: pkey).copy(), 
     SciterVal(impl: pval).copy()
   )
-  result = true
+  result = 1
 
 proc getPairs*(val: SciterVal): seq[SciterKeyVal] =
   ## Gets (key, value) of a Sciter value `x`. `x` must be T_MAP, 

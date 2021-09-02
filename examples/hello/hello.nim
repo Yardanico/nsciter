@@ -23,7 +23,7 @@ proc lpToNim(str: LPCWSTR; str_length: cuint; param: pointer): VOID {.cdecl.} =
 
 var i = 0
 
-proc elemFoundCb(elem: HELEMENT, param: pointer): bool {.cdecl.} = 
+proc elemFoundCb(elem: HELEMENT, param: pointer): cint {.cdecl.} = 
   echo "Button found..."
   echo elem.onClick(proc: uint32 = 
     echo "Clicked button"
@@ -39,7 +39,7 @@ proc elemFoundCb(elem: HELEMENT, param: pointer): bool {.cdecl.} =
     # GC_unref(str)
     result = 0
   )
-  result = true
+  result = 1
 
 wnd.onClick(proc: uint32 = 
   echo "Global click event handler 1"

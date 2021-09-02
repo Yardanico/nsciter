@@ -106,7 +106,7 @@ import tables
 #proc hash(x: EventHandler): Hash {.inline.} =  return hash(x)
 var evct = initTable[EventHandler, uint]()
 
-proc element_proc(tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): bool {.cdecl.} =
+proc element_proc(tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): cint {.cdecl.} =
   var pThis = cast[EventHandler](tag)
   #if evtg > uint32(256):
   #debugEcho "element_proc: " , cast[EVENT_GROUPS](evtg)  #, " prms:", repr prms
@@ -116,7 +116,7 @@ proc element_proc(tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): bool {.
     var p = cast[ptr cuint](prms)
     var res = pThis.subscription(he, p[])
     #echo "SUBSCRIPTIONS_REQUEST: ", cast[EVENT_GROUPS](p)
-    result = bool(res)
+    result = cint res
 
   of HANDLE_INITIALIZATION:
     var p = cast[ptr INITIALIZATION_PARAMS](prms)
@@ -133,71 +133,70 @@ proc element_proc(tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): bool {.
       pThis.attached(he)
       if evct.hasKeyOrPut(pThis, 0):
           evct[pThis] = evct[pThis] + 1
-    result = true
+    result = 1
 
   of HANDLE_MOUSE:
     var p = cast[ptr MOUSE_PARAMS](prms)
     var res = pThis.handle_mouse(he, p)
     #echo "HANDLE_MOUSE: res " , res, " cmd: " , cast[MOUSE_EVENTS](p.cmd)
-    result = bool(res)
+    result = cint res
 
   of HANDLE_KEY:
     var p = cast[ptr KEY_PARAMS](prms)
-    result = bool(pThis.handle_key(he, p))
+    result = cint pThis.handle_key(he, p)
 
   of HANDLE_FOCUS:
     var p = cast[ptr FOCUS_PARAMS](prms)
-    result = bool(pThis.handle_focus(he, p))
+    result = cint pThis.handle_focus(he, p)
 
   of HANDLE_DRAW:
     var p = cast[ptr DRAW_PARAMS](prms)
     #echo "HANDLE_DRAW: " , repr prms
     var res = pThis.handle_draw(he, p)
-    result = bool(res)
+    result = cint res
 
   of HANDLE_TIMER:
     var p = cast[ptr TIMER_PARAMS](prms)
     # echo "HANDLE_TIMER: ", repr p
-    result = bool(pThis.handle_timer(he, p))
+    result = cint pThis.handle_timer(he, p)
 
   of HANDLE_BEHAVIOR_EVENT:
     var p = cast[ptr BEHAVIOR_EVENT_PARAMS](prms)
     var res = pThis.handle_event(he, p)
     #echo "BEHAVIOR_EVENT_PARAMS: res ", res, repr p
-    result = bool(res)
+    result = cint res
 
   of HANDLE_METHOD_CALL:
     var p = cast[ptr METHOD_PARAMS](prms)
     #echo "HANDLE_METHOD_CALL: ", cast[BEHAVIOR_METHOD_IDENTIFIERS](p.methodID)
-    result = bool(pThis.handle_method_call(he, p))
+    result = cint pThis.handle_method_call(he, p)
 
   of HANDLE_DATA_ARRIVED:
     var p = cast[ptr DATA_ARRIVED_PARAMS](prms)
-    result = bool(pThis.handle_data_arrived(he, p))
-
+    result = cint pThis.handle_data_arrived(he, p)
   of HANDLE_SCROLL:
     var p = cast[ptr SCROLL_PARAMS](prms)
-    result = bool(pThis.handle_scroll(he, p))
+    result = cint pThis.handle_scroll(he, p)
 
   of HANDLE_SIZE:
     var res = pThis.handle_size(he)
-    result = bool(res)
+    result = cint res
 
   of HANDLE_SCRIPTING_METHOD_CALL:
     var p = cast[ptr SCRIPTING_METHOD_PARAMS](prms)
     #echo "HANDLE_SCRIPTING_METHOD_CALL: ", p.name
-    result = bool pThis.handle_scripting_call(he, p)
+    result = cint pThis.handle_scripting_call(he, p)
 
   of HANDLE_GESTURE:
     var p = cast[ptr GESTURE_PARAMS](prms)
-    result = bool pThis.handle_gesture(he, p)
+    result = cint pThis.handle_gesture(he, p)
 
   of HANDLE_EXCHANGE:
     var p = cast[ptr EXCHANGE_PARAMS](prms)
-    result = bool pThis.handle_exchange(he, p)
+    result = cint pThis.handle_exchange(he, p)
 
   else:
-    result = false
+    result = 0
 
 proc Attach*(target: ptr HWINDOW, eh: EventHandler, 
                 mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT =
