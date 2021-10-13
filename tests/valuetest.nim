@@ -8,7 +8,7 @@ let start = getMonoTime()
 block:
   var i: int8 = 100
   var p = newValue(i)
-  doAssert p.getInt32() == 100
+  doAssert p.getInt() == 100
   doAssert p.getBool() == true
 
 block:
@@ -33,7 +33,6 @@ block:
   o["key"] = newValue(100)
   o["hello"] = newValue(true)
   o["data"] = newValue("hallo")
-
   doAssert o["key"].getInt() == 100
   doAssert o["hello"].getBool() == true
   doAssert o["data"].getStr() == "hallo"
