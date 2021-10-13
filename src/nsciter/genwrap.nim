@@ -20,7 +20,7 @@ static:
   ])
 
 const
-  typeMap = "-TBOOL=bool,char16_t=cushort,UINT=cuint"
+  typeMap = "-TBOOL=bool,char16_t=cushort,UINT=cuint,SBOOL=bool"
 
 cOverride:
   type
@@ -58,7 +58,7 @@ cPlugin:
     if sym.name in ["VALUE_TYPE", "LPELEMENT_EVENT_PROC"]:
       sym.name = "C_" & sym.name
 
-cImport("/home/tiber/Projects/nsciter/sdk/include/sciter-x.h", nimFile = "sciwrap.nim", recurse = true, flags = typeMap & " --noHeader")
+cImport("/home/dian/Projects/nsciter/sdk/include/sciter-x.h", nimFile = "sciwrap.nim", recurse = true, flags = typeMap & " --noHeader")
 #cImport("/home/dian/Projects/nsciter/go-sciter/include/sciter-x.h", recurse = true, flags = typeMap & " --noHeader")
 
 echo "Fixing callbacks..."

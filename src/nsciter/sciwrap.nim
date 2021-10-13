@@ -1,16 +1,17 @@
-# Generated @ 2021-09-02T04:37:16+03:00
+# Generated @ 2021-10-13T07:49:11+03:00
 # Command line:
-#   /home/tiber/.nimble/pkgs/nimterop-0.6.13/nimterop/toast --preprocess -m:c --recurse -TBOOL=bool,char16_t=cushort,UINT=cuint --noHeader --includeDirs+=/usr/include/gtk-3.0 --includeDirs+=/usr/include/glib-2.0 --includeDirs+=/usr/lib/glib-2.0/include --includeDirs+=/usr/include/pango-1.0 --includeDirs+=/usr/include/cairo --includeDirs+=/usr/include/gdk-pixbuf-2.0 --includeDirs+=/usr/include/atk-1.0 --includeDirs+=/usr/include/harfbuzz --exclude+=/usr/include/gtk-3.0 --exclude+=/usr/include/glib-2.0 --exclude+=/usr/lib/glib-2.0/include --exclude+=/usr/include/pango-1.0 --exclude+=/usr/include/cairo --exclude+=/usr/include/gdk-pixbuf-2.0 --exclude+=/usr/include/atk-1.0 --exclude+=/usr/include/harfbuzz --pnim --symOverride=KB_LEFTBRACKET,KB_RIGHTBRACKET,KB_NUMLOCK,SUBSCRIPTIONS_REQUEST,RRT_FORCE_DWORD,RT_DATA_FORCE_DWORD,RS_FORCE_DWORD,SCDOM_OK_NOT_HANDLED,SCDOM_OK,SCDOM_INVALID_HWND,SCDOM_INVALID_HANDLE,SCDOM_PASSIVE_HANDLE,SCDOM_INVALID_PARAMETER,SCDOM_OPERATION_FAILED,HELEMENT,GtkWidget,HWINDOW,SCITER_VALUE,RECT,LPRECT,LPCRECT,SCDOM_RESULT,SUBSCRIPTIONS_REQUEST --nim:/home/tiber/Things/Nim/bin/nim --pluginSourcePath=/home/tiber/.cache/nim/nimterop/cPlugins/nimterop_3894462479.nim /home/tiber/Projects/nsciter/sdk/include/sciter-x.h -o /home/tiber/Projects/nsciter/src/nsciter/sciwrap.nim
+#   /home/dian/.nimble/pkgs/nimterop-0.6.13/nimterop/toast --preprocess -m:c --recurse -TBOOL=bool,char16_t=cushort,UINT=cuint,SBOOL=bool --noHeader --includeDirs+=/usr/include/gtk-3.0 --includeDirs+=/usr/include/glib-2.0 --includeDirs+=/usr/lib/glib-2.0/include --includeDirs+=/usr/include/pango-1.0 --includeDirs+=/usr/include/cairo --includeDirs+=/usr/include/gdk-pixbuf-2.0 --includeDirs+=/usr/include/atk-1.0 --includeDirs+=/usr/include/harfbuzz --exclude+=/usr/include/gtk-3.0 --exclude+=/usr/include/glib-2.0 --exclude+=/usr/lib/glib-2.0/include --exclude+=/usr/include/pango-1.0 --exclude+=/usr/include/cairo --exclude+=/usr/include/gdk-pixbuf-2.0 --exclude+=/usr/include/atk-1.0 --exclude+=/usr/include/harfbuzz --pnim --symOverride=KB_LEFTBRACKET,KB_RIGHTBRACKET,KB_NUMLOCK,SUBSCRIPTIONS_REQUEST,RRT_FORCE_DWORD,RT_DATA_FORCE_DWORD,RS_FORCE_DWORD,SCDOM_OK_NOT_HANDLED,SCDOM_OK,SCDOM_INVALID_HWND,SCDOM_INVALID_HANDLE,SCDOM_PASSIVE_HANDLE,SCDOM_INVALID_PARAMETER,SCDOM_OPERATION_FAILED,HELEMENT,GtkWidget,HWINDOW,SCITER_VALUE,RECT,LPRECT,LPCRECT,SCDOM_RESULT,SUBSCRIPTIONS_REQUEST --nim:/home/dian/Things/nim/bin/nim --pluginSourcePath=/home/dian/.cache/nim/nimterop/cPlugins/nimterop_3894462479.nim /home/dian/Projects/nsciter/sdk/include/sciter-x.h -o /home/dian/Projects/nsciter/src/nsciter/sciwrap.nim
 
+# const 'sciter_sciter_x_primitives_h' has unsupported value 'typedef int SBOOL;'
 # const 'LINUX' has unsupported value 'typedef unsigned int UINT;'
 # const 'SC_CALLBACK' has unsupported value 'typedef struct tagRECT'
+# const 'OBSOLETE' has unsupported value '__attribute__((deprecated))'
+# const 'STDCALL' has unsupported value '__stdcall'
+# const 'EXTERN_C' has unsupported value 'extern'
 # const 'HWINDOW' skipped
 # const 'HINSTANCE' has unsupported value 'LPVOID /**/'
 # const 'LRESULT' has unsupported value 'long'
 # const 'HDC' has unsupported value 'LPVOID /* cairo_t*/'
-# const 'OBSOLETE' has unsupported value '__attribute__((deprecated))'
-# const 'STDCALL' has unsupported value '__stdcall'
-# const 'EXTERN_C' has unsupported value 'extern'
 # const 'FLOAT_VALUE' has unsupported value 'double'
 # const 'HAS_TISCRIPT' has unsupported value 'typedef VALUE SCITER_VALUE;'
 # const 'SCDOM_RESULT' skipped
@@ -252,19 +253,75 @@ defineEnum(VALUE_UNIT_TYPE_STRING) ## ```
                                    ##   Sciter or TIScript specific
                                    ## ```
 defineEnum(VALUE_STRING_CVT_TYPE)
-defineEnum(ELEMENT_AREAS)
+defineEnum(ELEMENT_AREAS) ## ```
+                          ##   Get bounding rectangle of the element.
+                          ##   
+                          ##    \param[in] he \b #HELEMENT
+                          ##   
+                          ##    \param[out] p_location \b LPRECT, receives bounding rectangle of the element
+                          ##   
+                          ##    \param[in] rootRelative \b SBOOL, if TRUE function returns location of the
+                          ##   
+                          ##    element relative to Sciter window, otherwise the location is given
+                          ##   
+                          ##    relative to first scrollable container.
+                          ##   
+                          ##    \return \b #SCDOM_RESULT SCAPI
+                          ## ```
 defineEnum(SCITER_SCROLL_FLAGS)
 defineEnum(SET_ELEMENT_HTML)
 defineEnum(ELEMENT_STATE_BITS)
-defineEnum(REQUEST_TYPE)
-defineEnum(CTL_TYPE)
+defineEnum(REQUEST_TYPE) ## ```
+                         ##   SciterSendRequest - send GET or POST request for the element
+                         ##   
+                         ##   
+                         ##   
+                         ##    event handler on the 'he' element (if any) will be notified
+                         ##   
+                         ##    when data will be ready by receiving HANDLE_DATA_DELIVERY event.
+                         ## ```
+defineEnum(CTL_TYPE) ## ```
+                     ##   Control types.
+                     ##   
+                     ##     Control here is any dom element having appropriate behavior applied
+                     ## ```
 defineEnum(NODE_TYPE)
 defineEnum(NODE_INS_TARGET)
 defineEnum(GRAPHIN_RESULT)
 defineEnum(DRAW_PATH_MODE)
 defineEnum(SCITER_LINE_JOIN_TYPE)
 defineEnum(SCITER_LINE_CAP_TYPE)
-defineEnum(SCITER_IMAGE_ENCODING)
+defineEnum(SCITER_IMAGE_ENCODING) ## ```
+                                  ##   typedef enum SCITER_TEXT_ALIGNMENT
+                                  ##   
+                                  ##   {
+                                  ##   
+                                  ##     TEXT_ALIGN_DEFAULT,
+                                  ##   
+                                  ##     TEXT_ALIGN_START,
+                                  ##   
+                                  ##     TEXT_ALIGN_END,
+                                  ##   
+                                  ##     TEXT_ALIGN_CENTER,
+                                  ##   
+                                  ##   } SCITER_TEXT_ALIGNMENT;
+                                  ##   
+                                  ##   
+                                  ##   
+                                  ##   typedef enum SCITER_TEXT_DIRECTION
+                                  ##   
+                                  ##   {
+                                  ##   
+                                  ##     TEXT_DIRECTION_DEFAULT,
+                                  ##   
+                                  ##     TEXT_DIRECTION_LTR,
+                                  ##   
+                                  ##     TEXT_DIRECTION_RTL,
+                                  ##   
+                                  ##     TEXT_DIRECTION_TTB,
+                                  ##   
+                                  ##   } SCITER_TEXT_DIRECTION;
+                                  ## ```
 defineEnum(som_passport_flags)
 defineEnum(EVENT_GROUPS)     ## ```
                              ##   event groups.
@@ -299,31 +356,93 @@ defineEnum(BEHAVIOR_METHOD_IDENTIFIERS)
 defineEnum(SC_LOAD_DATA_RETURN_CODES) ## ```
                                       ##   #SC_LOAD_DATA notification return codes
                                       ## ```
-defineEnum(SCRIPT_RUNTIME_FEATURES)
+defineEnum(SCRIPT_RUNTIME_FEATURES) ## ```
+                                    ##   Try to translate message that sciter window is interested in.
+                                    ##   
+                                    ##   
+                                    ##   
+                                    ##    \param[in,out] lpMsg \b MSG*, address of message structure that was passed before to ::DispatchMessage(), ::PeekMessage().
+                                    ##   
+                                    ##   
+                                    ##   
+                                    ##    SciterTranslateMessage has the same meaning as ::TranslateMessage() and should be called immediately before it.
+                                    ##   
+                                    ##    Example:
+                                    ##   
+                                    ##   
+                                    ##   
+                                    ##      if( !SciterTranslateMessage(&msg) )
+                                    ##   
+                                    ##         TranslateMessage(&msg);
+                                    ##   
+                                    ##   
+                                    ##   
+                                    ##    ATTENTION!: SciterTranslateMessage call is critical for popup elements in MoSciter.
+                                    ##   
+                                    ##                On Desktop versions of the Sciter this function does nothing so can be ommited.
+                                    ##   
+                                    ##   
+                                    ##   
+                                    ##    
+                                    ##     Set various options.
+                                    ##   
+                                    ##   
+                                    ##   
+                                    ##    \param[in] hWnd \b HWINDOW, Sciter window handle.
+                                    ##   
+                                    ##    \param[in] option \b UINT, id of the option, one of SCITER_RT_OPTIONS
+                                    ##   
+                                    ##    \param[in] option \b UINT, value of the option.
+                                    ## ```
 defineEnum(SCITER_RT_OPTIONS)
 defineEnum(SCITER_CREATE_WINDOW_FLAGS)
-defineEnum(OUTPUT_SUBSYTEMS)
+defineEnum(OUTPUT_SUBSYTEMS) ## ```
+                             ##   SciterSetupDebugOutput - setup debug output function.
+                             ##   
+                             ##   
+                             ##   
+                             ##     This output function will be used for reprting problems
+                             ##   
+                             ##     found while loading html and css documents.
+                             ## ```
 defineEnum(OUTPUT_SEVERITY)
 defineEnum(SCITER_X_MSG_CODE) ## ```
                               ##   The Sciter Engine of Terra Informatica Software, Inc.
+                              ##   
                               ##    http:sciter.com
                               ##   
+                              ##   
+                              ##   
                               ##    The code and information provided "as-is" without
+                              ##   
                               ##    warranty of any kind, either expressed or implied.
                               ##   
+                              ##   
+                              ##   
                               ##    (C) 2003-2015, Terra Informatica Software, Inc.
+                              ##   
                               ##    
                               ##     
+                              ##   
                               ##    Sciter basic types, platform isolation declarations
+                              ##   
                               ##    
                               ##     
+                              ##   
                               ##    The Sciter Engine of Terra Informatica Software, Inc.
+                              ##   
                               ##    http:sciter.com
+                              ##   
                               ##    
+                              ##   
                               ##    The code and information provided "as-is" without
+                              ##   
                               ##    warranty of any kind, either expressed or implied.
+                              ##   
                               ##    
+                              ##   
                               ##    (C) 2003-2015, Terra Informatica Software, Inc.
+                              ##   
                               ##    
                               ##      #SCITER_X_MSG_CODE message/function identifier
                               ## ```
@@ -332,6 +451,8 @@ defineEnum(SCITER_PAINT_TARGET_TYPE) ## ```
                                      ## ```
 const
   SUBSCRIPTIONS_REQUEST* = (0xFFFFFFFF'i32).EVENT_GROUPS
+  TRUE* = (1)
+  FALSE* = (0)
   GFX_LAYER_GDI* = (1).GFX_LAYER
   GFX_LAYER_CG* = (1).GFX_LAYER ## ```
                                 ##   Mac OS
@@ -347,8 +468,6 @@ const
   GFX_LAYER_SKIA* = (4).GFX_LAYER
   GFX_LAYER_SKIA_OPENGL* = (5).GFX_LAYER
   GFX_LAYER_AUTO* = (0x0000FFFF).GFX_LAYER
-  TRUE* = (1)
-  FALSE* = (0)
   SCITER_DLL_NAME* = "libsciter-gtk.so"
   REQUEST_PANIC* = (-1).REQUEST_RESULT ## ```
                                        ##   e.g. not enough memory
@@ -850,7 +969,9 @@ const
                                                    ## ```
   HANDLE_BEHAVIOR_EVENT* = (0x00000100).EVENT_GROUPS ## ```
                                                      ##   < logical, synthetic events:
+                                                     ##   
                                                      ##                                                    BUTTON_CLICK, HYPERLINK_CLICK, etc.,
+                                                     ##   
                                                      ##                                                    a.k.a. notifications from intrinsic behaviors
                                                      ## ```
   HANDLE_METHOD_CALL* = (0x00000200).EVENT_GROUPS ## ```
@@ -1224,9 +1345,9 @@ const
                                                        ##   "right-click", BEHAVIOR_EVENT_PARAMS::he is current popup menu HELEMENT being processed or NULL.
                                                        ##      application can provide its own HELEMENT here (if it is NULL) or modify current menu element.
                                                        ## ```
-  VISIUAL_STATUS_CHANGED* = (0x00000011).BEHAVIOR_EVENTS ## ```
-                                                         ##   broadcast notification, sent to all elements of some container being shown or hidden
-                                                         ## ```
+  VISUAL_STATUS_CHANGED* = (0x00000011).BEHAVIOR_EVENTS ## ```
+                                                        ##   broadcast notification, sent to all elements of some container being shown or hidden
+                                                        ## ```
   DISABLED_STATUS_CHANGED* = (0x00000012).BEHAVIOR_EVENTS ## ```
                                                           ##   broadcast notification, sent to all elements of some container that got new value of :disabled state
                                                           ## ```
@@ -1377,28 +1498,51 @@ const
                                                          ## ```
   DO_CLICK* = (0).BEHAVIOR_METHOD_IDENTIFIERS ## ```
                                               ##   remnants of HTMLayout API, not used 
+                                              ##   
                                               ##       GET_TEXT_VALUE = 1,
+                                              ##   
                                               ##       SET_TEXT_VALUE,
+                                              ##   
                                               ##          p - TEXT_VALUE_PARAMS
                                               ##   
+                                              ##   
+                                              ##   
                                               ##       TEXT_EDIT_GET_SELECTION,
+                                              ##   
                                               ##          p - TEXT_EDIT_SELECTION_PARAMS
+                                              ##   
+                                              ##   
                                               ##   
                                               ##       TEXT_EDIT_SET_SELECTION,
+                                              ##   
                                               ##          p - TEXT_EDIT_SELECTION_PARAMS
                                               ##   
+                                              ##   
+                                              ##   
                                               ##        Replace selection content or insert text at current caret position.
+                                              ##   
                                               ##        Replaced text will be selected.
+                                              ##   
                                               ##       TEXT_EDIT_REPLACE_SELECTION,
+                                              ##   
                                               ##          p - TEXT_EDIT_REPLACE_SELECTION_PARAMS
                                               ##   
+                                              ##   
+                                              ##   
                                               ##        Set value of type="vscrollbar"/"hscrollbar"
+                                              ##   
                                               ##       SCROLL_BAR_GET_VALUE,
+                                              ##   
                                               ##       SCROLL_BAR_SET_VALUE,
                                               ##   
+                                              ##   
+                                              ##   
                                               ##       TEXT_EDIT_GET_CARET_POSITION, 
+                                              ##   
                                               ##       TEXT_EDIT_GET_SELECTION_TEXT,  p - TEXT_SELECTION_PARAMS
+                                              ##   
                                               ##       TEXT_EDIT_GET_SELECTION_HTML,  p - TEXT_SELECTION_PARAMS
+                                              ##   
                                               ##       TEXT_EDIT_CHAR_POS_AT_XY,      p - TEXT_EDIT_CHAR_POS_AT_XY_PARAMS
                                               ## ```
   IS_EMPTY* = (0x000000FC).BEHAVIOR_METHOD_IDENTIFIERS ## ```
@@ -1419,10 +1563,12 @@ const
                                                 ## ```
   LOAD_DELAYED* = (2).SC_LOAD_DATA_RETURN_CODES ## ```
                                                 ##   < data will be delivered later by the host application.
+                                                ##   
                                                 ##                            Host application must call SciterDataReadyAsync(,,, requestId) on each LOAD_DELAYED request to avoid memory leaks.
                                                 ## ```
   LOAD_MYSELF* = (3).SC_LOAD_DATA_RETURN_CODES ## ```
                                                ##   < you return LOAD_MYSELF result to indicate that your (the host) application took or will take care about HREQUEST in your code completely.
+                                               ##   
                                                ##                            Use sciter-x-request.h[pp] API functions with SCN_LOAD_DATA::requestId handle .
                                                ## ```
   SC_LOAD_DATA* = 0x00000001
@@ -1488,6 +1634,9 @@ const
   SCITER_SET_PX_AS_DIP* = (16).SCITER_RT_OPTIONS ## ```
                                                  ##   value 1 - 1px in CSS is treated as 1dip, value 0 - default behavior - 1px is a physical pixel
                                                  ## ```
+  SCITER_ENABLE_UIAUTOMATION* = (17).SCITER_RT_OPTIONS ## ```
+                                                       ##   hWnd - N/A , TRUE/FALSE, enables UIAutomation support.
+                                                       ## ```
   SW_CHILD* = ((1 shl typeof(1)(0))).SCITER_CREATE_WINDOW_FLAGS ## ```
                                                                 ##   child window only, if this flag is set all other flags ignored
                                                                 ## ```
@@ -1574,7 +1723,6 @@ type
     SCDOM_OK_NOT_HANDLED = (-1), SCDOM_OK = 0, SCDOM_INVALID_HWND = 1,
     SCDOM_INVALID_HANDLE = 2, SCDOM_PASSIVE_HANDLE = 3,
     SCDOM_INVALID_PARAMETER = 4, SCDOM_OPERATION_FAILED = 5
-  SBOOL* = cint
   INT* = cint
   UINT32* = cuint
   INT32* = cint
@@ -1615,14 +1763,22 @@ type
       cdecl.}
   HREQUEST* = pointer ## ```
                       ##   The Sciter Engine of Terra Informatica Software, Inc.
+                      ##   
                       ##    http:sciter.com
                       ##   
+                      ##   
+                      ##   
                       ##    The code and information provided "as-is" without
+                      ##   
                       ##    warranty of any kind, either expressed or implied.
                       ##   
+                      ##   
+                      ##   
                       ##    (C) 2003-2015, Terra Informatica Software, Inc.
+                      ##   
                       ##    
                       ##     
+                      ##   
                       ##    Sciter basic types, platform isolation declarations
                       ## ```
   SciterRequestAPI* {.bycopy.} = object
@@ -1761,7 +1917,7 @@ type
   NATIVE_FUNCTOR_INVOKE* = proc (tag: ptr VOID; argc: cuint; argv: ptr VALUE;
                                  retval: ptr VALUE): VOID {.cdecl.}
   NATIVE_FUNCTOR_RELEASE* = proc (tag: ptr VOID): VOID {.cdecl.}
-  KeyValueCallback* = proc (param: LPVOID; pkey: ptr VALUE; pval: ptr VALUE): SBOOL {.
+  KeyValueCallback* = proc (param: LPVOID; pkey: ptr VALUE; pval: ptr VALUE): bool {.
       cdecl.}
   HNODE* = pointer           ## ```
                              ##   DOM node handle.
@@ -1805,22 +1961,30 @@ type
     name*: LPCWSTR
     value*: LPCWSTR
 
-  SciterElementCallback* = proc (he: HELEMENT; param: LPVOID): SBOOL {.cdecl.}
-  ElementEventProc* = proc (tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): SBOOL {.
+  SciterElementCallback* = proc (he: HELEMENT; param: LPVOID): bool {.cdecl.}
+  ElementEventProc* = proc (tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): bool {.
       cdecl.}
   C_LPELEMENT_EVENT_PROC* = ElementEventProc
   ELEMENT_COMPARATOR* = proc (he1: HELEMENT; he2: HELEMENT; param: LPVOID): INT {.
       cdecl.}
   HGFX* = pointer ## ```
                   ##   The Sciter Engine of Terra Informatica Software, Inc.
+                  ##   
                   ##    http:sciter.com
                   ##   
+                  ##   
+                  ##   
                   ##    The code and information provided "as-is" without
+                  ##   
                   ##    warranty of any kind, either expressed or implied.
                   ##   
+                  ##   
+                  ##   
                   ##    (C) 2003-2015, Terra Informatica Software, Inc.
+                  ##   
                   ##    
                   ##     
+                  ##   
                   ##    Sciter basic types, platform isolation declarations
                   ## ```
   HIMG* = pointer
@@ -1845,17 +2009,17 @@ type
                              ##   0.0 ... 1.0
                              ## ```
   
-  image_write_function* = proc (prm: LPVOID; data: ptr BYTE; data_length: cuint): SBOOL {.
+  image_write_function* = proc (prm: LPVOID; data: ptr BYTE; data_length: cuint): bool {.
       cdecl.}
   image_paint_function* = proc (prm: LPVOID; hgfx: HGFX; width: cuint;
                                 height: cuint): VOID {.cdecl.}
   SciterGraphicsAPI* {.bycopy.} = object
     imageCreate*: proc (poutImg: ptr HIMG; width: cuint; height: cuint;
-                        withAlpha: SBOOL): GRAPHIN_RESULT {.cdecl.} ## ```
-                                                                    ##   image primitives
-                                                                    ## ```
+                        withAlpha: bool): GRAPHIN_RESULT {.cdecl.} ## ```
+                                                                   ##   image primitives
+                                                                   ## ```
     imageCreateFromPixmap*: proc (poutImg: ptr HIMG; pixmapWidth: cuint;
-                                  pixmapHeight: cuint; withAlpha: SBOOL;
+                                  pixmapHeight: cuint; withAlpha: bool;
                                   pixmap: ptr BYTE): GRAPHIN_RESULT {.cdecl.} ## ```
                                                                               ##   construct image from B[n+0],G[n+1],R[n+2],A[n+3] data.
                                                                               ##      Size of pixmap data is pixmapWidth*pixmapHeight*4
@@ -1863,7 +2027,7 @@ type
     imageAddRef*: proc (himg: HIMG): GRAPHIN_RESULT {.cdecl.}
     imageRelease*: proc (himg: HIMG): GRAPHIN_RESULT {.cdecl.}
     imageGetInfo*: proc (himg: HIMG; width: ptr cuint; height: ptr cuint;
-                         usesAlpha: ptr SBOOL): GRAPHIN_RESULT {.cdecl.}
+                         usesAlpha: ptr bool): GRAPHIN_RESULT {.cdecl.}
     imageClear*: proc (himg: HIMG; byColor: SC_COLOR): GRAPHIN_RESULT {.cdecl.}
     imageLoad*: proc (bytes: ptr BYTE; num_bytes: cuint; pout_img: ptr HIMG): GRAPHIN_RESULT {.
         cdecl.}              ## ```
@@ -1915,19 +2079,19 @@ type
     pathCreate*: proc (path: ptr HPATH): GRAPHIN_RESULT {.cdecl.}
     pathAddRef*: proc (path: HPATH): GRAPHIN_RESULT {.cdecl.}
     pathRelease*: proc (path: HPATH): GRAPHIN_RESULT {.cdecl.}
-    pathMoveTo*: proc (path: HPATH; x: SC_POS; y: SC_POS; relative: SBOOL): GRAPHIN_RESULT {.
+    pathMoveTo*: proc (path: HPATH; x: SC_POS; y: SC_POS; relative: bool): GRAPHIN_RESULT {.
         cdecl.}
-    pathLineTo*: proc (path: HPATH; x: SC_POS; y: SC_POS; relative: SBOOL): GRAPHIN_RESULT {.
+    pathLineTo*: proc (path: HPATH; x: SC_POS; y: SC_POS; relative: bool): GRAPHIN_RESULT {.
         cdecl.}
     pathArcTo*: proc (path: HPATH; x: SC_POS; y: SC_POS; angle: SC_ANGLE;
-                      rx: SC_DIM; ry: SC_DIM; is_large_arc: SBOOL;
-                      clockwise: SBOOL; relative: SBOOL): GRAPHIN_RESULT {.cdecl.}
+                      rx: SC_DIM; ry: SC_DIM; is_large_arc: bool;
+                      clockwise: bool; relative: bool): GRAPHIN_RESULT {.cdecl.}
     pathQuadraticCurveTo*: proc (path: HPATH; xc: SC_POS; yc: SC_POS; x: SC_POS;
-                                 y: SC_POS; relative: SBOOL): GRAPHIN_RESULT {.
+                                 y: SC_POS; relative: bool): GRAPHIN_RESULT {.
         cdecl.}
     pathBezierCurveTo*: proc (path: HPATH; xc1: SC_POS; yc1: SC_POS;
                               xc2: SC_POS; yc2: SC_POS; x: SC_POS; y: SC_POS;
-                              relative: SBOOL): GRAPHIN_RESULT {.cdecl.}
+                              relative: bool): GRAPHIN_RESULT {.cdecl.}
     pathClosePath*: proc (path: HPATH): GRAPHIN_RESULT {.cdecl.}
     gDrawPath*: proc (hgfx: HGFX; path: HPATH; dpm: DRAW_PATH_MODE): GRAPHIN_RESULT {.
         cdecl.}
@@ -1983,7 +2147,7 @@ type
                                 nstops: cuint): GRAPHIN_RESULT {.cdecl.} ## ```
                                                                          ##   setup parameters of gradient radial fills.
                                                                          ## ```
-    gFillMode*: proc (hgfx: HGFX; even_odd: SBOOL): GRAPHIN_RESULT {.cdecl.}
+    gFillMode*: proc (hgfx: HGFX; even_odd: bool): GRAPHIN_RESULT {.cdecl.}
     textCreateForElement*: proc (ptext: ptr HTEXT; text: LPCWSTR;
                                  textLength: cuint; he: HELEMENT;
                                  classNameOrNull: LPCWSTR): GRAPHIN_RESULT {.
@@ -2047,10 +2211,7 @@ type
     gFlush*: proc (hgfx: HGFX): GRAPHIN_RESULT {.cdecl.}
 
   LPSciterGraphicsAPI* = ptr SciterGraphicsAPI
-  som_passport_t* {.bycopy.} = object ## ```
-                                       ##   definiton of object (the thing) access interface
-                                       ##      this structure should be statically allocated - at least survive last instance of the engine
-                                       ## ```
+  som_passport_t* {.bycopy.} = object
     flags*: UINT64
     name*: som_atom_t        ## ```
                              ##   class name
@@ -2096,22 +2257,22 @@ type
     asset_get_passport*: proc (thing: ptr som_asset_t): ptr som_passport_t {.
         cdecl.}
 
-  som_prop_getter_t* = proc (thing: ptr som_asset_t; p_value: ptr SCITER_VALUE): SBOOL {.
+  som_prop_getter_t* = proc (thing: ptr som_asset_t; p_value: ptr SCITER_VALUE): bool {.
       cdecl.}
-  som_prop_setter_t* = proc (thing: ptr som_asset_t; p_value: ptr SCITER_VALUE): SBOOL {.
+  som_prop_setter_t* = proc (thing: ptr som_asset_t; p_value: ptr SCITER_VALUE): bool {.
       cdecl.}
   som_item_getter_t* = proc (thing: ptr som_asset_t; p_key: ptr SCITER_VALUE;
-                             p_value: ptr SCITER_VALUE): SBOOL {.cdecl.}
+                             p_value: ptr SCITER_VALUE): bool {.cdecl.}
   som_item_setter_t* = proc (thing: ptr som_asset_t; p_key: ptr SCITER_VALUE;
-                             p_value: ptr SCITER_VALUE): SBOOL {.cdecl.}
+                             p_value: ptr SCITER_VALUE): bool {.cdecl.}
   som_item_next_t* = proc (thing: ptr som_asset_t; p_idx: ptr SCITER_VALUE;
-                           p_value: ptr SCITER_VALUE): SBOOL {.cdecl.}
+                           p_value: ptr SCITER_VALUE): bool {.cdecl.}
   som_any_prop_getter_t* = proc (thing: ptr som_asset_t; propSymbol: UINT64;
-                                 p_value: ptr SCITER_VALUE): SBOOL {.cdecl.}
+                                 p_value: ptr SCITER_VALUE): bool {.cdecl.}
   som_any_prop_setter_t* = proc (thing: ptr som_asset_t; propSymbol: UINT64;
-                                 p_value: ptr SCITER_VALUE): SBOOL {.cdecl.}
+                                 p_value: ptr SCITER_VALUE): bool {.cdecl.}
   som_method_t* = proc (thing: ptr som_asset_t; argc: cuint;
-                        argv: ptr SCITER_VALUE; p_result: ptr SCITER_VALUE): SBOOL {.
+                        argv: ptr SCITER_VALUE; p_result: ptr SCITER_VALUE): bool {.
       cdecl.}
   som_dispose_t* = proc (thing: ptr som_asset_t) {.cdecl.}
   som_property_def_t* {.bycopy.} = object
@@ -2130,7 +2291,7 @@ type
                                              ##   signature of the function exported from external behavior/dll.
                                              ## ```
   SciterBehaviorFactory* = proc (a1: LPCSTR; a2: HELEMENT;
-                                 a3: ptr LPElementEventProc; a4: ptr LPVOID): SBOOL {.
+                                 a3: ptr LPElementEventProc; a4: ptr LPVOID): bool {.
       cdecl.}
   INITIALIZATION_PARAMS* {.bycopy.} = object
     cmd*: cuint              ## ```
@@ -2173,9 +2334,9 @@ type
     cursor_type*: cuint      ## ```
                              ##   CURSOR_TYPE to set, see CURSOR_TYPE
                              ## ```
-    is_on_icon*: SBOOL ## ```
-                       ##   mouse is over icon (foreground-image, foreground-repeat:no-repeat)
-                       ## ```
+    is_on_icon*: bool ## ```
+                      ##   mouse is over icon (foreground-image, foreground-repeat:no-repeat)
+                      ## ```
     dragging*: HELEMENT ## ```
                         ##   element that is being dragged over, this field is not NULL if (cmd & DRAGGING) != 0
                         ## ```
@@ -2197,20 +2358,23 @@ type
                              ##   KEYBOARD_STATES
                              ## ```
   
-  FOCUS_PARAMS* {.bycopy.} = object
+  FOCUS_PARAMS* {.bycopy.} = object ## ```
+                                     ##   #HANDLE_FOCUS params
+                                     ## ```
     cmd*: cuint              ## ```
                              ##   < #FOCUS_EVENTS
                              ## ```
     target*: HELEMENT ## ```
                       ##   < target element, for #FOCUS_LOST it is a handle of new focus element
+                      ##   
                       ##                                        and for #FOCUS_GOT it is a handle of old focus element, can be NULL
                       ## ```
     cause*: cuint ## ```
                   ##   < focus cause params or FOCUS_CMD_TYPE for FOCUS_ADVANCE_REQUEST
                   ## ```
-    cancel*: SBOOL ## ```
-                   ##   < in #FOCUS_REQUEST and #FOCUS_LOST phase setting this field to true will cancel transfer focus from old element to the new one.
-                   ## ```
+    cancel*: bool ## ```
+                  ##   < in #FOCUS_REQUEST and #FOCUS_LOST phase setting this field to true will cancel transfer focus from old element to the new one.
+                  ## ```
   
   SCROLL_PARAMS* {.bycopy.} = object
     cmd*: cuint              ## ```
@@ -2222,7 +2386,7 @@ type
     pos*: INT                ## ```
                              ##   scroll position if SCROLL_POS
                              ## ```
-    vertical*: SBOOL         ## ```
+    vertical*: bool          ## ```
                              ##   true if from vertical scrollbar
                              ## ```
     source*: cuint           ## ```
@@ -2318,11 +2482,15 @@ type
                              ##   /< return value
                              ## ```
   
-  VALUE_PARAMS* {.bycopy.} = object
+  VALUE_PARAMS* {.bycopy.} = object ## ```
+                                     ##   GET_VALUE/SET_VALUE methods params
+                                     ## ```
     methodID*: cuint
     val*: SCITER_VALUE
 
-  IS_EMPTY_PARAMS* {.bycopy.} = object
+  IS_EMPTY_PARAMS* {.bycopy.} = object ## ```
+                                        ##   IS_EMPTY method params
+                                        ## ```
     methodID*: cuint
     is_empty*: cuint         ## ```
                              ##   !0 - is empty
@@ -2364,7 +2532,11 @@ type
   SciterHostCallback* = proc (pns: LPSCITER_CALLBACK_NOTIFICATION;
                               callbackParam: LPVOID): cuint {.cdecl.}
   LPSciterHostCallback* = ptr SciterHostCallback
-  SCN_LOAD_DATA* {.bycopy.} = object
+  SCN_LOAD_DATA* {.bycopy.} = object ## ```
+                                      ##   This structure is used by #SC_LOAD_DATA notification.
+                                      ##   
+                                      ##   \copydoc SC_LOAD_DATA
+                                      ## ```
     code*: cuint             ## ```
                              ##   < [in] one of the codes above.
                              ## ```
@@ -2392,6 +2564,7 @@ type
   LPSCN_LOAD_DATA* = ptr SCN_LOAD_DATA
   SCN_DATA_LOADED* {.bycopy.} = object ## ```
                                         ##   This structure is used by #SC_DATA_LOADED notification.
+                                        ##   
                                         ##   \copydoc SC_DATA_LOADED
                                         ## ```
     code*: cuint             ## ```
@@ -2414,14 +2587,18 @@ type
                              ## ```
     status*: cuint ## ```
                    ##   < [in]
+                   ##   
                    ##                                            status = 0 (dataSize == 0) - unknown error.
+                   ##   
                    ##                                            status = 100..505 - http response status, Note: 200 - OK!
+                   ##   
                    ##                                            status > 12000 - wininet error code, see ERROR_INTERNET_*** in wininet.h
                    ## ```
   
   LPSCN_DATA_LOADED* = ptr SCN_DATA_LOADED
   SCN_ATTACH_BEHAVIOR* {.bycopy.} = object ## ```
                                             ##   This structure is used by #SC_ATTACH_BEHAVIOR notification.
+                                            ##   
                                             ##   \copydoc SC_ATTACH_BEHAVIOR
                                             ## ```
     code*: cuint             ## ```
@@ -2446,6 +2623,7 @@ type
   LPSCN_ATTACH_BEHAVIOR* = ptr SCN_ATTACH_BEHAVIOR
   SCN_ENGINE_DESTROYED* {.bycopy.} = object ## ```
                                              ##   This structure is used by #SC_ENGINE_DESTROYED notification.
+                                             ##   
                                              ##   \copydoc SC_ENGINE_DESTROYED
                                              ## ```
     code*: cuint             ## ```
@@ -2458,6 +2636,7 @@ type
   LPSCN_ENGINE_DESTROYED* = ptr SCN_ENGINE_DESTROYED
   SCN_POSTED_NOTIFICATION* {.bycopy.} = object ## ```
                                                 ##   This structure is used by #SC_ENGINE_DESTROYED notification.
+                                                ##   
                                                 ##   \copydoc SC_ENGINE_DESTROYED
                                                 ## ```
     code*: cuint             ## ```
@@ -2475,6 +2654,7 @@ type
   LPSCN_POSTED_NOTIFICATION* = ptr SCN_POSTED_NOTIFICATION
   SCN_GRAPHICS_CRITICAL_FAILURE* {.bycopy.} = object ## ```
                                                       ##   This structure is used by #SC_GRAPHICS_CRITICAL_FAILURE notification.
+                                                      ##   
                                                       ##   \copydoc SC_GRAPHICS_CRITICAL_FAILURE
                                                       ## ```
     code*: cuint             ## ```
@@ -2487,6 +2667,7 @@ type
   LPSCN_GRAPHICS_CRITICAL_FAILURE* = ptr SCN_GRAPHICS_CRITICAL_FAILURE
   SCN_KEYBOARD_REQUEST* {.bycopy.} = object ## ```
                                              ##   This structure is used by #SC_KEYBOARD_REQUEST notification.
+                                             ##   
                                              ##   \copydoc SC_KEYBOARD_REQUEST
                                              ## ```
     code*: cuint             ## ```
@@ -2502,6 +2683,7 @@ type
   LPSCN_KEYBOARD_REQUEST* = ptr SCN_KEYBOARD_REQUEST
   SCN_INVALIDATE_RECT* {.bycopy.} = object ## ```
                                             ##   This structure is used by #SC_INVALIDATE_RECT notification.
+                                            ##   
                                             ##   \copydoc SC_INVALIDATE_RECT
                                             ## ```
     code*: cuint             ## ```
@@ -2554,7 +2736,7 @@ type
   SCITER_X_MSG_CREATE* {.bycopy.} = object
     header*: SCITER_X_MSG
     backend*: cuint
-    transparent*: SBOOL
+    transparent*: bool
 
   SCITER_X_MSG_DESTROY* {.bycopy.} = object
     header*: SCITER_X_MSG
@@ -2583,7 +2765,7 @@ type
 
   SCITER_X_MSG_FOCUS* {.bycopy.} = object
     header*: SCITER_X_MSG
-    got*: SBOOL              ## ```
+    got*: bool               ## ```
                              ##   true - got, false - lost
                              ## ```
   
@@ -2614,9 +2796,9 @@ type
     element*: HELEMENT ## ```
                        ##   < [in] layer #HELEMENT, can be NULL if whole tree (document) needs to be rendered.
                        ## ```
-    isFore*: SBOOL ## ```
-                   ##   < [in] if element is not null tells if that element is fore-layer.
-                   ## ```
+    isFore*: bool ## ```
+                  ##   < [in] if element is not null tells if that element is fore-layer.
+                  ## ```
     targetType*: cuint       ## ```
                              ##   < [in] one of #SCITER_PAINT_TARGET_TYPE values
                              ## ```
@@ -2629,58 +2811,58 @@ type
                              ##   API_VERSION
                              ## ```
     SciterClassName*: proc (): LPCWSTR {.cdecl.}
-    SciterVersion*: proc (major: SBOOL): cuint {.cdecl.}
+    SciterVersion*: proc (major: bool): cuint {.cdecl.}
     SciterDataReady*: proc (hwnd: ptr GtkWidget; uri: LPCWSTR; data: LPCBYTE;
-                            dataLength: cuint): SBOOL {.cdecl.}
+                            dataLength: cuint): bool {.cdecl.}
     SciterDataReadyAsync*: proc (hwnd: ptr GtkWidget; uri: LPCWSTR;
                                  data: LPCBYTE; dataLength: cuint;
-                                 requestId: LPVOID): SBOOL {.cdecl.}
+                                 requestId: LPVOID): bool {.cdecl.}
     SciterProc*: LPVOID      ## ```
                              ##   NULL
                              ## ```
     SciterProcND*: LPVOID    ## ```
                              ##   NULL
                              ## ```
-    SciterLoadFile*: proc (hWndSciter: ptr GtkWidget; filename: LPCWSTR): SBOOL {.
+    SciterLoadFile*: proc (hWndSciter: ptr GtkWidget; filename: LPCWSTR): bool {.
         cdecl.}
     SciterLoadHtml*: proc (hWndSciter: ptr GtkWidget; html: LPCBYTE;
-                           htmlSize: cuint; baseUrl: LPCWSTR): SBOOL {.cdecl.}
+                           htmlSize: cuint; baseUrl: LPCWSTR): bool {.cdecl.}
     SciterSetCallback*: proc (hWndSciter: ptr GtkWidget;
                               cb: LPSciterHostCallback; cbParam: LPVOID): VOID {.
         cdecl.}
-    SciterSetMasterCSS*: proc (utf8: LPCBYTE; numBytes: cuint): SBOOL {.cdecl.}
-    SciterAppendMasterCSS*: proc (utf8: LPCBYTE; numBytes: cuint): SBOOL {.cdecl.}
+    SciterSetMasterCSS*: proc (utf8: LPCBYTE; numBytes: cuint): bool {.cdecl.}
+    SciterAppendMasterCSS*: proc (utf8: LPCBYTE; numBytes: cuint): bool {.cdecl.}
     SciterSetCSS*: proc (hWndSciter: ptr GtkWidget; utf8: LPCBYTE;
-                         numBytes: cuint; baseUrl: LPCWSTR; mediaType: LPCWSTR): SBOOL {.
+                         numBytes: cuint; baseUrl: LPCWSTR; mediaType: LPCWSTR): bool {.
         cdecl.}
-    SciterSetMediaType*: proc (hWndSciter: ptr GtkWidget; mediaType: LPCWSTR): SBOOL {.
+    SciterSetMediaType*: proc (hWndSciter: ptr GtkWidget; mediaType: LPCWSTR): bool {.
         cdecl.}
     SciterSetMediaVars*: proc (hWndSciter: ptr GtkWidget;
-                               mediaVars: ptr SCITER_VALUE): SBOOL {.cdecl.}
+                               mediaVars: ptr SCITER_VALUE): bool {.cdecl.}
     SciterGetMinWidth*: proc (hWndSciter: ptr GtkWidget): cuint {.cdecl.}
     SciterGetMinHeight*: proc (hWndSciter: ptr GtkWidget; width: cuint): cuint {.
         cdecl.}
     SciterCall*: proc (hWnd: ptr GtkWidget; functionName: LPCSTR; argc: cuint;
-                       argv: ptr SCITER_VALUE; retval: ptr SCITER_VALUE): SBOOL {.
+                       argv: ptr SCITER_VALUE; retval: ptr SCITER_VALUE): bool {.
         cdecl.}
     SciterEval*: proc (hwnd: ptr GtkWidget; script: LPCWSTR;
-                       scriptLength: cuint; pretval: ptr SCITER_VALUE): SBOOL {.
+                       scriptLength: cuint; pretval: ptr SCITER_VALUE): bool {.
         cdecl.}
     SciterUpdateWindow*: proc (hwnd: ptr GtkWidget): VOID {.cdecl.}
     SciterTranslateMessage*: LPVOID ## ```
                                     ##   NULL
                                     ## ```
-    SciterSetOption*: proc (hWnd: ptr GtkWidget; option: cuint; value: UINT_PTR): SBOOL {.
+    SciterSetOption*: proc (hWnd: ptr GtkWidget; option: cuint; value: UINT_PTR): bool {.
         cdecl.}
     SciterGetPPI*: proc (hWndSciter: ptr GtkWidget; px: ptr cuint; py: ptr cuint): VOID {.
         cdecl.}
-    SciterGetViewExpando*: proc (hwnd: ptr GtkWidget; pval: ptr VALUE): SBOOL {.
+    SciterGetViewExpando*: proc (hwnd: ptr GtkWidget; pval: ptr VALUE): bool {.
         cdecl.}
     SciterRenderD2D*: LPVOID
     SciterD2DFactory*: LPVOID
     SciterDWFactory*: LPVOID
-    SciterGraphicsCaps*: proc (pcaps: LPUINT): SBOOL {.cdecl.}
-    SciterSetHomeURL*: proc (hWndSciter: ptr GtkWidget; baseUrl: LPCWSTR): SBOOL {.
+    SciterGraphicsCaps*: proc (pcaps: LPUINT): bool {.cdecl.}
+    SciterSetHomeURL*: proc (hWndSciter: ptr GtkWidget; baseUrl: LPCWSTR): bool {.
         cdecl.}
     SciterCreateNSView*: LPVOID ## ```
                                 ##   NULL
@@ -2711,7 +2893,7 @@ type
         cdecl.}
     SciterGetParentElement*: proc (he: HELEMENT; p_parent_he: ptr HELEMENT): INT {.
         cdecl.}
-    SciterGetElementHtmlCB*: proc (he: HELEMENT; outer: SBOOL;
+    SciterGetElementHtmlCB*: proc (he: HELEMENT; outer: bool;
                                    rcv: LPCBYTE_RECEIVER; rcv_param: LPVOID): INT {.
         cdecl.}
     SciterGetElementTextCB*: proc (he: HELEMENT; rcv: LPCWSTR_RECEIVER;
@@ -2743,13 +2925,12 @@ type
                                      areas: cuint): INT {.cdecl.}
     SciterScrollToView*: proc (he: HELEMENT; SciterScrollFlags: cuint): INT {.
         cdecl.}
-    SciterUpdateElement*: proc (he: HELEMENT; andForceRender: SBOOL): INT {.
-        cdecl.}
+    SciterUpdateElement*: proc (he: HELEMENT; andForceRender: bool): INT {.cdecl.}
     SciterRefreshElementArea*: proc (he: HELEMENT; rc: RECT): INT {.cdecl.}
     SciterSetCapture*: proc (he: HELEMENT): INT {.cdecl.}
     SciterReleaseCapture*: proc (he: HELEMENT): INT {.cdecl.}
     SciterGetElementHwnd*: proc (he: HELEMENT; p_hwnd: ptr ptr GtkWidget;
-                                 rootWindow: SBOOL): INT {.cdecl.}
+                                 rootWindow: bool): INT {.cdecl.}
     SciterCombineURL*: proc (he: HELEMENT; szUrlBuffer: LPWSTR;
                              UrlBufferSize: cuint): INT {.cdecl.}
     SciterSelectElements*: proc (he: HELEMENT; CSS_selectors: LPCSTR;
@@ -2775,7 +2956,7 @@ type
     SciterGetElementState*: proc (he: HELEMENT; pstateBits: ptr cuint): INT {.
         cdecl.}
     SciterSetElementState*: proc (he: HELEMENT; stateBitsToSet: cuint;
-                                  stateBitsToClear: cuint; updateView: SBOOL): INT {.
+                                  stateBitsToClear: cuint; updateView: bool): INT {.
         cdecl.}
     SciterCreateElement*: proc (tagname: LPCSTR; textOrNull: LPCWSTR;
                                 phe: ptr HELEMENT): INT {.cdecl.}
@@ -2797,7 +2978,7 @@ type
         pep: C_LPELEMENT_EVENT_PROC; tag: LPVOID): INT {.cdecl.}
     SciterSendEvent*: proc (he: HELEMENT; appEventCode: cuint;
                             heSource: HELEMENT; reason: UINT_PTR;
-                            handled: ptr SBOOL): INT {.cdecl.}
+                            handled: ptr bool): INT {.cdecl.}
     SciterPostEvent*: proc (he: HELEMENT; appEventCode: cuint;
                             heSource: HELEMENT; reason: UINT_PTR): INT {.cdecl.}
     SciterCallBehaviorMethod*: proc (he: HELEMENT; params: ptr METHOD_PARAMS): INT {.
@@ -2812,15 +2993,15 @@ type
     SciterGetScrollInfo*: proc (he: HELEMENT; scrollPos: LPPOINT;
                                 viewRect: LPRECT; contentSize: LPSIZE): INT {.
         cdecl.}
-    SciterSetScrollPos*: proc (he: HELEMENT; scrollPos: POINT; smooth: SBOOL): INT {.
+    SciterSetScrollPos*: proc (he: HELEMENT; scrollPos: POINT; smooth: bool): INT {.
         cdecl.}
     SciterGetElementIntrinsicWidths*: proc (he: HELEMENT; pMinWidth: ptr INT;
         pMaxWidth: ptr INT): INT {.cdecl.}
     SciterGetElementIntrinsicHeight*: proc (he: HELEMENT; forWidth: INT;
         pHeight: ptr INT): INT {.cdecl.}
-    SciterIsElementVisible*: proc (he: HELEMENT; pVisible: ptr SBOOL): INT {.
+    SciterIsElementVisible*: proc (he: HELEMENT; pVisible: ptr bool): INT {.
         cdecl.}
-    SciterIsElementEnabled*: proc (he: HELEMENT; pEnabled: ptr SBOOL): INT {.
+    SciterIsElementEnabled*: proc (he: HELEMENT; pEnabled: ptr bool): INT {.
         cdecl.}
     SciterSortElements*: proc (he: HELEMENT; firstIndex: cuint;
                                lastIndex: cuint;
@@ -2828,7 +3009,7 @@ type
                                cmpFuncParam: LPVOID): INT {.cdecl.}
     SciterSwapElements*: proc (he1: HELEMENT; he2: HELEMENT): INT {.cdecl.}
     SciterTraverseUIEvent*: proc (evt: cuint; eventCtlStruct: LPVOID;
-                                  bOutProcessed: ptr SBOOL): INT {.cdecl.}
+                                  bOutProcessed: ptr bool): INT {.cdecl.}
     SciterCallScriptingMethod*: proc (he: HELEMENT; name: LPCSTR;
                                       argv: ptr VALUE; argc: cuint;
                                       retval: ptr VALUE): INT {.cdecl.}
@@ -2843,9 +3024,9 @@ type
     SciterControlGetType*: proc (he: HELEMENT; pType: ptr cuint): INT {.cdecl.}
     SciterGetValue*: proc (he: HELEMENT; pval: ptr VALUE): INT {.cdecl.}
     SciterSetValue*: proc (he: HELEMENT; pval: ptr VALUE): INT {.cdecl.}
-    SciterGetExpando*: proc (he: HELEMENT; pval: ptr VALUE; forceCreation: SBOOL): INT {.
+    SciterGetExpando*: proc (he: HELEMENT; pval: ptr VALUE; forceCreation: bool): INT {.
         cdecl.}
-    SciterGetObject*: proc (he: HELEMENT; pval: pointer; forceCreation: SBOOL): INT {.
+    SciterGetObject*: proc (he: HELEMENT; pval: pointer; forceCreation: bool): INT {.
         cdecl.}
     SciterGetElementNamespace*: proc (he: HELEMENT; pval: pointer): INT {.cdecl.}
     SciterGetHighlightedElement*: proc (hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.
@@ -2879,7 +3060,7 @@ type
         cdecl.}
     SciterNodeInsert*: proc (hnode: HNODE; where: cuint; what: HNODE): INT {.
         cdecl.}
-    SciterNodeRemove*: proc (hnode: HNODE; finalize: SBOOL): INT {.cdecl.}
+    SciterNodeRemove*: proc (hnode: HNODE; finalize: bool): INT {.cdecl.}
     SciterCreateTextNode*: proc (text: LPCWSTR; textLength: cuint;
                                  phnode: ptr HNODE): INT {.cdecl.}
     SciterCreateCommentNode*: proc (text: LPCWSTR; textLength: cuint;
@@ -2939,9 +3120,9 @@ type
                                   pinvoke: NATIVE_FUNCTOR_INVOKE;
                                   prelease: NATIVE_FUNCTOR_RELEASE;
                                   tag: ptr VOID): cuint {.cdecl.}
-    ValueIsNativeFunctor*: proc (pval: ptr VALUE): SBOOL {.cdecl.} ## ```
-                                                                   ##   used to be script VM API
-                                                                   ## ```
+    ValueIsNativeFunctor*: proc (pval: ptr VALUE): bool {.cdecl.} ## ```
+                                                                  ##   used to be script VM API
+                                                                  ## ```
     reserved1*: LPVOID       ## ```
                              ##   used to be script VM API
                              ## ```
@@ -2951,11 +3132,11 @@ type
     SciterOpenArchive*: proc (archiveData: LPCBYTE; archiveDataLength: cuint): HSARCHIVE {.
         cdecl.}
     SciterGetArchiveItem*: proc (harc: HSARCHIVE; path: LPCWSTR;
-                                 pdata: ptr LPCBYTE; pdataLength: ptr cuint): SBOOL {.
+                                 pdata: ptr LPCBYTE; pdataLength: ptr cuint): bool {.
         cdecl.}
-    SciterCloseArchive*: proc (harc: HSARCHIVE): SBOOL {.cdecl.}
-    SciterFireEvent*: proc (evt: ptr BEHAVIOR_EVENT_PARAMS; post: SBOOL;
-                            handled: ptr SBOOL): INT {.cdecl.}
+    SciterCloseArchive*: proc (harc: HSARCHIVE): bool {.cdecl.}
+    SciterFireEvent*: proc (evt: ptr BEHAVIOR_EVENT_PARAMS; post: bool;
+                            handled: ptr bool): INT {.cdecl.}
     SciterGetCallbackParam*: proc (hwnd: ptr GtkWidget): LPVOID {.cdecl.}
     SciterPostCallback*: proc (hwnd: ptr GtkWidget; wparam: UINT_PTR;
                                lparam: UINT_PTR; timeoutms: cuint): UINT_PTR {.
@@ -2965,7 +3146,7 @@ type
     SciterCreateOnDirectXWindow*: LPVOID
     SciterRenderOnDirectXWindow*: LPVOID
     SciterRenderOnDirectXTexture*: LPVOID
-    SciterProcX*: proc (hwnd: ptr GtkWidget; pMsg: ptr SCITER_X_MSG): SBOOL {.
+    SciterProcX*: proc (hwnd: ptr GtkWidget; pMsg: ptr SCITER_X_MSG): bool {.
         cdecl.}              ## ```
                              ##   returns TRUE if handled
                              ## ```
@@ -2973,10 +3154,10 @@ type
                                                              ##   
                                                              ## ```
     SciterAtomNameCB*: proc (atomv: UINT64; rcv: LPCSTR_RECEIVER;
-                             rcv_param: LPVOID): SBOOL {.cdecl.} ## ```
-                                                                 ##   
-                                                                 ## ```
-    SciterSetGlobalAsset*: proc (pass: ptr som_asset_t): SBOOL {.cdecl.}
+                             rcv_param: LPVOID): bool {.cdecl.} ## ```
+                                                                ##   
+                                                                ## ```
+    SciterSetGlobalAsset*: proc (pass: ptr som_asset_t): bool {.cdecl.}
     SciterGetElementAsset*: proc (el: HELEMENT; nameAtom: UINT64;
                                   ppass: ptr ptr som_asset_t): INT {.cdecl.}
     SciterSetVariable*: proc (hwndOrNull: ptr GtkWidget; path: LPCWSTR;
@@ -2992,7 +3173,7 @@ type
 
   SciterAPI_ptr* = proc (): ptr ISciterAPI {.cdecl.}
   SciterLibraryInitFunc* = proc (psapi: ptr ISciterAPI;
-                                 plibobject: ptr SCITER_VALUE): SBOOL {.cdecl.}
+                                 plibobject: ptr SCITER_VALUE): bool {.cdecl.}
 var
   left* {.importc.}: INT
   top* {.importc.}: INT
@@ -3001,6 +3182,7 @@ var
 proc ValueInit*(pval: ptr VALUE): cuint {.importc, cdecl.}
   ## ```
                                                           ##   ValueInit - initialize VALUE storage
+                                                          ##   
                                                           ##    This call has to be made before passing VALUE* to any other functions
                                                           ## ```
 proc ValueClear*(pval: ptr VALUE): cuint {.importc, cdecl.}
@@ -3018,7 +3200,9 @@ proc ValueCopy*(pdst: ptr VALUE; psrc: ptr VALUE): cuint {.importc, cdecl.}
 proc ValueIsolate*(pdst: ptr VALUE): cuint {.importc, cdecl.}
   ## ```
                                                              ##   ValueIsolate - converts T_OBJECT value types to T_MAP or T_ARRAY.
+                                                             ##   
                                                              ##    use this method if you need to pass values between different threads.
+                                                             ##   
                                                              ##    The fanction is applicable for the Sciter
                                                              ## ```
 proc ValueType*(pval: ptr VALUE; pType: ptr cuint; pUnits: ptr cuint): cuint {.
@@ -3030,12 +3214,14 @@ proc ValueStringData*(pval: ptr VALUE; pChars: ptr LPCWSTR; pNumChars: ptr cuint
     importc, cdecl.}
   ## ```
                     ##   ValueStringData - returns string data for T_STRING type
+                    ##   
                     ##    For T_FUNCTION returns name of the fuction.
                     ## ```
 proc ValueStringDataSet*(pval: ptr VALUE; chars: LPCWSTR; numChars: cuint;
                          units: cuint): cuint {.importc, cdecl.}
   ## ```
                                                                 ##   ValueStringDataSet - sets VALUE to T_STRING type and copies chars/numChars to
+                                                                ##   
                                                                 ##    internal refcounted buffer assosiated with the value.
                                                                 ## ```
 proc ValueIntData*(pval: ptr VALUE; pData: ptr INT): cuint {.importc, cdecl.}
@@ -3046,6 +3232,7 @@ proc ValueIntDataSet*(pval: ptr VALUE; data: INT; `type`: cuint; units: cuint): 
     importc, cdecl.}
   ## ```
                     ##   ValueIntDataSet - sets VALUE integer data of T_INT and T_BOOL types 
+                    ##   
                     ##    Optionally sets units field too.
                     ## ```
 proc ValueInt64Data*(pval: ptr VALUE; pData: ptr INT64): cuint {.importc, cdecl.}
@@ -3076,39 +3263,54 @@ proc ValueBinaryDataSet*(pval: ptr VALUE; pBytes: LPCBYTE; nBytes: cuint;
                          `type`: cuint; units: cuint): cuint {.importc, cdecl.}
   ## ```
                                                                                ##   ValueBinaryDataSet - sets VALUE to sequence of bytes of type T_BYTES 
+                                                                               ##   
                                                                                ##    'type' here must be set to T_BYTES. Optionally sets units field too.
+                                                                               ##   
                                                                                ##    The function creates local copy of bytes in its own storage.
                                                                                ## ```
 proc ValueElementsCount*(pval: ptr VALUE; pn: ptr INT): cuint {.importc, cdecl.}
   ## ```
                                                                                 ##   ValueElementsCount - retreive number of sub-elements for:
+                                                                                ##   
                                                                                 ##    - T_ARRAY - number of elements in the array; 
+                                                                                ##   
                                                                                 ##    - T_MAP - number of key/value pairs in the map;
+                                                                                ##   
                                                                                 ##    - T_FUNCTION - number of arguments in the function;
                                                                                 ## ```
 proc ValueNthElementValue*(pval: ptr VALUE; n: INT; pretval: ptr VALUE): cuint {.
     importc, cdecl.}
   ## ```
                     ##   ValueNthElementValue - retreive value of sub-element at index n for:
+                    ##   
                     ##    - T_ARRAY - nth element of the array; 
+                    ##   
                     ##    - T_MAP - value of nth key/value pair in the map;
+                    ##   
                     ##    - T_FUNCTION - value of nth argument of the function;
                     ## ```
 proc ValueNthElementValueSet*(pval: ptr VALUE; n: INT; pval_to_set: ptr VALUE): cuint {.
     importc, cdecl.}
   ## ```
                     ##   ValueNthElementValueSet - sets value of sub-element at index n for:
+                    ##   
                     ##    - T_ARRAY - nth element of the array; 
+                    ##   
                     ##    - T_MAP - value of nth key/value pair in the map;
+                    ##   
                     ##    - T_FUNCTION - value of nth argument of the function;
+                    ##   
                     ##    If the VALUE is not of one of types above then it makes it of type T_ARRAY with 
+                    ##   
                     ##    single element - 'val_to_set'.
                     ## ```
 proc ValueNthElementKey*(pval: ptr VALUE; n: INT; pretval: ptr VALUE): cuint {.
     importc, cdecl.}
   ## ```
                     ##   ValueEnumElements - enumeartes key/value pairs of T_MAP, T_FUNCTION and T_OBJECT values
+                    ##   
                     ##    - T_MAP - key of nth key/value pair in the map;
+                    ##   
                     ##    - T_FUNCTION - name of nth argument of the function (if any);
                     ## ```
 proc ValueEnumElements*(pval: ptr VALUE; penum: KeyValueCallback;
@@ -3117,11 +3319,18 @@ proc ValueSetValueToKey*(pval: ptr VALUE; pkey: ptr VALUE;
                          pval_to_set: ptr VALUE): cuint {.importc, cdecl.}
   ## ```
                                                                           ##   ValueSetValueToKey - sets value of sub-element by key:
+                                                                          ##   
                                                                           ##    - T_MAP - value of key/value pair with the key;
+                                                                          ##   
                                                                           ##    - T_FUNCTION - value of argument with the name key;
+                                                                          ##   
                                                                           ##    - T_OBJECT (tiscript) - value of property of the object
+                                                                          ##   
                                                                           ##    If the VALUE is not of one of types above then it makes it of type T_MAP with 
+                                                                          ##   
                                                                           ##    single pair - 'key'/'val_to_set'.
+                                                                          ##   
+                                                                          ##   
                                                                           ##   
                                                                           ##    key usually is a value of type T_STRING
                                                                           ## ```
@@ -3129,26 +3338,38 @@ proc ValueGetValueOfKey*(pval: ptr VALUE; pkey: ptr VALUE; pretval: ptr VALUE): 
     importc, cdecl.}
   ## ```
                     ##   ValueGetValueOfKey - retrieves value of sub-element by key:
+                    ##   
                     ##    - T_MAP - value of key/value pair with the key;
+                    ##   
                     ##    - T_FUNCTION - value of argument with the name key;
+                    ##   
                     ##    - T_OBJECT (tiscript) - value of property of the object
+                    ##   
                     ##    Otherwisepretval will have T_UNDEFINED value.
                     ## ```
 proc ValueToString*(pval: ptr VALUE; how: cuint): cuint {.importc, cdecl.}
   ## ```
                                                                           ##   ValueToString - converts value to T_STRING inplace:
+                                                                          ##   
                                                                           ##    - CVT_SIMPLE - parse/emit terminal values (T_INT, T_FLOAT, T_LENGTH, T_STRING)
+                                                                          ##   
                                                                           ##    - CVT_JSON_LITERAL - parse/emit value using JSON literal rules: {}, [], "string", true, false, null 
+                                                                          ##   
                                                                           ##    - CVT_JSON_MAP - parse/emit MAP value without enclosing '{' and '}' brackets.
                                                                           ## ```
 proc ValueFromString*(pval: ptr VALUE; str: LPCWSTR; strLength: cuint;
                       how: cuint): cuint {.importc, cdecl.}
   ## ```
                                                            ##   ValueFromString - parses string into value:
+                                                           ##   
                                                            ##    - CVT_SIMPLE - parse/emit terminal values (T_INT, T_FLOAT, T_LENGTH, T_STRING), "guess" non-strict parsing
+                                                           ##   
                                                            ##    - CVT_JSON_LITERAL - parse/emit value using JSON literal rules: {}, [], "string", true, false, null 
+                                                           ##   
                                                            ##    - CVT_JSON_MAP - parse/emit MAP value without enclosing '{' and '}' brackets.
+                                                           ##   
                                                            ##    Returns:
+                                                           ##   
                                                            ##      Number of non-parsed characters in case of errors. Thus if string was parsed in full it returns 0 (success)
                                                            ## ```
 proc ValueInvoke*(pval: ptr VALUE; pthis: ptr VALUE; argc: cuint;
@@ -3156,12 +3377,19 @@ proc ValueInvoke*(pval: ptr VALUE; pthis: ptr VALUE; argc: cuint;
     importc, cdecl.}
   ## ```
                     ##   ValueInvoke - function invocation (Sciter/TIScript).
+                    ##   
                     ##    - VALUE* pval is a value of type T_OBJECT/UT_OBJECT_FUNCTION
+                    ##   
                     ##    - VALUE* pthis - object that will be known as 'this' inside that function.
+                    ##   
                     ##    - UINT argc, const VALUE* argv - vector of arguments to pass to the function. 
+                    ##   
                     ##    - VALUE* pretval - parse/emit MAP value without enclosing '{' and '}' brackets.
+                    ##   
                     ##    - LPCWSTR url - url or name of the script - used for error reporting in the script.
+                    ##   
                     ##    Returns:
+                    ##   
                     ##      HV_OK, HV_BAD_PARAMETER or HV_INCOMPATIBLE_TYPE
                     ## ```
 proc ValueNativeFunctorSet*(pval: ptr VALUE; pinvoke: NATIVE_FUNCTOR_INVOKE;
@@ -3169,34 +3397,53 @@ proc ValueNativeFunctorSet*(pval: ptr VALUE; pinvoke: NATIVE_FUNCTOR_INVOKE;
     importc, cdecl.}
   ## ```
                     ##   ValueNativeFunctorSet - set reference to native function
+                    ##   
                     ##    - VALUE* pval - value to be initialized 
+                    ##   
                     ##    - NATIVE_FUNCTOR_INVOKE* pinvoke - reference to native functor implementation.
+                    ##   
                     ##    - NATIVE_FUNCTOR_RELEASE* prelease - reference to native functor dtor implementation.
+                    ##   
                     ##    - VOID* tag - optional tag, passed as it is to pinvoke and prelease
+                    ##   
                     ##    Returns:
+                    ##   
                     ##      HV_OK, HV_BAD_PARAMETER
                     ## ```
-proc ValueIsNativeFunctor*(pval: ptr VALUE): SBOOL {.importc, cdecl.}
+proc ValueIsNativeFunctor*(pval: ptr VALUE): bool {.importc, cdecl.}
 proc Sciter_UseElement*(he: HELEMENT): INT {.importc, cdecl.}
 proc Sciter_UnuseElement*(he: HELEMENT): INT {.importc, cdecl.}
   ## ```
                                                                ##   Marks DOM object as unused (a.k.a. Release).
+                                                               ##   
                                                                ##    Get handle of every element's child element.
+                                                               ##   
                                                                ##    \param[in] he \b #HELEMENT
+                                                               ##   
                                                                ##    \return \b #SCDOM_RESULT SCAPI
                                                                ##   
+                                                               ##   
+                                                               ##   
                                                                ##    Application should call this function when it does not need element's
+                                                               ##   
                                                                ##    handle anymore.
+                                                               ##   
                                                                ##    \sa #Sciter_UseElement()
                                                                ## ```
 proc SciterGetRootElement*(hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.
     importc, cdecl.}
   ## ```
                     ##   Get root DOM element of HTML document.
+                    ##   
                     ##    \param[in] hwnd \b HWINDOW, Sciter window for which you need to get root
+                    ##   
                     ##    element
+                    ##   
                     ##    \param[out ] phe \b #HELEMENT*, variable to receive root element
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
+                    ##   
+                    ##   
                     ##   
                     ##    Root DOM object is always a 'HTML' element of the document.
                     ## ```
@@ -3204,12 +3451,20 @@ proc SciterGetFocusElement*(hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.
     importc, cdecl.}
   ## ```
                     ##   Get focused DOM element of HTML document.
+                    ##   
                     ##    \param[in] hwnd \b HWINDOW, Sciter window for which you need to get focus
+                    ##   
                     ##    element
+                    ##   
                     ##    \param[out ] phe \b #HELEMENT*, variable to receive focus element
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
                     ##   
+                    ##   
+                    ##   
                     ##    phe can have null value (0).
+                    ##   
+                    ##   
                     ##   
                     ##    COMMENT: To set focus on element use SciterSetElementState(STATE_FOCUS,0)
                     ## ```
@@ -3217,11 +3472,18 @@ proc SciterFindElement*(hwnd: ptr GtkWidget; pt: POINT; phe: ptr HELEMENT): INT 
     importc, cdecl.}
   ## ```
                     ##   Find DOM element by coordinate.
+                    ##   
                     ##    \param[in] hwnd \b HWINDOW, Sciter window for which you need to find
+                    ##   
                     ##    elementz
+                    ##   
                     ##    \param[in] pt \b POINT, coordinates, window client area relative.
+                    ##   
                     ##    \param[out ] phe \b #HELEMENT*, variable to receive found element handle.
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
+                    ##   
+                    ##   
                     ##   
                     ##    If element was not found thenphe will be set to zero.
                     ## ```
@@ -3229,75 +3491,152 @@ proc SciterGetChildrenCount*(he: HELEMENT; count: ptr cuint): INT {.importc,
     cdecl.}
   ## ```
            ##   Get number of child elements.
+           ##   
            ##    \param[in] he \b #HELEMENT, element which child elements you need to count
+           ##   
            ##    \param[out] count \b UINT*, variable to receive number of child elements
+           ##   
            ##    \return \b #SCDOM_RESULT SCAPI
            ##   
+           ##   
+           ##   
            ##    \par Example:
+           ##   
            ##    for paragraph defined as
+           ##   
            ##    \verbatim <p>Hello <b>wonderfull</b> world!</p> \endverbatim
+           ##   
            ##    count will be set to 1 as the paragraph has only one sub element:
+           ##   
            ##    \verbatim <b>wonderfull</b> \endverbatim
            ## ```
 proc SciterGetNthChild*(he: HELEMENT; n: cuint; phe: ptr HELEMENT): INT {.
     importc, cdecl.}
   ## ```
                     ##   Get handle of every element's child element.
+                    ##   
                     ##    \param[in] he \b #HELEMENT
+                    ##   
                     ##    \param[in] n \b UINT, number of the child element
+                    ##   
                     ##    \param[out] phe \b #HELEMENT*, variable to receive handle of the child
+                    ##   
                     ##    element
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
                     ##   
+                    ##   
+                    ##   
                     ##    \par Example:
+                    ##   
                     ##    for paragraph defined as
+                    ##   
                     ##    \verbatim <p>Hello <b>wonderfull</b> world!</p> \endverbatim
+                    ##   
                     ##   phe will be equal to handle of &lt;b&gt; element:
+                    ##   
                     ##    \verbatim <b>wonderfull</b> \endverbatim
                     ## ```
 proc SciterGetParentElement*(he: HELEMENT; p_parent_he: ptr HELEMENT): INT {.
     importc, cdecl.}
   ## ```
                     ##   Get parent element.
+                    ##   
                     ##    \param[in] he \b #HELEMENT, element which parent you need
+                    ##   
                     ##    \param[out] p_parent_he \b #HELEMENT*, variable to recieve handle of the
+                    ##   
                     ##    parent element
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
                     ## ```
-proc SciterGetElementHtmlCB*(he: HELEMENT; outer: SBOOL;
+proc SciterGetElementHtmlCB*(he: HELEMENT; outer: bool;
                              rcv: LPCBYTE_RECEIVER; rcv_param: LPVOID): INT {.
     importc, cdecl.}
   ## ```
                     ##   Get html representation of the element.
+                    ##   
                     ##    \param[in] he \b #HELEMENT
+                    ##   
                     ##    \param[in] outer \b SBOOL, if TRUE will return outer HTML otherwise inner.
+                    ##   
                     ##    \param[in] rcv \b pointer to function receiving UTF8 encoded HTML.
+                    ##   
                     ##    \param[in] rcv_param \b parameter that passed to rcv as it is.
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
                     ## ```
 proc SciterGetElementTextCB*(he: HELEMENT; rcv: LPCWSTR_RECEIVER;
                              rcv_param: LPVOID): INT {.importc, cdecl.}
+  ## ```
+                                                                       ##   Get inner text of the element as LPWSTR (utf16 words).
+                                                                       ##   
+                                                                       ##    \param[in] he \b #HELEMENT
+                                                                       ##   
+                                                                       ##    \param[out] utf16words \b pointer to byte address receiving UTF16 encoded plain text
+                                                                       ##   
+                                                                       ##    \return \b #SCDOM_RESULT SCAPI
+                                                                       ##   
+                                                                       ##    OBSOLETE! use SciterGetElementTextCB instead
+                                                                       ##   
+                                                                       ##    
+                                                                       ##     OBSOLETE SCDOM_RESULT SCAPI SciterGetElementText(HELEMENT he, LPWSTR* utf16);
+                                                                       ##     Get inner text of the element as LPCWSTR (utf16 words).
+                                                                       ##   
+                                                                       ##    \param[in] he \b #HELEMENT
+                                                                       ##   
+                                                                       ##    \param[in] rcv \b pointer to the function receiving UTF16 encoded plain text
+                                                                       ##   
+                                                                       ##    \param[in] rcv_param \b param passed that passed to LPCWSTR_RECEIVER "as is"
+                                                                       ##   
+                                                                       ##    \return \b #SCDOM_RESULT SCAPI
+                                                                       ## ```
 proc SciterSetElementText*(he: HELEMENT; utf16: LPCWSTR; length: cuint): INT {.
     importc, cdecl.}
   ## ```
                     ##   Set inner text of the element from LPCWSTR buffer (utf16 words).
+                    ##   
                     ##    \param[in] he \b #HELEMENT
+                    ##   
                     ##    \param[in] utf16words \b pointer, UTF16 encoded plain text
+                    ##   
                     ##    \param[in] length \b UINT, number of words in utf16words sequence
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
                     ## ```
 proc SciterGetAttributeCount*(he: HELEMENT; p_count: LPUINT): INT {.importc,
     cdecl.}
   ## ```
            ##   Get number of element's attributes.
+           ##   
            ##    \param[in] he \b #HELEMENT
+           ##   
            ##    \param[out] p_count \b LPUINT, variable to receive number of element
+           ##   
            ##    attributes.
+           ##   
            ##    \return \b #SCDOM_RESULT SCAPI
            ## ```
 proc SciterGetNthAttributeNameCB*(he: HELEMENT; n: cuint;
                                   rcv: LPCSTR_RECEIVER; rcv_param: LPVOID): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   Get value of any element's attribute by attribute's number.
+                    ##   
+                    ##    \param[in] he \b #HELEMENT
+                    ##   
+                    ##    \param[in] n \b UINT, number of desired attribute
+                    ##   
+                    ##    \param[out] p_name \b LPCSTR*, will be set to address of the string
+                    ##   
+                    ##    containing attribute name
+                    ##   
+                    ##    \param[out] p_value \b LPCWSTR*, will be set to address of the string
+                    ##   
+                    ##    containing attribute value
+                    ##   
+                    ##    \return \b #SCDOM_RESULT SCAPI
+                    ## ```
 proc SciterGetNthAttributeValueCB*(he: HELEMENT; n: cuint;
                                    rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
     importc, cdecl.}
@@ -3306,11 +3645,17 @@ proc SciterGetAttributeByNameCB*(he: HELEMENT; name: LPCSTR;
     importc, cdecl.}
   ## ```
                     ##   Get value of any element's attribute by name.
+                    ##   
                     ##    \param[in] he \b #HELEMENT
+                    ##   
                     ##    \param[in] name \b LPCSTR, attribute name
+                    ##   
                     ##    \param[out] p_value \b LPCWSTR*, will be set to address of the string
+                    ##   
                     ##    containing attribute value
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
+                    ##   
                     ##    
                     ##     SCDOM_RESULT SCAPI SciterGetAttributeByName(HELEMENT he, LPCSTR name, LPCWSTR* p_value);
                     ## ```
@@ -3318,57 +3663,103 @@ proc SciterSetAttributeByName*(he: HELEMENT; name: LPCSTR; value: LPCWSTR): INT 
     importc, cdecl.}
   ## ```
                     ##   Set attribute's value.
+                    ##   
                     ##    \param[in] he \b #HELEMENT
+                    ##   
                     ##    \param[in] name \b LPCSTR, attribute name
+                    ##   
                     ##    \param[in] value \b LPCWSTR, new attribute value or 0 if you want to remove attribute.
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
                     ## ```
 proc SciterClearAttributes*(he: HELEMENT): INT {.importc, cdecl.}
   ## ```
                                                                  ##   Remove all attributes from the element.
+                                                                 ##   
                                                                  ##    \param[in] he \b #HELEMENT
+                                                                 ##   
                                                                  ##    \return \b #SCDOM_RESULT SCAPI
                                                                  ## ```
 proc SciterGetElementIndex*(he: HELEMENT; p_index: LPUINT): INT {.importc, cdecl.}
   ## ```
                                                                                   ##   Get element index.
+                                                                                  ##   
                                                                                   ##    \param[in] he \b #HELEMENT
+                                                                                  ##   
                                                                                   ##    \param[out] p_index \b LPUINT, variable to receive number of the element
+                                                                                  ##   
                                                                                   ##    among parent element's subelements.
+                                                                                  ##   
                                                                                   ##    \return \b #SCDOM_RESULT SCAPI
                                                                                   ## ```
 proc SciterGetElementType*(he: HELEMENT; p_type: ptr LPCSTR): INT {.importc,
     cdecl.}
   ## ```
            ##   Get element's type.
+           ##   
            ##    \param[in] he \b #HELEMENT
+           ##   
            ##    \param[out] p_type \b LPCSTR*, receives name of the element type.
+           ##   
            ##    \return \b #SCDOM_RESULT SCAPI
            ##   
+           ##   
+           ##   
            ##    \par Example:
+           ##   
            ##    For &lt;div&gt; tag p_type will be set to "div".
            ## ```
 proc SciterGetElementTypeCB*(he: HELEMENT; rcv: LPCSTR_RECEIVER;
                              rcv_param: LPVOID): INT {.importc, cdecl.}
   ## ```
                                                                        ##   Get element's type.
+                                                                       ##   
                                                                        ##    \param[in] he \b #HELEMENT
+                                                                       ##   
                                                                        ##    \param[out] rcv \b LPCSTR_RECEIVER, receives name of the element type.
+                                                                       ##   
                                                                        ##    \param[out] rcv_param \b LPVOID, parameter passed as it is to the receiver.
+                                                                       ##   
                                                                        ##    \return \b #SCDOM_RESULT SCAPI
                                                                        ## ```
 proc SciterGetStyleAttributeCB*(he: HELEMENT; name: LPCSTR;
                                 rcv: LPCWSTR_RECEIVER; rcv_param: LPVOID): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   Get element's style attribute.
+                    ##   
+                    ##    \param[in] he \b #HELEMENT
+                    ##   
+                    ##    \param[in] name \b LPCSTR, name of the style attribute
+                    ##   
+                    ##    \param[in] rcv \b pointer to the function receiving UTF16 encoded plain text
+                    ##   
+                    ##    \param[in] rcv_param \b param passed that passed to LPCWSTR_RECEIVER "as is"
+                    ##   
+                    ##   
+                    ##   
+                    ##    Style attributes are those that are set using css. E.g. "font-face: arial" or "display: block".
+                    ##   
+                    ##   
+                    ##   
+                    ##    \sa #SciterSetStyleAttribute()
+                    ## ```
 proc SciterSetStyleAttribute*(he: HELEMENT; name: LPCSTR; value: LPCWSTR): INT {.
     importc, cdecl.}
   ## ```
                     ##   Get element's style attribute.
+                    ##   
                     ##    \param[in] he \b #HELEMENT
+                    ##   
                     ##    \param[in] name \b LPCSTR, name of the style attribute
+                    ##   
                     ##    \param[out] value \b LPCWSTR, value of the style attribute.
                     ##   
+                    ##   
+                    ##   
                     ##    Style attributes are those that are set using css. E.g. "font-face: arial" or "display: block".
+                    ##   
+                    ##   
                     ##   
                     ##    \sa #SciterGetStyleAttribute()
                     ## ```
@@ -3378,94 +3769,256 @@ proc SciterScrollToView*(he: HELEMENT; SciterScrollFlags: cuint): INT {.importc,
     cdecl.}
   ## ```
            ##   Scroll to view.
+           ##   
            ##    \param[in] he \b #HELEMENT
+           ##   
            ##    \param[in] SciterScrollFlags \b #UINT, combination of SCITER_SCROLL_FLAGS above or 0
+           ##   
            ##    \return \b #SCDOM_RESULT SCAPI
            ## ```
-proc SciterUpdateElement*(he: HELEMENT; andForceRender: SBOOL): INT {.importc,
+proc SciterUpdateElement*(he: HELEMENT; andForceRender: bool): INT {.importc,
     cdecl.}
   ## ```
            ##   Apply changes and refresh element area in its window.
+           ##   
            ##    \param[in] he \b #HELEMENT
+           ##   
            ##    \param[in] andForceRender \b SBOOL, TRUE to force UpdateWindow() call.
+           ##   
            ##    \return \b #SCDOM_RESULT SCAPI
            ## ```
 proc SciterRefreshElementArea*(he: HELEMENT; rc: RECT): INT {.importc, cdecl.}
   ## ```
                                                                               ##   refresh element area in its window.
+                                                                              ##   
                                                                               ##    \param[in] he \b #HELEMENT
+                                                                              ##   
                                                                               ##    \param[in] rc \b RECT, rect to refresh.
+                                                                              ##   
                                                                               ##    \return \b #SCDOM_RESULT SCAPI
                                                                               ## ```
 proc SciterSetCapture*(he: HELEMENT): INT {.importc, cdecl.}
   ## ```
                                                             ##   Set the mouse capture to the specified element.
+                                                            ##   
                                                             ##    \param[in] he \b #HELEMENT
+                                                            ##   
                                                             ##    \return \b #SCDOM_RESULT SCAPI
                                                             ##   
+                                                            ##   
+                                                            ##   
                                                             ##    After call to this function all mouse events will be targeted to the element.
+                                                            ##   
                                                             ##    To remove mouse capture call ReleaseCapture() function.
                                                             ## ```
 proc SciterReleaseCapture*(he: HELEMENT): INT {.importc, cdecl.}
 proc SciterGetElementHwnd*(he: HELEMENT; p_hwnd: ptr ptr GtkWidget;
-                           rootWindow: SBOOL): INT {.importc, cdecl.}
+                           rootWindow: bool): INT {.importc, cdecl.}
   ## ```
-                                                                     ##   Get HWINDOW of containing window.
-                                                                     ##    \param[in] he \b #HELEMENT
-                                                                     ##    \param[out] p_hwnd \b HWINDOW*, variable to receive window handle
-                                                                     ##    \param[in] rootWindow \b SBOOL, handle of which window to get:
-                                                                     ##    - TRUE - Sciter window
-                                                                     ##    - FALSE - nearest parent element having overflow:auto or :scroll
-                                                                     ##    \return \b #SCDOM_RESULT SCAPI
-                                                                     ## ```
+                                                                    ##   Get HWINDOW of containing window.
+                                                                    ##   
+                                                                    ##    \param[in] he \b #HELEMENT
+                                                                    ##   
+                                                                    ##    \param[out] p_hwnd \b HWINDOW*, variable to receive window handle
+                                                                    ##   
+                                                                    ##    \param[in] rootWindow \b SBOOL, handle of which window to get:
+                                                                    ##   
+                                                                    ##    - TRUE - Sciter window
+                                                                    ##   
+                                                                    ##    - FALSE - nearest parent element having overflow:auto or :scroll
+                                                                    ##   
+                                                                    ##    \return \b #SCDOM_RESULT SCAPI
+                                                                    ## ```
 proc SciterCombineURL*(he: HELEMENT; szUrlBuffer: LPWSTR; UrlBufferSize: cuint): INT {.
     importc, cdecl.}
   ## ```
                     ##   Combine given URL with URL of the document element belongs to.
+                    ##   
                     ##    \param[in] he \b #HELEMENT
+                    ##   
                     ##    \param[in, out] szUrlBuffer \b LPWSTR, at input this buffer contains
+                    ##   
                     ##    zero-terminated URL to be combined, after function call it contains
+                    ##   
                     ##    zero-terminated combined URL
+                    ##   
                     ##    \param[in] UrlBufferSize \b UINT, size of the buffer pointed by
+                    ##   
                     ##    \c szUrlBuffer
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
+                    ##   
+                    ##   
                     ##   
                     ##    This function is used for resolving relative references.
                     ## ```
 proc SciterSelectElements*(he: HELEMENT; CSS_selectors: LPCSTR;
                            callback: SciterElementCallback; param: LPVOID): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   Call specified function for every element in a DOM that meets specified
+                    ##   
+                    ##    CSS selectors.
+                    ##   
+                    ##    See list of supported selectors: http:www.terrainformatica.com/sciter/css/selectors.htm
+                    ##   
+                    ##    \param[in] he \b #HELEMENT
+                    ##   
+                    ##    \param[in] selector \b LPCSTR, comma separated list of CSS selectors, e.g.: div, #id, div[align="right"].
+                    ##   
+                    ##    \param[in] callback \b #SciterElementCallback*, address of callback
+                    ##   
+                    ##    function being called on each element found.
+                    ##   
+                    ##    \param[in] param \b LPVOID, additional parameter to be passed to callback
+                    ##   
+                    ##    function.
+                    ##   
+                    ##    \return \b #SCDOM_RESULT SCAPI
+                    ## ```
 proc SciterSelectElementsW*(he: HELEMENT; CSS_selectors: LPCWSTR;
                             callback: SciterElementCallback; param: LPVOID): INT {.
     importc, cdecl.}
 proc SciterSelectParent*(he: HELEMENT; selector: LPCSTR; depth: cuint;
                          heFound: ptr HELEMENT): INT {.importc, cdecl.}
+  ## ```
+                                                                       ##   Find parent of the element by CSS selector.
+                                                                       ##   
+                                                                       ##    ATTN: function will test first element itself.
+                                                                       ##   
+                                                                       ##    See list of supported selectors: http:www.terrainformatica.com/sciter/css/selectors.htm
+                                                                       ##   
+                                                                       ##    \param[in] he \b #HELEMENT
+                                                                       ##   
+                                                                       ##    \param[in] selector \b LPCSTR, comma separated list of CSS selectors, e.g.: div, #id, div[align="right"].
+                                                                       ##   
+                                                                       ##    \param[out] heFound \b #HELEMENT*, address of result HELEMENT
+                                                                       ##   
+                                                                       ##    \param[in] depth \b LPVOID, depth of search, if depth == 1 then it will test only element itself.
+                                                                       ##   
+                                                                       ##                        Use depth = 1 if you just want to test he element for matching given CSS selector(s).
+                                                                       ##   
+                                                                       ##                        depth = 0 will scan the whole child parent chain up to the root.
+                                                                       ##   
+                                                                       ##    \return \b #SCDOM_RESULT SCAPI
+                                                                       ## ```
 proc SciterSelectParentW*(he: HELEMENT; selector: LPCWSTR; depth: cuint;
                           heFound: ptr HELEMENT): INT {.importc, cdecl.}
 proc SciterSetElementHtml*(he: HELEMENT; html: ptr BYTE; htmlLength: cuint;
                            where: cuint): INT {.importc, cdecl.}
+  ## ```
+                                                                ##   Set inner or outer html of the element.
+                                                                ##   
+                                                                ##    \param[in] he \b #HELEMENT
+                                                                ##   
+                                                                ##    \param[in] html \b LPCBYTE, UTF-8 encoded string containing html text
+                                                                ##   
+                                                                ##    \param[in] htmlLength \b UINT, length in bytes of \c html.
+                                                                ##   
+                                                                ##    \param[in] where \b UINT, possible values are:
+                                                                ##   
+                                                                ##    - SIH_REPLACE_CONTENT - replace content of the element
+                                                                ##   
+                                                                ##    - SIH_INSERT_AT_START - insert html before first child of the element
+                                                                ##   
+                                                                ##    - SIH_APPEND_AFTER_LAST - insert html after last child of the element
+                                                                ##   
+                                                                ##   
+                                                                ##   
+                                                                ##    - SOH_REPLACE - replace element by html, a.k.a. element.outerHtml = "something"
+                                                                ##   
+                                                                ##    - SOH_INSERT_BEFORE - insert html before the element
+                                                                ##   
+                                                                ##    - SOH_INSERT_AFTER - insert html after the element
+                                                                ##   
+                                                                ##      ATTN: SOH_*** operations do not work for inline elements like <SPAN>
+                                                                ##   
+                                                                ##   
+                                                                ##   
+                                                                ##    \return /b #SCDOM_RESULT SCAPI
+                                                                ## ```
 proc SciterGetElementUID*(he: HELEMENT; puid: ptr cuint): INT {.importc, cdecl.}
+  ## ```
+                                                                                ##   Element UID support functions.
+                                                                                ##   
+                                                                                ##   
+                                                                                ##   
+                                                                                ##     Element UID is unique identifier of the DOM element.
+                                                                                ##   
+                                                                                ##     UID is suitable for storing it in structures associated with the view/document.
+                                                                                ##   
+                                                                                ##     Access to the element using HELEMENT is more effective but table space of handles is limited.
+                                                                                ##   
+                                                                                ##     It is not recommended to store HELEMENT handles between function calls.
+                                                                                ##   
+                                                                                ##    
+                                                                                ##      Get Element UID.
+                                                                                ##   
+                                                                                ##    \param[in] he \b #HELEMENT
+                                                                                ##   
+                                                                                ##    \param[out] puid \b UINT*, variable to receive UID of the element.
+                                                                                ##   
+                                                                                ##    \return \b #SCDOM_RESULT SCAPI
+                                                                                ##   
+                                                                                ##   
+                                                                                ##   
+                                                                                ##    This function retrieves element UID by its handle.
+                                                                                ## ```
 proc SciterGetElementByUID*(hwnd: ptr GtkWidget; uid: cuint; phe: ptr HELEMENT): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   Get Element handle by its UID.
+                    ##   
+                    ##    \param[in] hwnd \b HWINDOW, HWINDOW of Sciter window
+                    ##   
+                    ##    \param[in] uid \b UINT
+                    ##   
+                    ##    \param[out] phe \b #HELEMENT*, variable to receive HELEMENT handle
+                    ##   
+                    ##    \return \b #SCDOM_RESULT SCAPI
+                    ##   
+                    ##   
+                    ##   
+                    ##    This function retrieves element UID by its handle.
+                    ## ```
 proc SciterShowPopup*(hePopup: HELEMENT; heAnchor: HELEMENT; placement: cuint): INT {.
     importc, cdecl.}
   ## ```
                     ##   Shows block element (DIV) in popup window.
+                    ##   
                     ##    \param[in] hePopup \b HELEMENT, element to show as popup
+                    ##   
                     ##    \param[in] heAnchor \b HELEMENT, anchor element - hePopup will be shown near this element
+                    ##   
                     ##    \param[in] placement \b UINT, values:
+                    ##   
                     ##        2 - popup element below of anchor
+                    ##   
                     ##        8 - popup element above of anchor
+                    ##   
                     ##        4 - popup element on left side of anchor
+                    ##   
                     ##        6 - popup element on right side of anchor
+                    ##   
                     ##        ( see numpad on keyboard to get an idea of the numbers)
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
                     ## ```
 proc SciterShowPopupAt*(hePopup: HELEMENT; pos: POINT; placement: cuint): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   Shows block element (DIV) in popup window at given position.
+                    ##   
+                    ##    \param[in] hePopup \b HELEMENT, element to show as popup
+                    ##   
+                    ##    \param[in] pos \b POINT, popup element position, relative to origin of Sciter window.
+                    ##   
+                    ##    \param[in] placement \b UINT, meaning of pos - number in 1..9 range. When 7 - pos is top/left corner of the popup
+                    ## ```
 proc SciterHidePopup*(he: HELEMENT): INT {.importc, cdecl.}
   ## ```
                                                            ##   Removes popup window.
+                                                           ##   
                                                            ##    \param[in] he \b HELEMENT, element which belongs to popup window or popup element itself
                                                            ## ```
 proc SciterGetElementState*(he: HELEMENT; pstateBits: ptr cuint): INT {.importc,
@@ -3474,50 +4027,84 @@ proc SciterGetElementState*(he: HELEMENT; pstateBits: ptr cuint): INT {.importc,
            ##   Get/set state bits, stateBits*** accept or'ed values above
            ## ```
 proc SciterSetElementState*(he: HELEMENT; stateBitsToSet: cuint;
-                            stateBitsToClear: cuint; updateView: SBOOL): INT {.
+                            stateBitsToClear: cuint; updateView: bool): INT {.
     importc, cdecl.}
   ## ```
                     ##   
                     ## ```
 proc SciterCreateElement*(tagname: LPCSTR; textOrNull: LPCWSTR;
                           phe: ptr HELEMENT): INT {.importc, cdecl.}
+  ## ```
+                                                                    ##   Create new element, the element is disconnected initially from the DOM.
+                                                                    ##   
+                                                                    ##       Element created with ref_count = 1 thus you \b must call Sciter_UnuseElement on returned handler.
+                                                                    ##   
+                                                                    ##    \param[in] tagname \b LPCSTR, html tag of the element e.g. "div", "option", etc.
+                                                                    ##   
+                                                                    ##    \param[in] textOrNull \b LPCWSTR, initial text of the element or NULL. text here is a plain text - method does no parsing.
+                                                                    ##   
+                                                                    ##    \param[out ] phe \b #HELEMENT*, variable to receive handle of the element
+                                                                    ## ```
 proc SciterCloneElement*(he: HELEMENT; phe: ptr HELEMENT): INT {.importc, cdecl.}
   ## ```
                                                                                  ##   Create new element as copy of existing element, new element is a full (deep) copy of the element and
+                                                                                 ##   
                                                                                  ##       is disconnected initially from the DOM.
+                                                                                 ##   
                                                                                  ##       Element created with ref_count = 1 thus you \b must call Sciter_UnuseElement on returned handler.
+                                                                                 ##   
                                                                                  ##    \param[in] he \b #HELEMENT, source element.
+                                                                                 ##   
                                                                                  ##    \param[out ] phe \b #HELEMENT*, variable to receive handle of the new element.
                                                                                  ## ```
 proc SciterInsertElement*(he: HELEMENT; hparent: HELEMENT; index: cuint): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   Insert element at \i index position of parent.
+                    ##   
+                    ##       It is not an error to insert element which already has parent - it will be disconnected first, but
+                    ##   
+                    ##       you need to update elements parent in this case.
+                    ##   
+                    ##    \param index \b UINT, position of the element in parent collection.
+                    ##   
+                    ##      It is not an error to provide index greater than elements count in parent -
+                    ##   
+                    ##      it will be appended.
+                    ## ```
 proc SciterDetachElement*(he: HELEMENT): INT {.importc, cdecl.}
   ## ```
                                                                ##   Take element out of its container (and DOM tree).
+                                                               ##   
                                                                ##       Element will be destroyed when its reference counter will become zero
                                                                ## ```
 proc SciterDeleteElement*(he: HELEMENT): INT {.importc, cdecl.}
   ## ```
                                                                ##   Take element out of its container (and DOM tree) and force destruction of all behaviors.
+                                                               ##   
                                                                ##       Element will be destroyed when its reference counter will become zero
                                                                ## ```
 proc SciterSetTimer*(he: HELEMENT; milliseconds: cuint; timer_id: UINT_PTR): INT {.
     importc, cdecl.}
   ## ```
                     ##   Start Timer for the element.
+                    ##   
                     ##       Element will receive on_timer event
+                    ##   
                     ##       To stop timer call SciterSetTimer( he, 0 );
                     ## ```
 proc SciterDetachEventHandler*(he: HELEMENT; pep: C_LPELEMENT_EVENT_PROC;
                                tag: LPVOID): INT {.importc, cdecl.}
   ## ```
                                                                    ##   Attach/Detach ElementEventProc to the element
+                                                                   ##   
                                                                    ##       See sciter::event_handler.
                                                                    ## ```
 proc SciterAttachEventHandler*(he: HELEMENT; pep: C_LPELEMENT_EVENT_PROC;
                                tag: LPVOID): INT {.importc, cdecl.}
   ## ```
                                                                    ##   Attach ElementEventProc to the element and subscribe it to events providede by subscription parameter
+                                                                   ##   
                                                                    ##       See Sciter::attach_event_handler.
                                                                    ## ```
 proc SciterWindowAttachEventHandler*(hwndLayout: ptr GtkWidget;
@@ -3525,62 +4112,241 @@ proc SciterWindowAttachEventHandler*(hwndLayout: ptr GtkWidget;
                                      subscription: cuint): INT {.importc, cdecl.}
   ## ```
                                                                                  ##   Attach/Detach ElementEventProc to the Sciter window.
+                                                                                 ##   
                                                                                  ##       All events will start first here (in SINKING phase) and if not consumed will end up here.
+                                                                                 ##   
                                                                                  ##       You can install Window EventHandler only once - it will survive all document reloads.
                                                                                  ## ```
 proc SciterWindowDetachEventHandler*(hwndLayout: ptr GtkWidget;
                                      pep: C_LPELEMENT_EVENT_PROC; tag: LPVOID): INT {.
     importc, cdecl.}
 proc SciterSendEvent*(he: HELEMENT; appEventCode: cuint; heSource: HELEMENT;
-                      reason: UINT_PTR; handled: ptr SBOOL): INT {.importc,
-    cdecl.}
+                      reason: UINT_PTR; handled: ptr bool): INT {.importc, cdecl.}
+  ## ```
+                                                                                  ##   SciterSendEvent - sends sinking/bubbling event to the child/parent chain of he element.
+                                                                                  ##   
+                                                                                  ##       First event will be send in SINKING mode (with SINKING flag) - from root to he element itself.
+                                                                                  ##   
+                                                                                  ##       Then from he element to its root on parents chain without SINKING flag (bubbling phase).
+                                                                                  ##   
+                                                                                  ##   
+                                                                                  ##   
+                                                                                  ##    \param[in] he \b HELEMENT, element to send this event to.
+                                                                                  ##   
+                                                                                  ##    \param[in] appEventCode \b UINT, event ID, see: #BEHAVIOR_EVENTS
+                                                                                  ##   
+                                                                                  ##    \param[in] heSource \b HELEMENT, optional handle of the source element, e.g. some list item
+                                                                                  ##   
+                                                                                  ##    \param[in] reason \b UINT, notification specific event reason code
+                                                                                  ##   
+                                                                                  ##    \param[out] handled \b SBOOL*, variable to receive TRUE if any handler handled it, FALSE otherwise.
+                                                                                  ## ```
 proc SciterPostEvent*(he: HELEMENT; appEventCode: cuint; heSource: HELEMENT;
                       reason: UINT_PTR): INT {.importc, cdecl.}
-proc SciterFireEvent*(evt: ptr BEHAVIOR_EVENT_PARAMS; post: SBOOL;
-                      handled: ptr SBOOL): INT {.importc, cdecl.}
+  ## ```
+                                                               ##   SciterPostEvent - post sinking/bubbling event to the child/parent chain of he element.
+                                                               ##   
+                                                               ##     Function will return immediately posting event into input queue of the application.
+                                                               ##   
+                                                               ##   
+                                                               ##   
+                                                               ##    \param[in] he \b HELEMENT, element to send this event to.
+                                                               ##   
+                                                               ##    \param[in] appEventCode \b UINT, event ID, see: #BEHAVIOR_EVENTS
+                                                               ##   
+                                                               ##    \param[in] heSource \b HELEMENT, optional handle of the source element, e.g. some list item
+                                                               ##   
+                                                               ##    \param[in] reason \b UINT, notification specific event reason code
+                                                               ## ```
+proc SciterFireEvent*(evt: ptr BEHAVIOR_EVENT_PARAMS; post: bool;
+                      handled: ptr bool): INT {.importc, cdecl.}
+  ## ```
+                                                                ##   SciterFireEvent - sends or posts sinking/bubbling event to the child/parent chain of specified element.
+                                                                ##   
+                                                                ##       First event will be send in SINKING mode (with SINKING flag) - from root to element itself.
+                                                                ##   
+                                                                ##       Then from element to its root on parents chain without SINKING flag (bubbling phase).
+                                                                ##   
+                                                                ##   
+                                                                ##   
+                                                                ##    \param[in] evt \b BEHAVIOR_EVENT_PARAMS, pointer to event param block
+                                                                ##   
+                                                                ##    \param[in] post \b SBOOL, \c TRUE to post event asynchronously, \c FALSE otherwise
+                                                                ##   
+                                                                ##    \param[out] handled \b SBOOL*, variable to receive TRUE if any handler handled it, FALSE otherwise.
+                                                                ## ```
 proc SciterCallBehaviorMethod*(he: HELEMENT; params: ptr METHOD_PARAMS): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   SciterCallMethod - calls behavior specific method.
+                    ##   
+                    ##    \param[in] he \b HELEMENT, element - source of the event.
+                    ##   
+                    ##    \param[in] params \b METHOD_PARAMS, pointer to method param block
+                    ## ```
 proc SciterRequestElementData*(he: HELEMENT; url: LPCWSTR; dataType: cuint;
                                initiator: HELEMENT): INT {.importc, cdecl.}
+  ## ```
+                                                                           ##   SciterRequestElementData  - request data download for the element.
+                                                                           ##   
+                                                                           ##    \param[in] he \b HELEMENT, element to deleiver data to.
+                                                                           ##   
+                                                                           ##    \param[in] url \b LPCWSTR, url to download data from.
+                                                                           ##   
+                                                                           ##    \param[in] dataType \b UINT, data type, see SciterResourceType.
+                                                                           ##   
+                                                                           ##    \param[in] hInitiator \b HELEMENT, element - initiator, can be NULL.
+                                                                           ##   
+                                                                           ##   
+                                                                           ##   
+                                                                           ##     event handler on the he element (if any) will be notified
+                                                                           ##   
+                                                                           ##     when data will be ready by receiving HANDLE_DATA_DELIVERY event.
+                                                                           ## ```
 proc SciterHttpRequest*(he: HELEMENT; url: LPCWSTR; dataType: cuint;
                         requestType: cuint; requestParams: ptr REQUEST_PARAM;
                         nParams: cuint): INT {.importc, cdecl.}
 proc SciterGetScrollInfo*(he: HELEMENT; scrollPos: LPPOINT; viewRect: LPRECT;
                           contentSize: LPSIZE): INT {.importc, cdecl.}
-proc SciterSetScrollPos*(he: HELEMENT; scrollPos: POINT; smooth: SBOOL): INT {.
+  ## ```
+                                                                      ##   SciterGetScrollInfo  - get scroll info of element with overflow:scroll or auto.
+                                                                      ##   
+                                                                      ##    \param[in] he \b HELEMENT, element.
+                                                                      ##   
+                                                                      ##    \param[out] scrollPos \b LPPOINT, scroll position.
+                                                                      ##   
+                                                                      ##    \param[out] viewRect \b LPRECT, position of element scrollable area, content box minus scrollbars.
+                                                                      ##   
+                                                                      ##    \param[out] contentSize \b LPSIZE, size of scrollable element content.
+                                                                      ## ```
+proc SciterSetScrollPos*(he: HELEMENT; scrollPos: POINT; smooth: bool): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   SciterSetScrollPos  - set scroll position of element with overflow:scroll or auto.
+                    ##   
+                    ##    \param[in] he \b HELEMENT, element.
+                    ##   
+                    ##    \param[in] scrollPos \b POINT, new scroll position.
+                    ##   
+                    ##    \param[in] smooth \b SBOOL, TRUE - do smooth scroll.
+                    ## ```
 proc SciterGetElementIntrinsicWidths*(he: HELEMENT; pMinWidth: ptr INT;
                                       pMaxWidth: ptr INT): INT {.importc, cdecl.}
   ## ```
                                                                                  ##   SciterGetElementIntrinsicWidths  - get min-intrinsic and max-intrinsic widths of the element.
+                                                                                 ##   
                                                                                  ##    \param[in] he \b HELEMENT, element.
+                                                                                 ##   
                                                                                  ##    \param[out] pMinWidth \b INT*, calculated min-intrinsic width.
+                                                                                 ##   
                                                                                  ##    \param[out] pMaxWidth \b INT*, calculated max-intrinsic width.
                                                                                  ## ```
 proc SciterGetElementIntrinsicHeight*(he: HELEMENT; forWidth: INT;
                                       pHeight: ptr INT): INT {.importc, cdecl.}
   ## ```
                                                                                ##   SciterGetElementIntrinsicHeight  - get min-intrinsic height of the element calculated for forWidth.
+                                                                               ##   
                                                                                ##    \param[in] he \b HELEMENT, element.
+                                                                               ##   
                                                                                ##    \param[in] forWidth \b INT*, width to calculate intrinsic height for.
+                                                                               ##   
                                                                                ##    \param[out] pHeight \b INT*, calculated min-intrinsic height.
                                                                                ## ```
-proc SciterIsElementVisible*(he: HELEMENT; pVisible: ptr SBOOL): INT {.importc,
+proc SciterIsElementVisible*(he: HELEMENT; pVisible: ptr bool): INT {.importc,
     cdecl.}
-proc SciterIsElementEnabled*(he: HELEMENT; pEnabled: ptr SBOOL): INT {.importc,
+  ## ```
+           ##   SciterIsElementVisible - deep visibility, determines if element visible - has no visiblity:hidden and no display:none defined
+           ##   
+           ##       for itself or for any its parents.
+           ##   
+           ##    \param[in] he \b HELEMENT, element.
+           ##   
+           ##    \param[out] pVisible \b LPBOOL, visibility state.
+           ## ```
+proc SciterIsElementEnabled*(he: HELEMENT; pEnabled: ptr bool): INT {.importc,
     cdecl.}
+  ## ```
+           ##   SciterIsElementEnabled - deep enable state, determines if element enabled - is not disabled by itself or no one
+           ##   
+           ##       of its parents is disabled.
+           ##   
+           ##    \param[in] he \b HELEMENT, element.
+           ##   
+           ##    \param[out] pEnabled \b LPBOOL, enabled state.
+           ## ```
 proc SciterSortElements*(he: HELEMENT; firstIndex: cuint; lastIndex: cuint;
                          cmpFunc: ptr ELEMENT_COMPARATOR; cmpFuncParam: LPVOID): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   SciterSortElements - sort children of the element.
+                    ##   
+                    ##    \param[in] he \b HELEMENT, element which children to be sorted.
+                    ##   
+                    ##    \param[in] firstIndex \b UINT, first child index to start sorting from.
+                    ##   
+                    ##    \param[in] lastIndex \b UINT, last index of the sorting range, element with this index will not be included in the sorting.
+                    ##   
+                    ##    \param[in] cmpFunc \b ELEMENT_COMPARATOR, comparator function.
+                    ##   
+                    ##    \param[in] cmpFuncParam \b LPVOID, parameter to be passed in comparator function.
+                    ## ```
 proc SciterSwapElements*(he1: HELEMENT; he2: HELEMENT): INT {.importc, cdecl.}
+  ## ```
+                                                                              ##   SciterSwapElements - swap element positions.
+                                                                              ##   
+                                                                              ##    Function changes "insertion points" of two elements. So it swops indexes and parents of two elements.
+                                                                              ##   
+                                                                              ##    \param[in] he1 \b HELEMENT, first element.
+                                                                              ##   
+                                                                              ##    \param[in] he2 \b HELEMENT, second element.
+                                                                              ## ```
 proc SciterTraverseUIEvent*(evt: cuint; eventCtlStruct: LPVOID;
-                            bOutProcessed: ptr SBOOL): INT {.importc, cdecl.}
+                            bOutProcessed: ptr bool): INT {.importc, cdecl.}
+  ## ```
+                                                                            ##   SciterTraverseUIEvent - traverse (sink-and-bubble) MOUSE or KEY event.
+                                                                            ##   
+                                                                            ##    \param[in] evt \b EVENT_GROUPS, either HANDLE_MOUSE or HANDLE_KEY code.
+                                                                            ##   
+                                                                            ##    \param[in] eventCtlStruct \b LPVOID, pointer on either MOUSE_PARAMS or KEY_PARAMS structure.
+                                                                            ##   
+                                                                            ##    \param[out] bOutProcessed \b LPBOOL, pointer to SBOOL receiving TRUE if event was processed by some element and FALSE otherwise.
+                                                                            ## ```
 proc SciterCallScriptingMethod*(he: HELEMENT; name: LPCSTR; argv: ptr VALUE;
                                 argc: cuint; retval: ptr VALUE): INT {.importc,
     cdecl.}
+  ## ```
+           ##   CallScriptingMethod - calls scripting method defined for the element.
+           ##   
+           ##    \param[in] he \b HELEMENT, element which method will be callled.
+           ##   
+           ##    \param[in] name \b LPCSTR, name of the method to call.
+           ##   
+           ##    \param[in] argv \b SCITER_VALUE[], vector of arguments.
+           ##   
+           ##    \param[in] argc \b UINT, number of arguments.
+           ##   
+           ##    \param[out] retval \b SCITER_VALUE*, pointer to SCITER_VALUE receiving returning value of the function.
+           ## ```
 proc SciterCallScriptingFunction*(he: HELEMENT; name: LPCSTR; argv: ptr VALUE;
                                   argc: cuint; retval: ptr VALUE): INT {.
     importc, cdecl.}
+  ## ```
+                    ##   CallScriptingFunction - calls scripting function defined in the namespace of the element (a.k.a. global function).
+                    ##   
+                    ##    \param[in] he \b HELEMENT, element which namespace will be used.
+                    ##   
+                    ##    \param[in] name \b LPCSTR, name of the method to call.
+                    ##   
+                    ##    \param[in] argv \b SCITER_VALUE[], vector of arguments.
+                    ##   
+                    ##    \param[in] argc \b UINT, number of arguments.
+                    ##   
+                    ##    \param[out] retval \b SCITER_VALUE*, pointer to SCITER_VALUE receiving returning value of the function.
+                    ##   
+                    ##   
+                    ##   
+                    ##    SciterCallScriptingFunction allows to call functions defined on global level of main document or frame loaded in it.
+                    ## ```
 proc SciterEvalElementScript*(he: HELEMENT; script: LPCWSTR;
                               scriptLength: cuint; retval: ptr VALUE): INT {.
     importc, cdecl.}
@@ -3588,56 +4354,94 @@ proc SciterAttachHwndToElement*(he: HELEMENT; hwnd: ptr GtkWidget): INT {.
     importc, cdecl.}
   ## ```
                     ##   Attach HWINDOW to the element.
+                    ##   
                     ##    \param[in] he \b #HELEMENT
+                    ##   
                     ##    \param[in] hwnd \b HWINDOW, window handle to attach
+                    ##   
                     ##    \return \b #SCDOM_RESULT SCAPI
                     ## ```
 proc SciterControlGetType*(he: HELEMENT; pType: ptr cuint): INT {.importc, cdecl.}
   ## ```
                                                                                   ##   SciterControlGetType - get type of control - type of behavior assigned to the element.
+                                                                                  ##   
                                                                                   ##    \param[in] he \b HELEMENT, element.
+                                                                                  ##   
                                                                                   ##    \param[out] pType \b UINT*, pointer to variable receiving control type,
+                                                                                  ##   
                                                                                   ##                for list of values see CTL_TYPE.
                                                                                   ## ```
 proc SciterGetValue*(he: HELEMENT; pval: ptr VALUE): INT {.importc, cdecl.}
   ## ```
                                                                            ##   SciterGetValue - get value of the element. 'value' is value of correspondent behavior attached to the element or its text.
+                                                                           ##   
                                                                            ##    \param[in] he \b HELEMENT, element which value will be retrieved.
+                                                                           ##   
                                                                            ##    \param[out] pval \b VALUE*, pointer to VALUE that will get elements value.
+                                                                           ##   
                                                                            ##     ATTN: if you are not using json::value wrapper then you shall call ValueClear aginst the returned value
+                                                                           ##   
                                                                            ##           otherwise memory will leak.
                                                                            ## ```
 proc SciterSetValue*(he: HELEMENT; pval: ptr VALUE): INT {.importc, cdecl.}
   ## ```
                                                                            ##   SciterSetValue - set value of the element.
+                                                                           ##   
                                                                            ##    \param[in] he \b HELEMENT, element which value will be changed.
+                                                                           ##   
                                                                            ##    \param[in] pval \b VALUE*, pointer to the VALUE to set.
                                                                            ## ```
-proc SciterGetExpando*(he: HELEMENT; pval: ptr VALUE; forceCreation: SBOOL): INT {.
+proc SciterGetExpando*(he: HELEMENT; pval: ptr VALUE; forceCreation: bool): INT {.
     importc, cdecl.}
   ## ```
                     ##   SciterGetExpando - get 'expando' of the element. 'expando' is a scripting object (of class Element)
+                    ##   
                     ##     that is assigned to the DOM element. 'expando' could be null as they are created on demand by script.
+                    ##   
                     ##    \param[in] he \b HELEMENT, element which expando will be retrieved.
+                    ##   
                     ##    \param[out] pval \b VALUE*, pointer to VALUE that will get value of type T_OBJECT/UT_OBJECT_NATIVE or null.
+                    ##   
                     ##    \param[in] forceCreation \b SBOOL, if there is no expando then when forceCreation==TRUE the function will create it.
+                    ##   
                     ##     ATTN: if you are not using json::value wrapper then you shall call ValueClear aginst the returned value
+                    ##   
                     ##           otherwise it will leak memory.
                     ## ```
-proc SciterGetObject*(he: HELEMENT; pval: pointer; forceCreation: SBOOL): INT {.
+proc SciterGetObject*(he: HELEMENT; pval: pointer; forceCreation: bool): INT {.
     importc, cdecl.}
   ## ```
                     ##   SciterGetObject - get 'expando' object of the element. 'expando' is a scripting object (of class Element)
+                    ##   
                     ##     that is assigned to the DOM element. 'expando' could be null as they are created on demand by script.
+                    ##   
                     ##    \param[in] he \b HELEMENT, element which expando will be retrieved.
+                    ##   
                     ##    \param[out] pval \b tiscript::value*, pointer to tiscript::value that will get reference to the scripting object associated wuth the element or null.
+                    ##   
                     ##    \param[in] forceCreation \b SBOOL, if there is no expando then when forceCreation==TRUE the function will create it.
                     ##   
+                    ##   
+                    ##   
                     ##     ATTN!: if you plan to store the reference or use it inside code that calls script VM functions
+                    ##   
                     ##            then you should use tiscript::pinned holder for the value.
                     ## ```
 proc SciterGetElementNamespace*(he: HELEMENT; pval: pointer): INT {.importc,
     cdecl.}
+  ## ```
+           ##   SciterGetElementNamespace - get namespace of document of the DOM element.
+           ##   
+           ##    \param[in] he \b HELEMENT, element which expando will be retrieved.
+           ##   
+           ##    \param[out] pval \b tiscript::value*, pointer to tiscript::value that will get reference to the namespace scripting object.
+           ##   
+           ##   
+           ##   
+           ##     ATTN!: if you plan to store the reference or use it inside code that calls script VM functions
+           ##   
+           ##            then you should use tiscript::pinned holder for the value.
+           ## ```
 proc SciterGetHighlightedElement*(hwnd: ptr GtkWidget; phe: ptr HELEMENT): INT {.
     importc, cdecl.}
   ## ```
@@ -3669,10 +4473,10 @@ proc SciterNodeInsert*(hnode: HNODE; where: cuint; what: HNODE): INT {.importc,
   ## ```
            ##   remove the node from the DOM, use finalize=FALSE if you plan to attach the node to the DOM later.
            ## ```
-proc SciterNodeRemove*(hnode: HNODE; finalize: SBOOL): INT {.importc, cdecl.}
+proc SciterNodeRemove*(hnode: HNODE; finalize: bool): INT {.importc, cdecl.}
   ## ```
-                                                                             ##   remove the node from the DOM, use finalize=FALSE if you plan to attach the node to the DOM later.
-                                                                             ## ```
+                                                                            ##   remove the node from the DOM, use finalize=FALSE if you plan to attach the node to the DOM later.
+                                                                            ## ```
 proc SciterCreateTextNode*(text: LPCWSTR; textLength: cuint; phnode: ptr HNODE): INT {.
     importc, cdecl.}
   ## ```
@@ -3682,146 +4486,349 @@ proc SciterCreateCommentNode*(text: LPCWSTR; textLength: cuint;
                               phnode: ptr HNODE): INT {.importc, cdecl.}
 proc SciterAtomValue*(name: cstring): som_atom_t {.importc, cdecl.}
 proc SciterAtomNameCB*(atomv: UINT64; rcv: LPCSTR_RECEIVER;
-                       rcv_param: LPVOID): UINT64 {.importc, cdecl.}
+                       rcv_param: LPVOID): bool {.importc, cdecl.}
 proc SciterClassName*(): LPCWSTR {.importc, cdecl.}
   ## ```
                                                    ##   Get name of Sciter window class.
                                                    ##   
+                                                   ##   
+                                                   ##   
                                                    ##    \return \b LPCWSTR, name of Sciter window class.
+                                                   ##   
                                                    ##            \b NULL if initialization of the engine failed, Direct2D or DirectWrite are not supported on the OS.
                                                    ##   
+                                                   ##   
+                                                   ##   
                                                    ##    Use this function if you wish to create unicode version of Sciter.
+                                                   ##   
                                                    ##    The returned name can be used in CreateWindow(Ex)W function.
+                                                   ##   
                                                    ##    You can use #SciterClassNameT macro.
                                                    ## ```
-proc SciterVersion*(major: SBOOL): cuint {.importc, cdecl.}
+proc SciterVersion*(major: bool): cuint {.importc, cdecl.}
   ## ```
-                                                           ##   Returns major and minor version of Sciter engine.
-                                                           ##     \return UINT, hiword (16-bit) contains major number and loword contains minor number;
-                                                           ## ```
+                                                          ##   Returns major and minor version of Sciter engine.
+                                                          ##   
+                                                          ##     \return UINT, hiword (16-bit) contains major number and loword contains minor number;
+                                                          ## ```
 proc SciterDataReady*(hwnd: ptr GtkWidget; uri: LPCWSTR; data: LPCBYTE;
-                      dataLength: cuint): SBOOL {.importc, cdecl.}
+                      dataLength: cuint): bool {.importc, cdecl.}
   ## ```
-                                                                  ##   The Sciter Engine of Terra Informatica Software, Inc.
-                                                                  ##    http:sciter.com
-                                                                  ##    
-                                                                  ##    The code and information provided "as-is" without
-                                                                  ##    warranty of any kind, either expressed or implied.
-                                                                  ##    
-                                                                  ##    (C) 2003-2015, Terra Informatica Software, Inc.
-                                                                  ##    
-                                                                  ##     
-                                                                  ##    Behaviors support (a.k.a windowless controls)
-                                                                  ##    
-                                                                  ##     This function is used in response to SCN_LOAD_DATA request.
-                                                                  ##   
-                                                                  ##    \param[in] hwnd \b HWINDOW, Sciter window handle.
-                                                                  ##    \param[in] uri \b LPCWSTR, URI of the data requested by Sciter.
-                                                                  ##    \param[in] data \b LPBYTE, pointer to data buffer.
-                                                                  ##    \param[in] dataLength \b UINT, length of the data in bytes.
-                                                                  ##    \return \b SBOOL, TRUE if Sciter accepts the data or \c FALSE if error occured
-                                                                  ##    (for example this function was called outside of #SCN_LOAD_DATA request).
-                                                                  ##   
-                                                                  ##    \warning If used, call of this function MUST be done ONLY while handling
-                                                                  ##    SCN_LOAD_DATA request and in the same thread. For asynchronous resource loading
-                                                                  ##    use SciterDataReadyAsync
-                                                                  ## ```
+                                                                 ##   The Sciter Engine of Terra Informatica Software, Inc.
+                                                                 ##   
+                                                                 ##    http:sciter.com
+                                                                 ##   
+                                                                 ##    
+                                                                 ##   
+                                                                 ##    The code and information provided "as-is" without
+                                                                 ##   
+                                                                 ##    warranty of any kind, either expressed or implied.
+                                                                 ##   
+                                                                 ##    
+                                                                 ##   
+                                                                 ##    (C) 2003-2015, Terra Informatica Software, Inc.
+                                                                 ##   
+                                                                 ##    
+                                                                 ##     
+                                                                 ##   
+                                                                 ##    Behaviors support (a.k.a windowless controls)
+                                                                 ##   
+                                                                 ##    
+                                                                 ##     This function is used in response to SCN_LOAD_DATA request.
+                                                                 ##   
+                                                                 ##   
+                                                                 ##   
+                                                                 ##    \param[in] hwnd \b HWINDOW, Sciter window handle.
+                                                                 ##   
+                                                                 ##    \param[in] uri \b LPCWSTR, URI of the data requested by Sciter.
+                                                                 ##   
+                                                                 ##    \param[in] data \b LPBYTE, pointer to data buffer.
+                                                                 ##   
+                                                                 ##    \param[in] dataLength \b UINT, length of the data in bytes.
+                                                                 ##   
+                                                                 ##    \return \b SBOOL, TRUE if Sciter accepts the data or \c FALSE if error occured
+                                                                 ##   
+                                                                 ##    (for example this function was called outside of #SCN_LOAD_DATA request).
+                                                                 ##   
+                                                                 ##   
+                                                                 ##   
+                                                                 ##    \warning If used, call of this function MUST be done ONLY while handling
+                                                                 ##   
+                                                                 ##    SCN_LOAD_DATA request and in the same thread. For asynchronous resource loading
+                                                                 ##   
+                                                                 ##    use SciterDataReadyAsync
+                                                                 ## ```
 proc SciterDataReadyAsync*(hwnd: ptr GtkWidget; uri: LPCWSTR; data: LPCBYTE;
-                           dataLength: cuint; requestId: LPVOID): SBOOL {.
+                           dataLength: cuint; requestId: LPVOID): bool {.
     importc, cdecl.}
-proc SciterLoadFile*(hWndSciter: ptr GtkWidget; url: LPCWSTR): SBOOL {.importc,
+  ## ```
+                    ##   Use this function outside of SCN_LOAD_DATA request. This function is needed when you
+                    ##   
+                    ##    you have your own http client implemented in your application.
+                    ##   
+                    ##   
+                    ##   
+                    ##    \param[in] hwnd \b HWINDOW, Sciter window handle.
+                    ##   
+                    ##    \param[in] uri \b LPCWSTR, URI of the data requested by Sciter.
+                    ##   
+                    ##    \param[in] data \b LPBYTE, pointer to data buffer.
+                    ##   
+                    ##    \param[in] dataLength \b UINT, length of the data in bytes.
+                    ##   
+                    ##    \param[in] requestId \b LPVOID, SCN_LOAD_DATA requestId, can be NULL.
+                    ##   
+                    ##    \return \b SBOOL, TRUE if Sciter accepts the data or \c FALSE if error occured
+                    ## ```
+proc SciterLoadFile*(hWndSciter: ptr GtkWidget; url: LPCWSTR): bool {.importc,
     cdecl.}
   ## ```
            ##   Load HTML file.
            ##   
+           ##   
+           ##   
            ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+           ##   
            ##    \param[in] url \b LPCWSTR, either absolute URL of HTML file to load. "file:...", "http:...", "res:...", "this:app/..." or absolute file path.
+           ##   
            ##    \return \b SBOOL, \c TRUE if the text was parsed and loaded successfully, \c FALSE otherwise.
            ## ```
 proc SciterLoadHtml*(hWndSciter: ptr GtkWidget; html: LPCBYTE; htmlSize: cuint;
-                     baseUrl: LPCWSTR): SBOOL {.importc, cdecl.}
+                     baseUrl: LPCWSTR): bool {.importc, cdecl.}
   ## ```
-                                                                ##   Load HTML from in memory buffer with base.
-                                                                ##   
-                                                                ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
-                                                                ##    \param[in] html \b LPCBYTE, Address of HTML to load.
-                                                                ##    \param[in] htmlSize \b UINT, Length of the array pointed by html parameter.
-                                                                ##    \param[in] baseUrl \b LPCWSTR, base URL. All relative links will be resolved against
-                                                                ##                                   this URL.
-                                                                ##    \return \b SBOOL, \c TRUE if the text was parsed and loaded successfully, FALSE otherwise.
-                                                                ## ```
+                                                               ##   Load HTML from in memory buffer with base.
+                                                               ##   
+                                                               ##   
+                                                               ##   
+                                                               ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+                                                               ##   
+                                                               ##    \param[in] html \b LPCBYTE, Address of HTML to load.
+                                                               ##   
+                                                               ##    \param[in] htmlSize \b UINT, Length of the array pointed by html parameter.
+                                                               ##   
+                                                               ##    \param[in] baseUrl \b LPCWSTR, base URL. All relative links will be resolved against
+                                                               ##   
+                                                               ##                                   this URL.
+                                                               ##   
+                                                               ##    \return \b SBOOL, \c TRUE if the text was parsed and loaded successfully, FALSE otherwise.
+                                                               ## ```
 proc SciterSetCallback*(hWndSciter: ptr GtkWidget; cb: LPSciterHostCallback;
                         cbParam: LPVOID): VOID {.importc, cdecl.}
   ## ```
                                                                  ##   Set \link #SCITER_NOTIFY() notification callback function \endlink.
                                                                  ##   
+                                                                 ##   
+                                                                 ##   
                                                                  ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+                                                                 ##   
                                                                  ##    \param[in] cb \b SCITER_NOTIFY*, \link #SCITER_NOTIFY() callback function \endlink.
+                                                                 ##   
                                                                  ##    \param[in] cbParam \b LPVOID, parameter that will be passed to \link #SCITER_NOTIFY() callback function \endlink as vParam paramter.
                                                                  ## ```
-proc SciterSetMasterCSS*(utf8: LPCBYTE; numBytes: cuint): SBOOL {.importc, cdecl.}
-proc SciterAppendMasterCSS*(utf8: LPCBYTE; numBytes: cuint): SBOOL {.importc,
+proc SciterSetMasterCSS*(utf8: LPCBYTE; numBytes: cuint): bool {.importc, cdecl.}
+  ## ```
+                                                                                 ##   Set Master style sheet.
+                                                                                 ##   
+                                                                                 ##   
+                                                                                 ##   
+                                                                                 ##    \param[in] utf8 \b LPCBYTE, start of CSS buffer.
+                                                                                 ##   
+                                                                                 ##    \param[in] numBytes \b UINT, number of bytes in utf8.
+                                                                                 ## ```
+proc SciterAppendMasterCSS*(utf8: LPCBYTE; numBytes: cuint): bool {.importc,
     cdecl.}
+  ## ```
+           ##   Append Master style sheet.
+           ##   
+           ##   
+           ##   
+           ##    \param[in] utf8 \b LPCBYTE, start of CSS buffer.
+           ##   
+           ##    \param[in] numBytes \b UINT, number of bytes in utf8.
+           ## ```
 proc SciterSetCSS*(hWndSciter: ptr GtkWidget; utf8: LPCBYTE; numBytes: cuint;
-                   baseUrl: LPCWSTR; mediaType: LPCWSTR): SBOOL {.importc, cdecl.}
-proc SciterSetMediaType*(hWndSciter: ptr GtkWidget; mediaType: LPCWSTR): SBOOL {.
+                   baseUrl: LPCWSTR; mediaType: LPCWSTR): bool {.importc, cdecl.}
+  ## ```
+                                                                                 ##   Set (reset) style sheet of current document.
+                                                                                 ##   
+                                                                                 ##    Will reset styles for all elements according to given CSS (utf8)
+                                                                                 ##   
+                                                                                 ##   
+                                                                                 ##   
+                                                                                 ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+                                                                                 ##   
+                                                                                 ##    \param[in] utf8 \b LPCBYTE, start of CSS buffer.
+                                                                                 ##   
+                                                                                 ##    \param[in] numBytes \b UINT, number of bytes in utf8.
+                                                                                 ## ```
+proc SciterSetMediaType*(hWndSciter: ptr GtkWidget; mediaType: LPCWSTR): bool {.
     importc, cdecl.}
-proc SciterSetMediaVars*(hWndSciter: ptr GtkWidget; mediaVars: ptr SCITER_VALUE): SBOOL {.
+  ## ```
+                    ##   Set media type of this sciter instance.
+                    ##   
+                    ##   
+                    ##   
+                    ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+                    ##   
+                    ##    \param[in] mediaType \b LPCWSTR, media type name.
+                    ##   
+                    ##   
+                    ##   
+                    ##    For example media type can be "handheld", "projection", "screen", "screen-hires", etc.
+                    ##   
+                    ##    By default sciter window has "screen" media type.
+                    ##   
+                    ##   
+                    ##   
+                    ##    Media type name is used while loading and parsing style sheets in the engine so
+                    ##   
+                    ##    you should call this functionbefore* loading document in it.
+                    ## ```
+proc SciterSetMediaVars*(hWndSciter: ptr GtkWidget; mediaVars: ptr SCITER_VALUE): bool {.
     importc, cdecl.}
+  ## ```
+                    ##   Set media variables of this sciter instance.
+                    ##   
+                    ##   
+                    ##   
+                    ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+                    ##   
+                    ##    \param[in] mediaVars \b SCITER_VALUE, map that contains name/value pairs - media variables to be set.
+                    ##   
+                    ##   
+                    ##   
+                    ##    For example media type can be "handheld:true", "projection:true", "screen:true", etc.
+                    ##   
+                    ##    By default sciter window has "screen:true" and "desktop:true"/"handheld:true" media variables.
+                    ##   
+                    ##   
+                    ##   
+                    ##    Media variables can be changed in runtime. This will cause styles of the document to be reset.
+                    ## ```
 proc SciterGetMinWidth*(hWndSciter: ptr GtkWidget): cuint {.importc, cdecl.}
 proc SciterGetMinHeight*(hWndSciter: ptr GtkWidget; width: cuint): cuint {.
     importc, cdecl.}
 proc SciterCall*(hWnd: ptr GtkWidget; functionName: LPCSTR; argc: cuint;
-                 argv: ptr SCITER_VALUE; retval: ptr SCITER_VALUE): SBOOL {.
+                 argv: ptr SCITER_VALUE; retval: ptr SCITER_VALUE): bool {.
     importc, cdecl.}
   ## ```
                     ##   evalue script in context of current document
                     ## ```
 proc SciterEval*(hwnd: ptr GtkWidget; script: LPCWSTR; scriptLength: cuint;
-                 pretval: ptr SCITER_VALUE): SBOOL {.importc, cdecl.}
+                 pretval: ptr SCITER_VALUE): bool {.importc, cdecl.}
   ## ```
-                                                                     ##   evalue script in context of current document
-                                                                     ## ```
+                                                                    ##   evalue script in context of current document
+                                                                    ## ```
 proc SciterUpdateWindow*(hwnd: ptr GtkWidget): VOID {.importc, cdecl.}
   ## ```
                                                                       ##   Update pending changes in Sciter window.
                                                                       ##   
+                                                                      ##   
+                                                                      ##   
                                                                       ##    \param[in] hwnd \b HWINDOW, Sciter window handle.
                                                                       ## ```
-proc SciterSetOption*(hWnd: ptr GtkWidget; option: cuint; value: UINT_PTR): SBOOL {.
+proc SciterSetOption*(hWnd: ptr GtkWidget; option: cuint; value: UINT_PTR): bool {.
     importc, cdecl.}
 proc SciterGetPPI*(hWndSciter: ptr GtkWidget; px: ptr cuint; py: ptr cuint): VOID {.
     importc, cdecl.}
-proc SciterGetViewExpando*(hwnd: ptr GtkWidget; pval: ptr VALUE): SBOOL {.
+  ## ```
+                    ##   Get current pixels-per-inch metrics of the Sciter window
+                    ##   
+                    ##   
+                    ##   
+                    ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+                    ##   
+                    ##    \param[out] px \b PUINT, get ppi in horizontal direction.
+                    ##   
+                    ##    \param[out] py \b PUINT, get ppi in vertical direction.
+                    ## ```
+proc SciterGetViewExpando*(hwnd: ptr GtkWidget; pval: ptr VALUE): bool {.
     importc, cdecl.}
+  ## ```
+                    ##   Get "expando" of the view object
+                    ##   
+                    ##   
+                    ##   
+                    ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+                    ##   
+                    ##    \param[out] pval \b VALUE*, expando as sciter::value.
+                    ## ```
 proc SciterEnumUrlData*(hWndSciter: ptr GtkWidget;
                         receiver: ptr URL_DATA_RECEIVER; param: LPVOID;
-                        url: LPCSTR): SBOOL {.importc, cdecl.}
+                        url: LPCSTR): bool {.importc, cdecl.}
   ## ```
-                                                              ##   Get graphics capabilities of the system
-                                                              ##   
-                                                              ##    \pcaps[in] LPUINT \b pcaps, address of variable receiving:
-                                                              ##                                0 - no compatible graphics found;
-                                                              ##                                1 - compatible graphics found but Direct2D will use WARP driver (software emulation);
-                                                              ##                                2 - Direct2D will use hardware backend (best performance);
-                                                              ##    \return \b SBOOL, \c TRUE if pcaps is valid pointer.
-                                                              ## ```
-proc SciterGraphicsCaps*(pcaps: LPUINT): SBOOL {.importc, cdecl.}
-proc SciterSetHomeURL*(hWndSciter: ptr GtkWidget; baseUrl: LPCWSTR): SBOOL {.
+                                                             ##   Get url resource data received by the engine
+                                                             ##   
+                                                             ##     Note: this function really works only if the engine is set to debug mode.
+                                                             ##   
+                                                             ##   
+                                                             ##   
+                                                             ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+                                                             ##   
+                                                             ##    \param[in] receiver \b URL_DATA_RECEIVER, address of reciver callback.
+                                                             ##   
+                                                             ##    \param[in] param \b LPVOID, param passed to callback as it is.
+                                                             ##   
+                                                             ##    \param[in] url \b LPCSTR, optional, url of the data. If not provided the engine will list all loaded resources
+                                                             ##   
+                                                             ##    \return \b SBOOL, \c TRUE if receiver is called at least once, FALSE otherwise.
+                                                             ## ```
+proc SciterGraphicsCaps*(pcaps: LPUINT): bool {.importc, cdecl.}
+  ## ```
+                                                                ##   Get graphics capabilities of the system
+                                                                ##   
+                                                                ##   
+                                                                ##   
+                                                                ##    \pcaps[in] LPUINT \b pcaps, address of variable receiving:
+                                                                ##   
+                                                                ##                                0 - no compatible graphics found;
+                                                                ##   
+                                                                ##                                1 - compatible graphics found but Direct2D will use WARP driver (software emulation);
+                                                                ##   
+                                                                ##                                2 - Direct2D will use hardware backend (best performance);
+                                                                ##   
+                                                                ##    \return \b SBOOL, \c TRUE if pcaps is valid pointer.
+                                                                ## ```
+proc SciterSetHomeURL*(hWndSciter: ptr GtkWidget; baseUrl: LPCWSTR): bool {.
     importc, cdecl.}
+  ## ```
+                    ##   Set sciter home url.
+                    ##   
+                    ##     home url is used for resolving sciter: urls
+                    ##   
+                    ##     If you will set it like SciterSetHomeURL(hwnd,"http:sciter.com/modules/")
+                    ##   
+                    ##     then <script src="sciter:lib/root-extender.tis"> will load
+                    ##   
+                    ##     root-extender.tis from http:sciter.com/modules/lib/root-extender.tis
+                    ##   
+                    ##   
+                    ##   
+                    ##    \param[in] hWndSciter \b HWINDOW, Sciter window handle.
+                    ##   
+                    ##    \param[in] baseUrl \b LPCWSTR, URL of sciter home.
+                    ## ```
 proc SciterCreateWindow*(creationFlags: cuint; frame: LPRECT;
                          delegate: SciterWindowDelegate;
                          delegateParam: LPVOID; parent: ptr GtkWidget): ptr GtkWidget {.
     importc, cdecl.}
   ## ```
                     ##   Create sciter window.
+                    ##   
                     ##     On Windows returns HWND of either top-level or child window created.
+                    ##   
                     ##     On OS X returns NSView* of either top-level window or child view .
                     ##   
+                    ##   
+                    ##   
                     ##    \param[in] creationFlags \b SCITER_CREATE_WINDOW_FLAGS, creation flags.
+                    ##   
                     ##    \param[in] frame \b LPRECT, window frame position and size.
+                    ##   
                     ##    \param[in] delegate \b SciterWindowDelegate, either partial WinProc implementation or thing implementing NSWindowDelegate protocol.
+                    ##   
                     ##    \param[in] delegateParam \b LPVOID, optional param passed to SciterWindowDelegate.
+                    ##   
                     ##    \param[in] parent \b HWINDOW, optional parent window.
                     ## ```
 proc SciterSetupDebugOutput*(hwndOrNull: ptr GtkWidget; param: LPVOID;

@@ -2,6 +2,11 @@ import std/[strformat, times, unicode]
 
 import sciwrap, papi, converters, event, helpers
 
+
+# XXX: Consider trying to remove the heap allocation and doing it as described
+# in https://sciter.com/forums/topic/a-question-about-sciters-value-type/ ?
+# The only downside will be that it'll be needed to have _all_ SciterValObj
+# variables defined as `var`
 type
   SciterValObj* = object
     ## A Nim object that wraps a pointer to
@@ -357,9 +362,9 @@ proc len*(val: SciterVal): int =
   isOk sapi.ValueElementsCount(val.impl, addr temp)
   result = int temp
 
-proc getItemsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): cint {.cdecl.} = 
+proc getItemsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
   cast[ptr seq[SciterVal]](param)[].add SciterVal(impl: pval).copy()
-  result = 1
+  result = true
 
 proc getItems*(val: SciterVal): seq[SciterVal] =
   ## Gets all items from a Sciter value `x`
@@ -375,14 +380,14 @@ iterator items*(val: SciterVal): SciterVal =
 
 type SciterKeyVal* = tuple[key, value: SciterVal]
 
-proc getPairsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): cint {.cdecl.} = 
+proc getPairsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
   # As far as I understand we don't own pkey and pval so we must
   # copy them here
   cast[ptr seq[SciterKeyVal]](param)[].add (
     SciterVal(impl: pkey).copy(), 
     SciterVal(impl: pval).copy()
   )
-  result = 1
+  result = true
 
 proc getPairs*(val: SciterVal): seq[SciterKeyVal] =
   ## Gets (key, value) of a Sciter value `x`. `x` must be T_MAP, 

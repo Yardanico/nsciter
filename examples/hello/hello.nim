@@ -23,9 +23,9 @@ proc lpToNim(str: LPCWSTR; str_length: cuint; param: pointer): VOID {.cdecl.} =
 
 var i = 0
 
-proc elemFoundCb(elem: HELEMENT, param: pointer): cint {.cdecl.} = 
+proc elemFoundCb(elem: HELEMENT, param: pointer): bool {.cdecl.} = 
   echo "Button found..."
-  echo elem.onClick(proc: uint32 = 
+  echo elem.onClick(proc: bool = 
     echo "Clicked button"
     var node: HNODE
     var mystr: string
@@ -37,15 +37,15 @@ proc elemFoundCb(elem: HELEMENT, param: pointer): cint {.cdecl.} =
     # GC_ref(str) # needed or not?
     discard sapi.SciterSetElementText(elem, cast[LPCWSTR](addr str[0]), uint32 str.len)
     # GC_unref(str)
-    result = 0
+    result = false
   )
-  result = 1
+  result = true
 
-wnd.onClick(proc: uint32 = 
+wnd.onClick(proc: bool = 
   echo "Global click event handler 1"
 )
 
-wnd.onClick(proc: uint32 = 
+wnd.onClick(proc: bool = 
   echo "Global click event handler 2"
 )
 

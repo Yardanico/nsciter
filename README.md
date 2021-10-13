@@ -1,10 +1,13 @@
 # nsciter - Nim wrapper for https://sciter.com/
 
 This library is a low and high-level wrapper for the Sciter GUI framework.
+Only tested with the Sciter.JS edition for now.
 
-Based on https://github.com/citrusn/nsciter and Nimterop. Currently only supports Linux (GTK3).
+Based on https://github.com/citrusn/nsciter and Nimterop.
+Currently it only supports Linux (GTK3), but ot shouldn't be hard to add Windows/macOS support, help welcome.
 
-This wrapper does not support statically linking Sciter because I don't have access to the source code :)
+This wrapper does not support statically linking Sciter because I don't have access to the source code,
+but in theory it should be really simple to do.
 
 ## Examples
 

@@ -1,9 +1,10 @@
 import os, nsciter, strformat, times, mathexpr
 
 # create rect with window position size
-var rect = newSciterRect(420, 125)
+var rect = newSciterRect(420, 150)
 
 let sapi = initSapi()
+enableInspectorSupport()
 
 # create window
 var wnd = sapi.SciterCreateWindow(
@@ -35,7 +36,7 @@ echo sapi.SciterSelectElements(rootElem, "#mathRes", resFound, nil)
 proc onKeyPress*(target: HELEMENT): SCDOM_RESULT {.discardable.} =
   var eh = newEventHandler()
 
-  eh.handle_key = proc(he: HELEMENT, params: ptr KEY_PARAMS): uint =
+  eh.handle_key = proc(he: HELEMENT, params: ptr KEY_PARAMS): bool =
     var str: string
     discard sapi.SciterGetElementTextCB(target, lpToNim, addr str)
     var data = ""

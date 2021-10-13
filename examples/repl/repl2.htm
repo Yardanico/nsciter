@@ -11,14 +11,24 @@
       }
     </style>
   </head>
-  
   <body>
-    <script type="text/tiscript">
-      const lib = view.getLib();
-      event change $(input#mathExpr) {
-        $(input#mathRes).text = lib.calculate(this.text);
+    <script>
+      //console.log("test log output");
+      const lib = Window.this;
+      let input = document.$("input#mathExpr");
+      document.on("change", "input#mathExpr", (evt, elem) => {
+        let res = lib.xcall("calculate", elem.value);
+        if (res == "error") {
+          // Show that the input is not correct
+          elem.style.border = "2px solid #d66";
+        }
+        else {
+          elem.style.border = "";
+          document.$("input#mathRes").value = res;
+          //console.log("changed to " + res);
+        }
         return true;
-      }
+      });
     </script>
     <h2>This is a simple calculator.</h2>
     Input your mathematical expression and it'll be calculated on the fly!

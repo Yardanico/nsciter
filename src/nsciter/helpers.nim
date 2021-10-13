@@ -84,3 +84,15 @@ proc createWindow*(flags = {swMain, swTitlebar, swControls, swResizeable},
     cast[cuint](flags),
     rect.impl, nil, nil, nil
   )
+
+proc enableInspectorSupport* = 
+  ## Enables inspector support for the whole application and allows
+  ## all types of scripting APIs to be executed. Remove this from production
+  ## builds of your application!
+  discard sapi.SciterSetOption(nil, cuint SCITER_SET_DEBUG_MODE, TRUE)
+  # Allow calling all APIs in the inspector via eval
+  discard sapi.SciterSetOption(nil, cuint SCITER_SET_SCRIPT_RUNTIME_FEATURES,
+        cuint(ALLOW_FILE_IO or 
+        ALLOW_SOCKET_IO or
+        ALLOW_EVAL or
+        ALLOW_SYSINFO))

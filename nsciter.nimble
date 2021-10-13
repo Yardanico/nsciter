@@ -1,4 +1,4 @@
-version       = "0.0.1"
+version       = "0.0.2"
 author        = "Danil Yarantsev (Yardanico)"
 description   = "nsciter - High-level and low-level bindings to the Sciter UI library"
 license       = "MIT"
