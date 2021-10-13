@@ -13,7 +13,8 @@ type
     ## the Sciter value
     ## 
     ## Required for destructors to correctly work
-    impl*: ptr SCITER_VALUE
+    impl*: SCITER_VALUE
+    wasDestroyed: bool
     when isDebug:
       tag*: string
   
@@ -96,18 +97,17 @@ proc `==`(a: cuint, b: VALUE_RESULT): bool = a == b.cuint
 proc `=destroy`(val: var SciterValObj) =   
   when isDebug:
     echo "Destroying ", x.tag
-  if val.impl != nil:
-    discard sapi.ValueClear(val.impl)
-    dealloc(val.impl)
+  if not val.wasDestroyed:
+    discard sapi.ValueClear(addr val.impl)
+  val.wasDestroyed = true
 
 proc `=`(dst: var SciterValObj, src: SciterValObj) = 
   when isDebug:
     echo "Assigning ", dst.tag
   if dst.impl != src.impl:
     `=destroy`(dst.impl)
-    dst.impl = cast[ptr SCITER_VALUE](alloc(sizeof(SCITER_VALUE)))
-    discard sapi.ValueInit(dst.impl)
-    discard sapi.ValueCopy(dst.impl, src.impl)
+    discard sapi.ValueInit(addr dst.impl)
+    discard sapi.ValueCopy(addr dst.impl, unsafeAddr src.impl)
 
 proc `=sink`(dst: var SciterValObj, src: SciterValObj) = 
   when isDebug:
@@ -140,12 +140,11 @@ proc isObjectError*(v: SciterVal): bool {.inline.} =
 #    result = v.impl.t == T_DOM_OBJECT
 
 proc isNativeFunctor*(v: SciterVal): bool {.inline.} =
-  result = bool sapi.ValueIsNativeFunctor(v.impl)
+  result = bool sapi.ValueIsNativeFunctor(unsafeAddr v.impl)
 
 proc newValue*(): SciterVal =
   ## Creates a new empty Sciter value.
-  result.impl = create(SCITER_VALUE)
-  isOk sapi.ValueInit(result.impl)
+  isOk sapi.ValueInit(addr result.impl)
 
 proc newValueDbg*(tag: string): SciterVal = 
   result = newValue()
@@ -157,14 +156,14 @@ proc nullValue*(): SciterVal =
   result = newValue()
   result.impl.t = T_NULL.cuint
 
-proc copyTo*(src: SciterVal, dst: SciterVal) {.inline.} =
+proc copyTo*(src: SciterVal, dst: var SciterVal) {.inline.} =
   ## Copies the Sciter value `src` into the Sciter value `dst`.
-  isOk sapi.ValueCopy(dst.impl, src.impl)
+  isOk sapi.ValueCopy(addr dst.impl, unsafeAddr src.impl)
 
 proc copy*(val: SciterVal): SciterVal {.inline.} =
   ## Creates a new copy from a Sciter value `x` 
   result = nullValue()
-  isOk sapi.ValueCopy(result.impl, val.impl)
+  isOk sapi.ValueCopy(addr result.impl, unsafeAddr val.impl)
 
 proc initValue*(val: string): SciterValue = 
   ## Creates a new stack-allocated Sciter value from a string `val`.
@@ -177,7 +176,7 @@ proc newValue*(val: string): SciterVal =
   ## Creates a new Sciter value from a Nim string `val`
   var ws = utf8to16(val)
   result = newValue()
-  isOk sapi.ValueStringDataSet(result.impl, ws[0].addr, ws.len.uint32, 0'u32)
+  isOk sapi.ValueStringDataSet(addr result.impl, ws[0].addr, ws.len.uint32, 0'u32)
 
 proc getStr*(val: SciterVal, default = ""): string =
   ## Gets a string from a Sciter string-like value `x`.
@@ -185,7 +184,7 @@ proc getStr*(val: SciterVal, default = ""): string =
   ## Returns `default` if `x` is not a string
   var widestr: ptr UncheckedArray[uint16]
   var len: uint32    
-  checkTypDefault(sapi.ValueStringData(val.impl, cast[ptr LPCWSTR](addr widestr), addr len)):
+  checkTypDefault(sapi.ValueStringData(unsafeAddr val.impl, cast[ptr LPCWSTR](addr widestr), addr len)):
     result = utf16to8(widestr, int len)
   do:
     result = default
@@ -205,23 +204,23 @@ proc newValue*(val: int8 | int16 | int32 | int64): SciterVal =
   ## .. warning:: For 64-bit integers this truncates the integer to 32-bits
   ##    as Sciter does NOT support 64-bit integers!
   result = newValue()
-  isOk sapi.ValueIntDataSet(result.impl, cint val, svInt, 0)
+  isOk sapi.ValueIntDataSet(addr result.impl, cint val, svInt, 0)
 
 proc newValue*(time: Time): SciterVal =
   result = newValue()
   var s = toWinTime(time)
-  isOk sapi.ValueInt64DataSet(result.impl, s, svDate, DT_HAS_SECONDS.UINT32)
+  isOk sapi.ValueInt64DataSet(addr result.impl, s, svDate, DT_HAS_SECONDS.UINT32)
 
 proc newValue*(fl: float64): SciterVal =
   ## Creates a new Sciter value from a float `val`.
   result = newValue()
-  isOk sapi.ValueFloatDataSet(result.impl, fl, svFloat, 0)
+  isOk sapi.ValueFloatDataSet(addr result.impl, fl, svFloat, 0)
 
 proc newValue*(val: bool): SciterVal =
   ## Creates a new Sciter value from a bool `val`.
   ## Internally stores the value as an `int32` Sciter value.
   result = newValue()
-  isOk sapi.ValueIntDataSet(result.impl, cint(val), svBool, 0)
+  isOk sapi.ValueIntDataSet(addr result.impl, cint(val), svBool, 0)
 
 proc newValue*(val: openArray[(string, string)]): SciterVal =
   ## Creates a new Sciter map from `val` pairs.
@@ -231,7 +230,7 @@ proc newValue*(val: openArray[(string, string)]): SciterVal =
     var
       key = initValue(key)
       val = initValue(val)
-    isOk sapi.ValueSetValueToKey(result.impl, addr key, addr val)
+    isOk sapi.ValueSetValueToKey(addr result.impl, addr key, addr val)
 
 proc newValueObj*(obj: object): SciterVal =
   ## Creates a new Sciter map from fields and values of an object `obj`
@@ -245,12 +244,12 @@ proc newValueObj*(obj: object): SciterVal =
     var val = newValue(fval)
     isOk sapi.ValueSetValueToKey(result.impl, addr key, val.impl)
 
-proc convertFromString*(val: SciterVal, s: string, how = CVT_SIMPLE)  =
+proc convertFromString*(val: var SciterVal, s: string, how = CVT_SIMPLE)  =
   var ws = utf8to16(s)
-  isOk sapi.ValueFromString(val.impl, ws[0].addr, ws.len.uint32, how.UINT32)
+  isOk sapi.ValueFromString(addr val.impl, ws[0].addr, ws.len.uint32, how.UINT32)
 
-proc convertToString*(val: SciterVal, how = CVT_SIMPLE) =
-  isOk sapi.ValueToString(val.impl, how.UINT32)
+proc convertToString*(val: var SciterVal, how = CVT_SIMPLE) =
+  isOk sapi.ValueToString(addr val.impl, how.UINT32)
 
 proc `$`*(v: SciterVal): string =
   ## Stringifies a Sciter value `x`. 
@@ -290,7 +289,7 @@ proc getInt*(val: SciterVal, default = 0'i32): int32 =
   ## Gets a 32-bit int from a Sciter value `x`.
   ## 
   ## Returns `default` if `x` is not an int
-  checkTypDefault sapi.ValueIntData(val.impl, addr result), default
+  checkTypDefault sapi.ValueIntData(unsafeAddr val.impl, addr result), default
 
 proc getBool*(val: SciterVal, default = false): bool = 
   ## Gets a bool from a Sciter value `x` (checks if `x` != 0).
@@ -298,7 +297,7 @@ proc getBool*(val: SciterVal, default = false): bool =
   ## `x` must be a bool Sciter value 
   sciterAssert val.kind in {svBool, svInt}
   var tmp: cint
-  checkTypDefault(sapi.ValueIntData(val.impl, addr tmp)):
+  checkTypDefault(sapi.ValueIntData(unsafeAddr val.impl, addr tmp)):
     result = tmp != 0
   do:
     result = default
@@ -307,7 +306,7 @@ proc getFloat*(val: SciterVal, default = 0.0): float =
   ## Gets a float from a Sciter float value `x`.
   ## 
   ## Returns `default` if `x` is not a float
-  checkTypDefault sapi.ValueFloatData(val.impl, addr result), default
+  checkTypDefault sapi.ValueFloatData(unsafeAddr val.impl, addr result), default
 
 proc getBytes*(val: SciterVal, default: seq[byte] = @[]): seq[byte] =
   ## Gets bytes from a Sciter value `val` containing binary data.
@@ -315,17 +314,17 @@ proc getBytes*(val: SciterVal, default: seq[byte] = @[]): seq[byte] =
   ## Returns `default` if `x` is not a byte array
   var p: LPCBYTE
   var size: cuint
-  checkTypDefault(sapi.ValueBinaryData(val.impl, addr p, addr size)):
+  checkTypDefault(sapi.ValueBinaryData(unsafeAddr val.impl, addr p, addr size)):
     result = newSeqUninitialized[byte](size)
     # Copy the binary data
     copyMem(addr result[0], p, int(size) * sizeof(byte))
   do:
     result = default
 
-proc setBytes*(val: SciterVal, bytes: openArray[byte]) =
+proc setBytes*(val: var SciterVal, bytes: openArray[byte]) =
   ## Sets Sciter value `x` to binary data `bytes`.
   isOk sapi.ValueBinaryDataSet(
-    val.impl, 
+    addr val.impl, 
     cast[LPCBYTE](unsafeAddr bytes[0]), # our own buffer
     cuint(bytes.len() * sizeof(byte)),  # total data size
     svBytes, 0
@@ -365,7 +364,7 @@ proc getDate*(val: SciterVal, default = Time()): Time =
   ## Returns `default` if `val` is not a date
   if val.kind == svDate:
     var t: int64
-    isOk sapi.ValueInt64Data(val.impl, addr t)
+    isOk sapi.ValueInt64Data(unsafeAddr val.impl, addr t)
     result = fromWinTime(t)
   else:
     result = default
@@ -374,11 +373,13 @@ proc len*(val: SciterVal): int =
   ## Gets the length of the Sciter value `x`. `x` should be an array or 
   ## an object type.
   var temp: cint
-  isOk sapi.ValueElementsCount(val.impl, addr temp)
+  isOk sapi.ValueElementsCount(unsafeAddr val.impl, addr temp)
   result = int temp
 
-proc getItemsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
-  cast[ptr seq[SciterVal]](param)[].add SciterVal(impl: pval).copy()
+proc getItemsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.nodestroy, cdecl.} = 
+  # nodestroy so that Nim doesn't try to destroy the `val` since we don't own it
+  var val = SciterVal(impl: pval[])
+  cast[ptr seq[SciterVal]](param)[].add val.copy()
   result = true
 
 proc getItems*(val: SciterVal): seq[SciterVal] =
@@ -386,7 +387,7 @@ proc getItems*(val: SciterVal): seq[SciterVal] =
   # TODO: do we really need this optimization?
   result = newSeqOfCap[SciterVal](val.len())
   
-  isOk sapi.ValueEnumElements(val.impl, getItemsCb, addr result)
+  isOk sapi.ValueEnumElements(unsafeAddr val.impl, getItemsCb, addr result)
 
 iterator items*(val: SciterVal): SciterVal = 
   ## Yields values of `x`. `x` must be T_MAP, T_FUNCTION or T_OBJECT
@@ -395,12 +396,17 @@ iterator items*(val: SciterVal): SciterVal =
 
 type SciterKeyVal* = tuple[key, value: SciterVal]
 
-proc getPairsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
-  # As far as I understand we don't own pkey and pval so we must
-  # copy them here
+proc getPairsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.nodestroy, cdecl.} = 
+  # nodestroy so that Nim doesn't try to destroy the `val` since we don't own it
+  var key = SciterVal(impl: pkey[])
+  var val = SciterVal(impl: pval[])
+  #var key = nullValue()
+  #isOk sapi.ValueCopy(addr key.impl, pkey)
+  #var val = nullValue()
+  #isOk sapi.ValueCopy(addr val.impl, pval)
   cast[ptr seq[SciterKeyVal]](param)[].add (
-    SciterVal(impl: pkey).copy(), 
-    SciterVal(impl: pval).copy()
+    key.copy(),
+    val.copy()
   )
   result = true
 
@@ -411,7 +417,7 @@ proc getPairs*(val: SciterVal): seq[SciterKeyVal] =
   
   # Pass the nim seq itself as a pointer so we can add values to
   # the resulting seq directly
-  isOk sapi.ValueEnumElements(val.impl, getPairsCb, addr result)
+  isOk sapi.ValueEnumElements(unsafeAddr val.impl, getPairsCb, addr result)
 
 iterator pairs*(val: SciterVal): (SciterVal, SciterVal) = 
   ## Yields (key, value) pairs from `x`. `x` must be T_MAP, T_FUNCTION 
@@ -423,19 +429,19 @@ proc `[]`*[T: Ordinal](val: SciterVal; i: T): SciterVal =
   ## Gets `i`th value from a Sciter value `x`. `x` must be an array-like
   ## value.
   result = newValue()
-  isOk sapi.ValueNthElementValue(val.impl, i.INT, result.impl)
+  isOk sapi.ValueNthElementValue(unsafeAddr val.impl, i.INT, result.impl)
 
-proc `[]=`*(val: SciterVal; i: int32; y: SciterVal) =
-  isOk sapi.ValueNthElementValueSet(val.impl, i.INT, y.impl)
+proc `[]=`*(val: var SciterVal; i: int32; y: SciterVal) =
+  isOk sapi.ValueNthElementValueSet(addr val.impl, i.INT, unsafeAddr y.impl)
 
 proc `[]`*(val: SciterVal; name: string): SciterVal =
   var key = newValue(name)
   result = newValue()
-  isOk sapi.ValueGetValueOfKey(val.impl, key.impl, result.impl)
+  isOk sapi.ValueGetValueOfKey(unsafeAddr val.impl, addr key.impl, addr result.impl)
 
-proc `[]=`*(val: SciterVal; name: string; y: SciterVal) =
+proc `[]=`*(val: var SciterVal; name: string; y: SciterVal) =
   var key = newValue(name)
-  isOk sapi.ValueSetValueToKey(val.impl, key.impl, y.impl)
+  isOk sapi.ValueSetValueToKey(addr val.impl, addr key.impl, unsafeAddr y.impl)
 
 proc invokeWithSelf*(val: SciterVal, self: SciterVal, 
                     args: varargs[SciterVal]): SciterVal = 
@@ -443,10 +449,11 @@ proc invokeWithSelf*(val: SciterVal, self: SciterVal,
   var clen = len(args)
   var cargs = newSeq[ptr SCITER_VALUE](clen + 1)
   for i in 0 ..< clen:
-    cargs[i] = args[i].impl
+    var val = args[i].impl
+    cargs[i] = addr val
     
-  sciterAssert sapi.ValueInvoke(val.impl, self.impl, uint32(len(args)),
-                      cargs[0], result.impl, nil) == HV_OK
+  sciterAssert sapi.ValueInvoke(unsafeAddr val.impl, unsafeAddr self.impl, uint32(len(args)),
+                      cargs[0], addr result.impl, nil) == HV_OK
   echo "invokeWithSelf. result: ", result
 
 proc invoke*(val: SciterVal, args: varargs[SciterVal]): SciterVal =
@@ -472,10 +479,10 @@ proc pinvoke(tag: ptr VOID;
 proc prelease(tag: ptr VOID): VOID {.cdecl.} = 
   echo "prelease tag index: ", cast[int](tag)
 
-proc setNativeFunctor*(v: SciterVal, nf: NativeFunctor) = 
+proc setNativeFunctor*(v: var SciterVal, nf: NativeFunctor) = 
   nfs.add(nf)
   var tag = cast[ptr VOID](nfs.len() - 1)
-  isOk sapi.ValueNativeFunctorSet(v.impl, pinvoke, prelease, tag)
+  isOk sapi.ValueNativeFunctorSet(addr v.impl, pinvoke, prelease, tag)
 
 proc callFunction*(hwnd: HWINDOW | HELEMENT, 
                   name: cstring, args: varargs[SciterVal]): SciterVal =  
@@ -516,10 +523,16 @@ proc callMethod*(he: HELEMENT, name: cstring, args: varargs[SciterVal]): SciterV
   var clen = len(args)
   var cargs = newSeq[ptr SCITER_VALUE](clen)
   for i in 0 ..< clen:
-    cargs[i] = args[i].impl
+    var val = args[i].impl
+    cargs[i] = addr val
   var ok =  SciterCallScriptingMethod(
-    he, name, cargs[0], uint32(clen), result.impl
+    he, name, cargs[0], uint32(clen), addr result.impl
   )
   doAssert ok.SCDOM_RESULT == SCDOM_OK, "ok is:" & $ok 
   #sciter.Value.raise_from(rv, ok == SCDOM_RESULT.SCDOM_OK, name)
   #self._throw_if(ok)
+
+proc copy*(x: ptr VALUE): SciterVal = 
+  ## Creates a copy of a Sciter value from the pointer `x`.
+  result = nullValue()
+  isOk sapi.ValueCopy(addr result.impl, x)

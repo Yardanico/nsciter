@@ -15,18 +15,18 @@ var wnd = sapi.SciterCreateWindow(
 
 proc funct(data: seq[ptr Value]): Value = 
   if data.len < 1: 
-    let b = newValue("Requires 1 argument: string to evaluate")
-    discard sapi.ValueCopy(addr result, b.impl)
+    var b = newValue("Requires 1 argument: string to evaluate")
+    discard sapi.ValueCopy(addr result, addr b.impl)
     return
-  let str = SciterVal(impl: data[0]).getStr()
+  let str = data[0].copy().getStr()
   var data = ""
   try:
     let e = newEvaluator()
     data = $e.eval(str)
   except:
     data = "error"
-  let res = newValue(data)
-  discard sapi.ValueCopy(addr result, res.impl)
+  var res = newValue(data)
+  discard sapi.ValueCopy(addr result, addr res.impl)
 
 echo wnd.defineScriptingFunction("calculate", funct)
 
