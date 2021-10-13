@@ -19,8 +19,10 @@ type
   
   SciterVal* = SciterValObj
 
-  SciterValKind* {.pure.} = enum ## An enum of all possible types
+  SciterValKind* {.pure.} = enum 
+    ## An enum of all possible types
     ## a Sciter value might hold
+    # See C_VALUE_TYPE for the original definitions
     svUndefined = 0, svNull, svBool, svInt, svFloat,
     svString, svDate, svCurrency, svLength, svArray, svMap
     svFunction, svBytes, svObject, svResource, svDuration,
@@ -61,7 +63,7 @@ template checkTypDefault(call, default: untyped) {.dirty.} =
   let res = call
   if res == HV_INCOMPATIBLE_TYPE:
     result = default
-  else:
+  elif res != HV_OK:
     sciterErr(res)
 
 template checkTypDefault(call, ifOk, default: untyped): untyped = 
@@ -166,7 +168,8 @@ proc copy*(val: SciterVal): SciterVal {.inline.} =
 
 proc initValue*(val: string): SciterValue = 
   ## Creates a new stack-allocated Sciter value from a string `val`.
-  ## .. warning:: You should only use this proc if you know what you're doing!
+  ## 
+  ## .. warning:: Be careful when using stack-allocated Sciter values!
   var ws = utf8to16(val)
   isOk sapi.ValueStringDataSet(addr result, ws[0].addr, ws.len.uint32, 0'u32)
 
@@ -187,14 +190,20 @@ proc getStr*(val: SciterVal, default = ""): string =
   do:
     result = default
 
+#[
 proc newValue*(val: int64): SciterVal =
   ## Creates a new int64 Sciter value from `val`. 
+  ##
   result = newValue()
   isOk sapi.ValueInt64DataSet(result.impl, val, svInt, 0)
+]#
 
-proc newValue*(val: int8 | int16 | int32): SciterVal =
+proc newValue*(val: int8 | int16 | int32 | int64): SciterVal =
   ## Creates a new Sciter value from an integer `val`.
   ## Internally stores the value as a 32-bit Sciter integer
+  ## 
+  ## .. warning:: For 64-bit integers this truncates the integer to 32-bits
+  ##    as Sciter does NOT support 64-bit integers!
   result = newValue()
   isOk sapi.ValueIntDataSet(result.impl, cint val, svInt, 0)
 
@@ -263,16 +272,22 @@ proc `$`*(v: SciterVal): string =
     nv.convertToString(CVT_SIMPLE)
     result &= nv.getStr()
 
-proc getInt*(val: SciterVal, default = 0): int64 =
+
+# Apparently Sciter does not have 64 general-purpose integers and only uses them
+# for DATE and CURRENCY types
+# See https://sciter.com/forums/topic/how-to-compute-if-this-value-over-int32/
+#[
+proc getInt64*(val: SciterVal, default = 0): int64 =
   ## Gets a 64-bit int from a Sciter value `x`. 
   ## `x` **must** be a 64-bit Sciter value (this proc won't work 
   ## for getting int32 or smaller)!
   ## 
   ## Returns `default` if `x` is not an int
   checkTypDefault sapi.ValueInt64Data(val.impl, addr result), default
+]#
 
-proc getInt32*(val: SciterVal, default = 0'i32): int32 =
-  ## Gets a 32-bit int from a Sciter value `x`
+proc getInt*(val: SciterVal, default = 0'i32): int32 =
+  ## Gets a 32-bit int from a Sciter value `x`.
   ## 
   ## Returns `default` if `x` is not an int
   checkTypDefault sapi.ValueIntData(val.impl, addr result), default
@@ -322,7 +337,7 @@ proc getColor*(val: SciterVal, default = 0'u32): uint32 =
   ## 
   ## Returns `default` if `val` is not a color.
   if val.kind == svColor:
-    result = uint32 val.getInt32()
+    result = uint32 val.getInt()
   else:
     result = default
 
