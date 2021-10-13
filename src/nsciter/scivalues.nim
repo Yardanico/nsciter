@@ -14,7 +14,7 @@ type
     ## 
     ## Required for destructors to correctly work
     impl*: SCITER_VALUE
-    wasDestroyed: bool
+    #wasDestroyed: bool
     when isDebug:
       tag*: string
   
@@ -97,9 +97,9 @@ proc `==`(a: cuint, b: VALUE_RESULT): bool = a == b.cuint
 proc `=destroy`(val: var SciterValObj) =   
   when isDebug:
     echo "Destroying ", x.tag
-  if not val.wasDestroyed:
-    discard sapi.ValueClear(addr val.impl)
-  val.wasDestroyed = true
+  #if not val.wasDestroyed:
+  discard sapi.ValueClear(addr val.impl)
+  #val.wasDestroyed = true
 
 proc `=`(dst: var SciterValObj, src: SciterValObj) = 
   when isDebug:
