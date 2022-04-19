@@ -1,4 +1,4 @@
-import sciwrap, papi
+import sciwrap2, papi, converters
 
 #[
 We have an object with event handler procs
@@ -36,7 +36,7 @@ type
     attached*: proc(he: HELEMENT)
 
 type
-    EventTarget = HWINDOW or HELEMENT
+    EventTarget = GtkWidget or HELEMENT
 
 proc fn_subscription(he: HELEMENT, params: var cuint): bool = 
   discard
@@ -106,17 +106,21 @@ import tables
 #proc hash(x: EventHandler): Hash {.inline.} =  return hash(x)
 var evct = initTable[EventHandler, uint]()
 
-proc element_proc(tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): bool {.cdecl.} =
+#  Elementeventproc_436208248* = proc (a0: Lpvoid_436208209; a1: Helement_436208277;
+#                                     a2: Uint_436208391; a3: Lpvoid_436208209): Sbool_436208261
+
+proc element_proc(tag: Lpvoid; he: Helement; evtg: Uint; prms: Lpvoid): Int {.cdecl.} =
   var pThis = cast[EventHandler](tag)
   #if evtg > uint32(256):
   #debugEcho "element_proc: " , cast[EVENT_GROUPS](evtg)  #, " prms:", repr prms
-  assert pThis != nil, "pThis is nil"    
+  assert pThis != nil, "pThis is nil"
+
   case cast[EVENT_GROUPS](evtg)
   of SUBSCRIPTIONS_REQUEST:
     var p = cast[ptr cuint](prms)
     var res = pThis.subscription(he, p[])
     #echo "SUBSCRIPTIONS_REQUEST: ", cast[EVENT_GROUPS](p)
-    result = bool res
+    result = cint res
 
   of HANDLE_INITIALIZATION:
     var p = cast[ptr INITIALIZATION_PARAMS](prms)
@@ -133,87 +137,88 @@ proc element_proc(tag: LPVOID; he: HELEMENT; evtg: cuint; prms: LPVOID): bool {.
       pThis.attached(he)
       if evct.hasKeyOrPut(pThis, 0):
           evct[pThis] = evct[pThis] + 1
-    result = true
+    result = 1
 
   of HANDLE_MOUSE:
     var p = cast[ptr MOUSE_PARAMS](prms)
     var res = pThis.handle_mouse(he, p)
     #echo "HANDLE_MOUSE: res " , res, " cmd: " , cast[MOUSE_EVENTS](p.cmd)
-    result = bool res
+    result = cint res
 
   of HANDLE_KEY:
     var p = cast[ptr KEY_PARAMS](prms)
-    result = bool pThis.handle_key(he, p)
+    result = cint pThis.handle_key(he, p)
 
   of HANDLE_FOCUS:
     var p = cast[ptr FOCUS_PARAMS](prms)
-    result = bool pThis.handle_focus(he, p)
+    result = cint pThis.handle_focus(he, p)
 
   of HANDLE_DRAW:
     var p = cast[ptr DRAW_PARAMS](prms)
     #echo "HANDLE_DRAW: " , repr prms
     var res = pThis.handle_draw(he, p)
-    result = bool res
+    result = cint res
 
   of HANDLE_TIMER:
     var p = cast[ptr TIMER_PARAMS](prms)
     # echo "HANDLE_TIMER: ", repr p
-    result = bool pThis.handle_timer(he, p)
+    result = cint pThis.handle_timer(he, p)
 
   of HANDLE_BEHAVIOR_EVENT:
     var p = cast[ptr BEHAVIOR_EVENT_PARAMS](prms)
     var res = pThis.handle_event(he, p)
     #echo "BEHAVIOR_EVENT_PARAMS: res ", res, repr p
-    result = bool res
+    result = cint res
 
   of HANDLE_METHOD_CALL:
     var p = cast[ptr METHOD_PARAMS](prms)
     #echo "HANDLE_METHOD_CALL: ", cast[BEHAVIOR_METHOD_IDENTIFIERS](p.methodID)
-    result = bool pThis.handle_method_call(he, p)
+    result = cint pThis.handle_method_call(he, p)
 
   of HANDLE_DATA_ARRIVED:
     var p = cast[ptr DATA_ARRIVED_PARAMS](prms)
-    result = bool pThis.handle_data_arrived(he, p)
+    result = cint pThis.handle_data_arrived(he, p)
   of HANDLE_SCROLL:
     var p = cast[ptr SCROLL_PARAMS](prms)
-    result = bool pThis.handle_scroll(he, p)
+    result = cint pThis.handle_scroll(he, p)
 
   of HANDLE_SIZE:
     var res = pThis.handle_size(he)
-    result = bool res
+    result = cint res
 
   of HANDLE_SCRIPTING_METHOD_CALL:
     var p = cast[ptr SCRIPTING_METHOD_PARAMS](prms)
-    echo "HANDLE_SCRIPTING_METHOD_CALL: ", p.name
-    result = bool pThis.handle_scripting_call(he, p)
+    result = cint pThis.handle_scripting_call(he, p)
 
   of HANDLE_GESTURE:
     var p = cast[ptr GESTURE_PARAMS](prms)
-    result = bool pThis.handle_gesture(he, p)
+    result = cint pThis.handle_gesture(he, p)
 
   of HANDLE_EXCHANGE:
     var p = cast[ptr EXCHANGE_PARAMS](prms)
-    result = bool pThis.handle_exchange(he, p)
+    result = cint pThis.handle_exchange(he, p)
 
   else:
-    result = false
+    result = 0
 
-proc Attach*(target: ptr HWINDOW, eh: EventHandler, 
+
+
+proc Attach*(target: ptr Gtkwidget, eh: EventHandler, 
                 mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT =
-  result = sapi.SciterWindowAttachEventHandler(target, element_proc, eh, mask).SCDOM_RESULT
+  result = sapi.SciterWindowAttachEventHandler(target, cast[ptr Elementeventproc](element_proc), eh, cuint mask).SCDOM_RESULT
 
 proc Attach*(target: HELEMENT, eh: EventHandler,
             mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT =
-  result = sapi.SciterAttachEventHandler(target, element_proc, eh).SCDOM_RESULT
+  result = sapi.SciterAttachEventHandler(target, cast[ptr Elementeventproc](element_proc), eh).SCDOM_RESULT
 
 proc Detach*(target: ptr EventTarget, eh: EventHandler,
             mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT {.discardable.} =
-  when EventTarget is HWINDOW:
+  when EventTarget is Gtkwidget:
     result = sapi.SciterWindowDetachEventHandler(target, element_proc, eh, mask)
   elif EventTarget is HELEMENT:
     result = sapi.SciterDetachEventHandler(target, element_proc, eh)
 
-proc onClick*(target: ptr HWINDOW | HELEMENT , 
+proc onClick*(target: ptr Gtkwidget | HELEMENT , 
             handler: proc(): bool): SCDOM_RESULT {.discardable.} =
   var eh = newEventHandler()
 
@@ -234,21 +239,21 @@ proc packArgs*(argc: uint32; argv: ptr Value): seq[ptr Value] =
       var p = cast[ptr Value](base + step*uint(idx))
       result[int(idx)] = p
 
-proc defineScriptingFunction*(target: ptr HWINDOW | HELEMENT, name: string,
+proc defineScriptingFunction*(target: ptr Gtkwidget | HELEMENT, name: string,
                             fn: NativeFunctor): SCDOM_RESULT {.discardable.} =
   var eh = newEventHandler()
   eh.handle_scripting_call = proc(he: HELEMENT, params: ptr SCRIPTING_METHOD_PARAMS): bool =
-    echo "handle_scripting_call: ", params.name , " ", name
+    echo "handle_scripting_call: ", cast[cstring](params.name) , " ", name
     # This is not the name of our function
-    if params.name != cstring(name):
+    if cast[cstring](params.name) != cstring(name):
       return false
     var ret = fn(packArgs(params.argc, params.argv))
-    echo " handle_scripting result: ", params.name, " ", ret
+    echo " handle_scripting result: ", cast[cstring](params.name), " ", ret
     params.result = ret
     result = true
   # XXX: Seems like sciter.js needs HANDLE_METHOD_CALL here, but then
   # do we really need HANDLE_SCRIPTING_METHOD_CALL?
-  return target.Attach(eh, cuint (HANDLE_METHOD_CALL or HANDLE_SCRIPTING_METHOD_CALL)).SCDOM_RESULT #  HANDLE_ALL
+  return target.Attach(eh, cuint(cuint(HANDLE_METHOD_CALL) or cuint(HANDLE_SCRIPTING_METHOD_CALL))).SCDOM_RESULT #  HANDLE_ALL
 
 proc createBehavior*(target: LPSCN_ATTACH_BEHAVIOR,
                     fn: proc()): SCDOM_RESULT {.discardable.} =

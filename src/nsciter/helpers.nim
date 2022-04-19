@@ -9,7 +9,7 @@ type
 
 const isDebug* = defined(nsciterDbg)
 
-import papi, sciwrap
+import papi, sciwrap2
 
 # Taken from https://github.com/treeform/encode. License applies
 proc utf8to16*(input: string): seq[uint16] =
@@ -45,7 +45,7 @@ proc utf16to8*(input: ptr UncheckedArray[uint16], len: int): string =
 proc loadFile*(wnd: ptr GtkWidget, path: string) =
   var path = utf8to16(path)
   # TODO: Raise an exception if this fails?
-  discard sapi.SciterLoadFile(wnd, addr path[0])
+  discard sapi.SciterLoadFile(wnd, cast[Lpcwstr](addr path[0]))
 
 type
   SciterRect* = object
@@ -89,10 +89,7 @@ proc enableInspectorSupport* =
   ## Enables inspector support for the whole application and allows
   ## all types of scripting APIs to be executed. Remove this from production
   ## builds of your application!
-  discard sapi.SciterSetOption(nil, cuint SCITER_SET_DEBUG_MODE, TRUE)
+  discard sapi.SciterSetOption(nil, cuint SCITER_SET_DEBUG_MODE, 1)
   # Allow calling all APIs in the inspector via eval
   discard sapi.SciterSetOption(nil, cuint SCITER_SET_SCRIPT_RUNTIME_FEATURES,
-        cuint(ALLOW_FILE_IO or 
-        ALLOW_SOCKET_IO or
-        ALLOW_EVAL or
-        ALLOW_SYSINFO))
+        cast[cuint](cuint(ALLOW_FILE_IO) or cuint(ALLOW_SOCKET_IO) or cuint(ALLOW_EVAL) or cuint(ALLOW_SYSINFO)))

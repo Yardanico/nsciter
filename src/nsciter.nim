@@ -1,6 +1,6 @@
 
-import nsciter / [sciwrap, papi, event, converters, scivalues, helpers]
-export sciwrap, papi, event, converters, scivalues, helpers
+import nsciter / [sciwrap2, papi, event, converters, scivalues, helpers]
+export sciwrap2, papi, event, converters, scivalues, helpers
 
 when defined(linux):
   {.passC: gorge("pkg-config gtk+-3.0 --cflags").}
@@ -10,7 +10,7 @@ when defined(linux):
       gtklib = "libgtk-3.so.0"
   type
       GtkWindow {.final, header: gtkhdr, importc.} = object
-  proc toGtkWindow(w: ptr GtkWidget): ptr GtkWindow {.importc: "GTK_WINDOW".}
+  proc toGtkWindow(w: ptr Gtkwidget): ptr Gtkwidget {.importc: "GTK_WINDOW".}
   proc gtk_init(arc: ptr cint, argv: ptr ptr ptr cchar) {.importc: "gtk_init".}
   proc gtk_main() {.importc: "gtk_main".}
   proc gtk_window_present(w: ptr GtkWindow) {.

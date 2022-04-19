@@ -1,4 +1,4 @@
-import os, nsciter, strformat, times, mathexpr
+import os, ../../src/nsciter, strformat, times, mathexpr
 
 # create rect with window position size
 var rect = newSciterRect(420, 150)
@@ -8,7 +8,7 @@ enableInspectorSupport()
 
 # create window
 var wnd = sapi.SciterCreateWindow(
-  cast[cuint](SW_CONTROLS or SW_MAIN or SW_TITLEBAR or SW_RESIZEABLE), 
+  cuint(cuint(SW_CONTROLS) or cuint(SW_MAIN) or cuint(SW_TITLEBAR) or cuint(SW_RESIZEABLE)), 
   rect.impl, nil, nil, nil
 )
 
@@ -19,7 +19,7 @@ wnd.loadFile(currentSourcePath().splitPath().head / "repl1.htm")
 var rootElem: HELEMENT
 echo sapi.SciterGetRootElement(wnd, addr rootElem)
 
-proc lpToNim(str: LPCWSTR; str_length: cuint; param: pointer): VOID {.cdecl.} = 
+proc lpToNim(str: LPCWSTR; str_length: cuint; param: pointer) {.cdecl.} = 
   cast[ptr string](param)[] = $cast[WideCString](str)
 
 var i = 0
@@ -31,14 +31,14 @@ proc resFound(elem: HELEMENT, param: pointer): bool {.cdecl.} =
   reselem = elem
   result = true
 
-echo sapi.SciterSelectElements(rootElem, "#mathRes", resFound, nil)
+echo sapi.SciterSelectElements(rootElem, "#mathRes", cast[ptr Sciterelementcallback](resFound), nil)
 
 proc onKeyPress*(target: HELEMENT): SCDOM_RESULT {.discardable.} =
   var eh = newEventHandler()
 
   eh.handle_key = proc(he: HELEMENT, params: ptr KEY_PARAMS): bool =
     var str: string
-    discard sapi.SciterGetElementTextCB(target, lpToNim, addr str)
+    discard sapi.SciterGetElementTextCB(target, cast[ptr Lpcwstrreceiver](lpToNim), addr str)
     var data = ""
     try:
       let e = newEvaluator()
@@ -56,6 +56,6 @@ proc inputFound(elem: HELEMENT, param: pointer): bool {.cdecl.} =
   discard elem.onKeyPress()
   result = true
 
-discard sapi.SciterSelectElements(rootElem, "#mathExpr", inputFound, nil)
+discard sapi.SciterSelectElements(rootElem, "#mathExpr", cast[ptr Sciterelementcallback](inputFound), nil)
 
 wnd.run()

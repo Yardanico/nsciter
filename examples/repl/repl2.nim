@@ -1,4 +1,4 @@
-import os, nsciter, strformat, times, mathexpr
+import os, ../../src/nsciter, strformat, times, mathexpr
 
 # create rect with window position size
 var rect = newSciterRect(420, 140)
@@ -8,7 +8,7 @@ enableInspectorSupport()
 
 # create window
 var wnd = sapi.SciterCreateWindow(
-  cast[cuint](SW_CONTROLS or SW_MAIN or SW_TITLEBAR or SW_RESIZEABLE), 
+  cuint(cuint(SW_CONTROLS) or cuint(SW_MAIN) or cuint(SW_TITLEBAR) or cuint(SW_RESIZEABLE)), 
   rect.impl, nil, nil, nil
 )
 
@@ -28,7 +28,7 @@ proc funct(data: seq[ptr Value]): Value =
   let res = newValue(data)
   discard sapi.ValueCopy(addr result, res.impl)
 
-echo wnd.defineScriptingFunction("calculate", funct)
+echo SCDOM_RESULT(wnd.defineScriptingFunction("calculate", funct))
 
 # load htm file for sciter
 wnd.loadFile(currentSourcePath().splitPath().head / "repl2.htm")

@@ -1,6 +1,6 @@
 import std/[strformat, times, unicode]
 
-import sciwrap, papi, converters, event, helpers
+import sciwrap2, papi, converters, event, helpers
 
 
 # XXX: Consider trying to remove the heap allocation and doing it as described
@@ -81,10 +81,12 @@ template checkTypDefault(call, ifOk, default: untyped): untyped =
 template enumToInt(typ: untyped): void =
   converter fromCuint(x: cuint): typ  =
     result = typ(x)
+  converter toCuint(x: typ): cuint =
+    result = cuint(x)
 
 # All of those converters are private to this module
 enumToInt(VALUE_RESULT)
-enumToInt(C_VALUE_TYPE)
+enumToInt(Valuetype)
 enumToInt(VALUE_UNIT_TYPE_STRING)
 enumToInt(VALUE_UNIT_TYPE_OBJECT)
 
@@ -171,13 +173,13 @@ proc initValue*(val: string): SciterValue =
   ## 
   ## .. warning:: Be careful when using stack-allocated Sciter values!
   var ws = utf8to16(val)
-  isOk sapi.ValueStringDataSet(addr result, ws[0].addr, ws.len.uint32, 0'u32)
+  isOk sapi.ValueStringDataSet(addr result, cast[Lpcwstr](ws[0].addr), ws.len.uint32, 0'u32)
 
 proc newValue*(val: string): SciterVal =
   ## Creates a new Sciter value from a Nim string `val`
   var ws = utf8to16(val)
   result = newValue()
-  isOk sapi.ValueStringDataSet(result.impl, ws[0].addr, ws.len.uint32, 0'u32)
+  isOk sapi.ValueStringDataSet(result.impl, cast[Lpcwstr](ws[0].addr), ws.len.uint32, 0'u32)
 
 proc getStr*(val: SciterVal, default = ""): string =
   ## Gets a string from a Sciter string-like value `x`.
@@ -205,7 +207,7 @@ proc newValue*(val: int8 | int16 | int32 | int64): SciterVal =
   ## .. warning:: For 64-bit integers this truncates the integer to 32-bits
   ##    as Sciter does NOT support 64-bit integers!
   result = newValue()
-  isOk sapi.ValueIntDataSet(result.impl, cint val, svInt, 0)
+  isOk sapi.ValueIntDataSet(result.impl, INT val, cuint svInt, cuint(0))
 
 proc newValue*(time: Time): SciterVal =
   result = newValue()
@@ -247,7 +249,7 @@ proc newValueObj*(obj: object): SciterVal =
 
 proc convertFromString*(val: SciterVal, s: string, how = CVT_SIMPLE)  =
   var ws = utf8to16(s)
-  isOk sapi.ValueFromString(val.impl, ws[0].addr, ws.len.uint32, how.UINT32)
+  isOk sapi.ValueFromString(val.impl, cast[Lpcwstr](ws[0].addr), ws.len.uint32, how.UINT32)
 
 proc convertToString*(val: SciterVal, how = CVT_SIMPLE) =
   isOk sapi.ValueToString(val.impl, how.UINT32)
@@ -377,7 +379,9 @@ proc len*(val: SciterVal): int =
   isOk sapi.ValueElementsCount(val.impl, addr temp)
   result = int temp
 
-proc getItemsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
+#  Keyvaluecallback_436208382* = proc (a0: Lpvoid_436208209; a1: ptr Value_436208127;
+ #                                     a2: ptr Value_436208127): Sbool_436208261 {.
+proc getItemsCb(param: Lpvoid; pkey, pval: ptr Scitervalue): bool {.cdecl.} = 
   cast[ptr seq[SciterVal]](param)[].add SciterVal(impl: pval).copy()
   result = true
 
@@ -386,7 +390,7 @@ proc getItems*(val: SciterVal): seq[SciterVal] =
   # TODO: do we really need this optimization?
   result = newSeqOfCap[SciterVal](val.len())
   
-  isOk sapi.ValueEnumElements(val.impl, getItemsCb, addr result)
+  isOk sapi.ValueEnumElements(val.impl, cast[ptr Keyvaluecallback](getItemsCb), cast[Lpvoid](addr result))
 
 iterator items*(val: SciterVal): SciterVal = 
   ## Yields values of `x`. `x` must be T_MAP, T_FUNCTION or T_OBJECT
@@ -411,7 +415,7 @@ proc getPairs*(val: SciterVal): seq[SciterKeyVal] =
   
   # Pass the nim seq itself as a pointer so we can add values to
   # the resulting seq directly
-  isOk sapi.ValueEnumElements(val.impl, getPairsCb, addr result)
+  isOk sapi.ValueEnumElements(val.impl, cast[ptr Keyvaluecallback](getPairsCb), addr result)
 
 iterator pairs*(val: SciterVal): (SciterVal, SciterVal) = 
   ## Yields (key, value) pairs from `x`. `x` must be T_MAP, T_FUNCTION 
@@ -457,10 +461,10 @@ proc invoke*(val: SciterVal, args: varargs[SciterVal]): SciterVal =
 
 var nfs = newSeq[NativeFunctor]()
 
-proc pinvoke(tag: ptr VOID;
+proc pinvoke(tag: pointer;
             argc: cuint; 
             argv: ptr SCITER_VALUE;
-            retval: ptr SCITER_VALUE): VOID {.cdecl.} =
+            retval: ptr SCITER_VALUE) {.cdecl.} =
     #is available only when ``--threads:on`` and ``--tlsEmulation:off`` are used
     #setupForeignThreadGc()
   var i = cast[int](tag)
@@ -469,22 +473,22 @@ proc pinvoke(tag: ptr VOID;
   isOk sapi.ValueInit(retval)
   isOk sapi.ValueCopy(retval, res.addr)    
 
-proc prelease(tag: ptr VOID): VOID {.cdecl.} = 
+proc prelease(tag: pointer) {.cdecl.} = 
   echo "prelease tag index: ", cast[int](tag)
 
 proc setNativeFunctor*(v: SciterVal, nf: NativeFunctor) = 
   nfs.add(nf)
-  var tag = cast[ptr VOID](nfs.len() - 1)
-  isOk sapi.ValueNativeFunctorSet(v.impl, pinvoke, prelease, tag)
+  var tag = cast[pointer](nfs.len() - 1)
+  isOk sapi.ValueNativeFunctorSet(v.impl, cast[ptr Nativefunctorinvoke](pinvoke), cast[ptr Nativefunctorrelease](prelease), tag)
 
-proc callFunction*(hwnd: HWINDOW | HELEMENT, 
+proc callFunction*(hwnd: Gtkwidget | HELEMENT, 
                   name: cstring, args: varargs[SciterVal]): SciterVal =  
   result = newValue()    
   var clen = len(args)
   var cargs = newSeq[ptr SCITER_VALUE](clen)
   for i in 0 ..< clen:
     cargs[i] = args[i].impl
-  when hwnd is HWINDOW:
+  when hwnd is Gtkwidget:
     ## Call scripting function defined in the global namespace."""
     var ok = SciterCall(hwnd, name, uint32(clen), cargs[0], result.impl)
     #doAssert ok, "ok is:" & $ok # == SCDOM_OK
@@ -517,7 +521,7 @@ proc callMethod*(he: HELEMENT, name: cstring, args: varargs[SciterVal]): SciterV
   var cargs = newSeq[ptr SCITER_VALUE](clen)
   for i in 0 ..< clen:
     cargs[i] = args[i].impl
-  var ok =  SciterCallScriptingMethod(
+  var ok =  sapi.SciterCallScriptingMethod(
     he, name, cargs[0], uint32(clen), result.impl
   )
   doAssert ok.SCDOM_RESULT == SCDOM_OK, "ok is:" & $ok 

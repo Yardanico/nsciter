@@ -1,4 +1,4 @@
-import sciwrap, os, dynlib
+import sciwrap2, os, dynlib
 
 var 
   sapi*: ptr ISciterAPI

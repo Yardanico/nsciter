@@ -1,4 +1,4 @@
-import sciwrap
+import sciwrap2
 
 converter toLPCWSTR*(s: string): LPCWSTR = 
   ## Converts a Nim string to Sciter-expected ptr wchar_t (LPCWSTR)
@@ -11,12 +11,12 @@ converter toLPCWSTR*(s: WideCStringObj): LPCWSTR =
   var widestr = newWideCString($s)
   result = cast[LPCWSTR](addr widestr[0])
 
-converter toLPCSTR*(s: string): LPCSTR = 
+converter Lpcstr*(s: string): Lpcstr = 
   ## Converts a Nim string to Sciter-expected ptr char (LPCSTR)
   var mystr = cstring(s)
-  result = cast[LPCSTR](addr mystr[0])
+  result = cast[Lpcstr](addr mystr[0])
 
-converter toLPCSTR*(s: cstring): LPCSTR = 
+converter toLPCSTR*(s: cstring): Lpcstr = 
   ## Converts a Nim string to Sciter-expected ptr char (LPCSTR)
   var mystr = cstring($s)
-  result = cast[LPCSTR](addr mystr[0])
+  result = cast[Lpcstr](addr mystr[0])

@@ -1,4 +1,4 @@
-import os, nsciter, strformat, times
+import os, ../../src/nsciter, strformat, times
 
 # Initialize the Sciter API
 let sapi = initSapi()
@@ -15,10 +15,10 @@ wnd.loadFile(path)
 
 
 # Get root element (the <html> one) of the window
-var rootElem: HELEMENT
+var rootElem: Helement
 echo sapi.SciterGetRootElement(wnd, addr rootElem)
 
-proc lpToNim(str: LPCWSTR; str_length: cuint; param: pointer): VOID {.cdecl.} = 
+proc lpToNim(str: LPCWSTR; str_length: cuint; param: pointer) {.cdecl.} = 
   cast[ptr string](param)[] = utf16to8(cast[ptr UncheckedArray[uint16]](str), int str_length)
 
 var i = 0
@@ -29,7 +29,7 @@ proc elemFoundCb(elem: HELEMENT, param: pointer): bool {.cdecl.} =
     echo "Clicked button"
     var node: HNODE
     var mystr: string
-    discard sapi.SciterGetElementTextCB(elem, lpToNim, addr mystr)
+    discard sapi.SciterGetElementTextCB(elem, cast[ptr Lpcwstrreceiver](lpToNim), addr mystr)
     echo "Current text - ", mystr
     echo "Setting new text!"
     inc i
@@ -50,7 +50,7 @@ wnd.onClick(proc: bool =
 )
 
 var mysel = cstring("#btnOne")
-echo sapi.SciterSelectElements(rootElem, "#btnOne", elemFoundCb, nil)
+echo sapi.SciterSelectElements(rootElem, "#btnOne", cast[ptr Sciterelementcallback](elemFoundCb), nil)
 
 # Open the window and start the main loop
 wnd.run()
