@@ -47,15 +47,21 @@ template sciterAssert(chk: untyped) =
       "Assert failed: " & astToStr(chk)
     )
 
-template isOk(vs: ValueResult) = 
+template isOk(vs: ValueResult | Uint) = 
   # raises an error if vs is not HV_OK
-  let res = vs
+  when vs is Valueresult:
+    let res = vs
+  else:
+    let res = Valueresult(vs)
   if res != HV_OK:
     sciterErr(res)
 
 template isOk(vs: ValueResult, msg: string) = 
   # raises an error with custom message if vs is not HV_OK
-  let res = vs
+  when vs is Valueresult:
+    let res = vs
+  else:
+    let res = Valueresult(vs)
   if res != HV_OK:
     raise newException(SciterValueError, msg)
 
