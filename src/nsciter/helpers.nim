@@ -9,7 +9,7 @@ type
 
 const isDebug* = defined(nsciterDbg)
 
-import papi, sciwrap2
+import papi, sciwrap
 
 # Taken from https://github.com/treeform/encode. License applies
 proc utf8to16*(input: string): seq[uint16] =
@@ -42,7 +42,7 @@ proc utf16to8*(input: ptr UncheckedArray[uint16], len: int): string =
         # Error, produce tofu character.
         result.add "□"
 
-proc loadFile*(wnd: ptr GtkWidget, path: string) =
+proc loadFile*(wnd: WindowHandle, path: string) =
   var path = utf8to16(path)
   # TODO: Raise an exception if this fails?
   discard sapi.SciterLoadFile(wnd, cast[Lpcwstr](addr path[0]))
@@ -76,7 +76,7 @@ type
     swEnableDebug, swOwnsVm
 
 proc createWindow*(flags = {swMain, swTitlebar, swControls, swResizeable},
-    rect = SciterRect()): ptr GtkWidget =
+    rect = SciterRect()): WindowHandle =
   ## Creates a new Sciter window with a `set` of `SciterWindowFlag` flags,
   ## and an optional rectangle containing the starting position and size
   ## of the window

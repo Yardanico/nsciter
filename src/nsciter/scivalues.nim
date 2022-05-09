@@ -1,7 +1,6 @@
 import std/[strformat, times, unicode]
 
-import sciwrap2, papi, converters, event, helpers
-
+import papi, sciwrap, converters, event, helpers
 
 # XXX: Consider trying to remove the heap allocation and doing it as described
 # in https://sciter.com/forums/topic/a-question-about-sciters-value-type/ ?
@@ -218,7 +217,7 @@ proc newValue*(val: int8 | int16 | int32 | int64): SciterVal =
 proc newValue*(time: Time): SciterVal =
   result = newValue()
   var s = toWinTime(time)
-  isOk sapi.ValueInt64DataSet(result.impl, s, svDate, DT_HAS_SECONDS.UINT32)
+  isOk sapi.ValueInt64DataSet(result.impl, s, svDate, DT_HAS_SECONDS.cuint)
 
 proc newValue*(fl: float64): SciterVal =
   ## Creates a new Sciter value from a float `val`.
@@ -255,10 +254,10 @@ proc newValueObj*(obj: object): SciterVal =
 
 proc convertFromString*(val: SciterVal, s: string, how = CVT_SIMPLE)  =
   var ws = utf8to16(s)
-  isOk sapi.ValueFromString(val.impl, cast[Lpcwstr](ws[0].addr), ws.len.uint32, how.UINT32)
+  isOk sapi.ValueFromString(val.impl, cast[Lpcwstr](ws[0].addr), ws.len.uint32, how.cuint)
 
 proc convertToString*(val: SciterVal, how = CVT_SIMPLE) =
-  isOk sapi.ValueToString(val.impl, how.UINT32)
+  isOk sapi.ValueToString(val.impl, how.cuint)
 
 proc `$`*(v: SciterVal): string =
   ## Stringifies a Sciter value `x`. 
@@ -387,16 +386,19 @@ proc len*(val: SciterVal): int =
 
 #  Keyvaluecallback_436208382* = proc (a0: Lpvoid_436208209; a1: ptr Value_436208127;
  #                                     a2: ptr Value_436208127): Sbool_436208261 {.
-proc getItemsCb(param: Lpvoid; pkey, pval: ptr Scitervalue): bool {.cdecl.} = 
+proc getItemsCb(param: Lpvoid; pkey, pval: ptr Scitervalue): Sbool {.cdecl.} = 
   cast[ptr seq[SciterVal]](param)[].add SciterVal(impl: pval).copy()
-  result = true
+  result = 1
 
 proc getItems*(val: SciterVal): seq[SciterVal] =
   ## Gets all items from a Sciter value `x`
   # TODO: do we really need this optimization?
   result = newSeqOfCap[SciterVal](val.len())
   
-  isOk sapi.ValueEnumElements(val.impl, cast[ptr Keyvaluecallback](getItemsCb), cast[Lpvoid](addr result))
+  when defined(windows):
+    isOk sapi.ValueEnumElements(val.impl, getItemsCb, cast[Lpvoid](addr result))
+  elif defined(linux):
+    isOk sapi.ValueEnumElements(val.impl, cast[ptr Keyvaluecallback](getItemsCb), cast[Lpvoid](addr result))
 
 iterator items*(val: SciterVal): SciterVal = 
   ## Yields values of `x`. `x` must be T_MAP, T_FUNCTION or T_OBJECT
@@ -405,14 +407,14 @@ iterator items*(val: SciterVal): SciterVal =
 
 type SciterKeyVal* = tuple[key, value: SciterVal]
 
-proc getPairsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): bool {.cdecl.} = 
+proc getPairsCb(param: pointer; pkey, pval: ptr SCITER_VALUE): Sbool {.cdecl.} = 
   # As far as I understand we don't own pkey and pval so we must
   # copy them here
   cast[ptr seq[SciterKeyVal]](param)[].add (
     SciterVal(impl: pkey).copy(), 
     SciterVal(impl: pval).copy()
   )
-  result = true
+  result = 1
 
 proc getPairs*(val: SciterVal): seq[SciterKeyVal] =
   ## Gets (key, value) of a Sciter value `x`. `x` must be T_MAP, 
@@ -421,7 +423,10 @@ proc getPairs*(val: SciterVal): seq[SciterKeyVal] =
   
   # Pass the nim seq itself as a pointer so we can add values to
   # the resulting seq directly
-  isOk sapi.ValueEnumElements(val.impl, cast[ptr Keyvaluecallback](getPairsCb), addr result)
+  when defined(linux):
+    isOk sapi.ValueEnumElements(val.impl, cast[ptr Keyvaluecallback](getPairsCb), addr result)
+  elif defined(windows):
+    isOk sapi.ValueEnumElements(val.impl, getPairsCb, addr result)
 
 iterator pairs*(val: SciterVal): (SciterVal, SciterVal) = 
   ## Yields (key, value) pairs from `x`. `x` must be T_MAP, T_FUNCTION 
@@ -487,14 +492,14 @@ proc setNativeFunctor*(v: SciterVal, nf: NativeFunctor) =
   var tag = cast[pointer](nfs.len() - 1)
   isOk sapi.ValueNativeFunctorSet(v.impl, cast[ptr Nativefunctorinvoke](pinvoke), cast[ptr Nativefunctorrelease](prelease), tag)
 
-proc callFunction*(hwnd: Gtkwidget | HELEMENT, 
+proc callFunction*(hwnd: EventTarget, 
                   name: cstring, args: varargs[SciterVal]): SciterVal =  
   result = newValue()    
   var clen = len(args)
   var cargs = newSeq[ptr SCITER_VALUE](clen)
   for i in 0 ..< clen:
     cargs[i] = args[i].impl
-  when hwnd is Gtkwidget:
+  when hwnd is WindowHandle:
     ## Call scripting function defined in the global namespace."""
     var ok = SciterCall(hwnd, name, uint32(clen), cargs[0], result.impl)
     #doAssert ok, "ok is:" & $ok # == SCDOM_OK

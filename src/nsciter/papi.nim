@@ -1,4 +1,14 @@
-import sciwrap2, os, dynlib
+import os, dynlib
+
+import sciwrap
+when defined(linux):
+  type
+      WindowHandle* = ptr Gtkwidget
+elif defined(windows):
+  type
+      WindowHandle* = Hwnd # hwnd is already a pointer
+type
+  EventTarget* = WindowHandle or Helement
 
 var 
   sapi*: ptr ISciterAPI

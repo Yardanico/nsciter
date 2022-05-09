@@ -23,13 +23,16 @@ proc lpToNim(str: LPCWSTR; str_length: cuint; param: pointer) {.cdecl.} =
 
 var i = 0
 
-proc elemFoundCb(elem: HELEMENT, param: pointer): bool {.cdecl.} = 
+proc elemFoundCb(elem: HELEMENT, param: pointer): Sbool {.cdecl.} = 
   echo "Button found..."
   echo elem.onClick(proc: bool = 
     echo "Clicked button"
     var node: HNODE
     var mystr: string
-    discard sapi.SciterGetElementTextCB(elem, cast[ptr Lpcwstrreceiver](lpToNim), addr mystr)
+    when defined(linux):
+      discard sapi.SciterGetElementTextCB(elem, cast[ptr Lpcwstrreceiver](lpToNim), addr mystr)
+    elif defined(windows):
+      discard sapi.SciterGetElementTextCB(elem, lpToNim, addr mystr)
     echo "Current text - ", mystr
     echo "Setting new text!"
     inc i
@@ -39,7 +42,7 @@ proc elemFoundCb(elem: HELEMENT, param: pointer): bool {.cdecl.} =
     # GC_unref(str)
     result = false
   )
-  result = true
+  result = 1
 
 wnd.onClick(proc: bool = 
   echo "Global click event handler 1"
@@ -50,7 +53,10 @@ wnd.onClick(proc: bool =
 )
 
 var mysel = cstring("#btnOne")
-echo sapi.SciterSelectElements(rootElem, "#btnOne", cast[ptr Sciterelementcallback](elemFoundCb), nil)
+when defined(linux):
+  echo sapi.SciterSelectElements(rootElem, "#btnOne", cast[ptr Sciterelementcallback](elemFoundCb), nil)
+elif defined(windows):
+  echo sapi.SciterSelectElements(rootElem, "#btnOne", elemFoundCb, nil)
 
 # Open the window and start the main loop
 wnd.run()

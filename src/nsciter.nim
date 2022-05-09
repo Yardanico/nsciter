@@ -1,6 +1,7 @@
 
-import nsciter / [sciwrap2, papi, event, converters, scivalues, helpers]
-export sciwrap2, papi, event, converters, scivalues, helpers
+import nsciter / [papi, sciwrap, event, converters, scivalues, helpers]
+
+export papi, sciwrap, event, converters, scivalues, helpers
 
 when defined(linux):
   {.passC: gorge("pkg-config gtk+-3.0 --cflags").}
@@ -25,3 +26,18 @@ when defined(linux):
     # xxx - is that correct?
     gtk_window_present(cast[ptr GtkWindow](w))
     gtk_main()
+elif defined(windows):
+  import winim/[lean, com]
+  proc run*(hwnd: sciwrap_win.Hwnd) = 
+    # TODO: Do we need other stuff here?
+    # Is this the same as OleInitialize ?
+    CoInitialize(nil)
+    let hwnd = cast[lean.Hwnd](hwnd)
+    var
+      msg: winuser.MSG
+    ShowWindow(hwnd, SW_SHOW)
+    UpdateWindow(hwnd)
+
+    while GetMessage(msg, 0, 0, 0) != 0:
+      TranslateMessage(msg)
+      DispatchMessage(msg)

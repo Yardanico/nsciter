@@ -1,4 +1,5 @@
-import sciwrap2
+import sciwrap
+
 
 converter toLPCWSTR*(s: string): LPCWSTR = 
   ## Converts a Nim string to Sciter-expected ptr wchar_t (LPCWSTR)

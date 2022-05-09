@@ -26,19 +26,25 @@ var i = 0
 
 var resElem: HELEMENT
 
-proc resFound(elem: HELEMENT, param: pointer): bool {.cdecl.} = 
+proc resFound(elem: HELEMENT, param: pointer): Sbool {.cdecl.} = 
   echo "Result field found"
   reselem = elem
-  result = true
+  result = 1
 
-echo sapi.SciterSelectElements(rootElem, "#mathRes", cast[ptr Sciterelementcallback](resFound), nil)
+when defined(linux):
+  echo sapi.SciterSelectElements(rootElem, "#mathRes", cast[ptr Sciterelementcallback](resFound), nil)
+elif defined(windows):
+  echo sapi.SciterSelectElements(rootElem, "#mathRes", resFound, nil)
 
 proc onKeyPress*(target: HELEMENT): SCDOM_RESULT {.discardable.} =
   var eh = newEventHandler()
 
   eh.handle_key = proc(he: HELEMENT, params: ptr KEY_PARAMS): bool =
     var str: string
-    discard sapi.SciterGetElementTextCB(target, cast[ptr Lpcwstrreceiver](lpToNim), addr str)
+    when defined(linux):
+      discard sapi.SciterGetElementTextCB(target, cast[ptr Lpcwstrreceiver](lpToNim), addr str)
+    elif defined(windows):
+      discard sapi.SciterGetElementTextCB(target, lpToNim, addr str)
     var data = ""
     try:
       let e = newEvaluator()
@@ -51,11 +57,14 @@ proc onKeyPress*(target: HELEMENT): SCDOM_RESULT {.discardable.} =
   
   result = target.Attach(eh, HANDLE_KEY.cuint).SCDOM_RESULT
 
-proc inputFound(elem: HELEMENT, param: pointer): bool {.cdecl.} = 
+proc inputFound(elem: HELEMENT, param: pointer): Sbool {.cdecl.} = 
   echo "Input elem found"
   discard elem.onKeyPress()
-  result = true
+  result = 1
 
-discard sapi.SciterSelectElements(rootElem, "#mathExpr", cast[ptr Sciterelementcallback](inputFound), nil)
+when defined(linux):
+  discard sapi.SciterSelectElements(rootElem, "#mathExpr", cast[ptr Sciterelementcallback](inputFound), nil)
+elif defined(windows):
+  discard sapi.SciterSelectElements(rootElem, "#mathExpr", inputFound, nil)
 
 wnd.run()

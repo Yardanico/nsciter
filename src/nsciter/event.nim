@@ -1,4 +1,4 @@
-import sciwrap2, papi, converters
+import papi, sciwrap
 
 #[
 We have an object with event handler procs
@@ -34,9 +34,6 @@ type
     handle_exchange*: proc(he: HELEMENT, params: ptr EXCHANGE_PARAMS): bool
     detached*: proc(he: HELEMENT)
     attached*: proc(he: HELEMENT)
-
-type
-    EventTarget = GtkWidget or HELEMENT
 
 proc fn_subscription(he: HELEMENT, params: var cuint): bool = 
   discard
@@ -203,22 +200,29 @@ proc element_proc(tag: Lpvoid; he: Helement; evtg: Uint; prms: Lpvoid): Int {.cd
 
 
 
-proc Attach*(target: ptr Gtkwidget, eh: EventHandler, 
+proc Attach*(target: WindowHandle, eh: EventHandler, 
                 mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT =
-  result = sapi.SciterWindowAttachEventHandler(target, cast[ptr Elementeventproc](element_proc), eh, cuint mask).SCDOM_RESULT
+  # TODO: Remove this after Futhark fixes proc pointers
+  when defined(windows):
+    result = sapi.SciterWindowAttachEventHandler(target, element_proc, eh, cuint mask).SCDOM_RESULT
+  elif defined(linux):
+    result = sapi.SciterWindowAttachEventHandler(target, cast[ptr Elementeventproc](element_proc), eh, cuint mask).SCDOM_RESULT
 
 proc Attach*(target: HELEMENT, eh: EventHandler,
             mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT =
-  result = sapi.SciterAttachEventHandler(target, cast[ptr Elementeventproc](element_proc), eh).SCDOM_RESULT
+  when defined(windows):
+    result = sapi.SciterAttachEventHandler(target, element_proc, eh).SCDOM_RESULT
+  elif defined(linux):
+    result = sapi.SciterAttachEventHandler(target, cast[ptr Elementeventproc](element_proc), eh).SCDOM_RESULT
 
-proc Detach*(target: ptr EventTarget, eh: EventHandler,
+proc Detach*(target: EventTarget, eh: EventHandler,
             mask: uint32 = HANDLE_ALL.uint32): SCDOM_RESULT {.discardable.} =
-  when EventTarget is Gtkwidget:
+  when EventTarget is WindowHandle:
     result = sapi.SciterWindowDetachEventHandler(target, element_proc, eh, mask)
   elif EventTarget is HELEMENT:
     result = sapi.SciterDetachEventHandler(target, element_proc, eh)
 
-proc onClick*(target: ptr Gtkwidget | HELEMENT , 
+proc onClick*(target: EventTarget , 
             handler: proc(): bool): SCDOM_RESULT {.discardable.} =
   var eh = newEventHandler()
 
@@ -239,7 +243,7 @@ proc packArgs*(argc: uint32; argv: ptr Value): seq[ptr Value] =
       var p = cast[ptr Value](base + step*uint(idx))
       result[int(idx)] = p
 
-proc defineScriptingFunction*(target: ptr Gtkwidget | HELEMENT, name: string,
+proc defineScriptingFunction*(target: EventTarget, name: string,
                             fn: NativeFunctor): SCDOM_RESULT {.discardable.} =
   var eh = newEventHandler()
   eh.handle_scripting_call = proc(he: HELEMENT, params: ptr SCRIPTING_METHOD_PARAMS): bool =

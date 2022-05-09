@@ -9,9 +9,10 @@
 !LICENSE
 
 sdk
-sciter-js-sdk
+sciter-js-sdk*
 sciterold
-libsciter-gtk.so
+*.so
+*.dll
 
 # sometimes I use this nimcache folder
 here
